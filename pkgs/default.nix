@@ -1,7 +1,7 @@
 # Custom packages, that can be defined similarly to ones from nixpkgs
 # You can build them using 'nix build .#example'
 { pkgs, system, inputs }: {
-  home-manager = inputs.home-manager.defaultPackage.${system};
+  home-manager = inputs.home-manager.packages.${system}.default;
   deploy-rs = inputs.deploy-rs.packages.${system}.default;
 
   # can be removed and moved to overlays when #396637 is merged

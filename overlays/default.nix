@@ -11,8 +11,8 @@
       ];
     });
     gnome-keyring = prev.gnome-keyring.overrideAttrs (oldAttrs: {
-      configureFlags = (builtins.filter (flag: flag != "--enable-ssh-agent") oldAttrs.configureFlags) ++ [
-        "--disable-ssh-agent"
+      mesonFlags = (builtins.filter (flag: flag != "-Dssh-agent=true") oldAttrs.mesonFlags) ++ [
+        "-Dssh-agent=false"
       ];
     });
   };

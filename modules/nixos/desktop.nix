@@ -200,6 +200,7 @@
     gnome-pomodoro
     newsflash
     deja-dup
+    warp
 
     adwaita-icon-theme
     adwaita-qt
