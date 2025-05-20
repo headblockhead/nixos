@@ -1,8 +1,7 @@
 {
   basicConfig = import ./basicConfig.nix;
   bluetooth = import ./bluetooth.nix;
-  bootloaderGraphical = import ./bootloaderGraphical.nix;
-  bootloaderText = import ./bootloaderText.nix;
+  bootloader = import ./bootloader.nix;
   desktop = import ./desktop.nix;
   desktopApps = import ./desktopApps.nix;
   development = import ./development.nix;
@@ -17,7 +16,6 @@
   homeManager = import ./homeManager.nix;
   kmscon = import ./kmscon.nix;
   monitoring = import ./monitoring.nix;
-  ncps = import ./ncps.nix;
   network = import ./network.nix;
   openrgb = import ./openrgb.nix;
   p2pool = import ./p2pool.nix;

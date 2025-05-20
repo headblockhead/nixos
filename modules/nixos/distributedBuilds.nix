@@ -48,7 +48,6 @@ let
       maxJobs = 4;
       speedFactor = 3;
     }
-
   ];
 in
 {

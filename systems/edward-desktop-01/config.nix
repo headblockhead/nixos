@@ -6,7 +6,7 @@
   imports = with outputs.nixosModules; [
     basicConfig
     bluetooth
-    bootloaderGraphical
+    bootloader
     desktop
     desktopApps
     development
@@ -37,17 +37,16 @@
   ];
   systemd.services.xmrig.wantedBy = lib.mkForce [ ];
 
-  #  services.ollama = {
-  #enable = true;
-  #acceleration = "rocm";
-  #};
+  boot.plymouth.extraConfig = ''
+    [Daemon]
+    DeviceScale=2
+  '';
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
-    #dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
     package = pkgs.unstable.steam;
   };

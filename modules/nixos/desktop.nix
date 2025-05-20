@@ -1,6 +1,6 @@
 { account, outputs, pkgs, lib, ... }: {
 
-  # delete when NixOS/nixpkgs#385497 is fixed
+  # delete when NixOS/nixpkgs#391574 is merged
   disabledModules = [
     "services/ttys/kmscon.nix"
   ];
@@ -182,7 +182,7 @@
 
   # Touchpad/touchscreen support.
   services.libinput.enable = true;
-  services.touchegg.enable = true;
+  services.touchegg.enable = true; # x11-gestures support
 
   # Exclude certain xserver packages.
   services.xserver.excludePackages = [ pkgs.xterm ];
@@ -201,6 +201,8 @@
     newsflash
     deja-dup
     warp
+    dconf-editor
+    plattenalbum
 
     adwaita-icon-theme
     adwaita-qt
@@ -258,6 +260,9 @@
 
   # Use latest (non-LTS) kernel package by default for machines with desktops.
   boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+
+  # High-performance version of D-Bus
+  services.dbus.implementation = "broker";
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";

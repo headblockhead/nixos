@@ -31,4 +31,7 @@ in
       ls = "ls --color=tty -A";
     };
   };
+
+  programs.fzf.keybindings = true;
+  programs.fzf.fuzzyCompletion = true;
 }

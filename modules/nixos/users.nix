@@ -5,7 +5,7 @@
     ${account.username} = {
       description = account.realname;
       isNormalUser = true;
-      extraGroups = [ "wheel" "adbusers" "dialout" "docker" "wireshark" ];
+      extraGroups = [ "wheel" "dialout" ];
     };
   };
 }

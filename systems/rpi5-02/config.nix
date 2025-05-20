@@ -5,7 +5,6 @@
   imports = with outputs.nixosModules; [
     basicConfig
     distributedBuilds
-    fzf
     git
     headless
     monitoring
@@ -13,6 +12,11 @@
     users
     zsh
   ];
+
+  services.glusterfs = {
+    enable = true;
+    useRpcbind = false;
+  };
 
   networking.firewall.allowedTCPPorts = [ 9002 ];
 

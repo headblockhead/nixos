@@ -89,8 +89,8 @@
           specialArgs = { inherit inputs outputs sshkeys account nixos-raspberrypi; };
           modules = [
             ./systems/rpi5-01/config.nix
-            ./systems/rpi5-01/hardware.nix
-            ./systems/rpi5-01/disko.nix
+            ./systems/rpi5-hardware.nix
+            ./systems/rpi5-disko.nix
             nixos-raspberrypi.nixosModules.raspberry-pi-5.base
             agenix.nixosModules.default
             disko.nixosModules.disko
@@ -102,8 +102,8 @@
           specialArgs = { inherit inputs outputs sshkeys account nixos-raspberrypi; };
           modules = [
             ./systems/rpi5-02/config.nix
-            ./systems/rpi5-02/hardware.nix
-            ./systems/rpi5-02/disko.nix
+            ./systems/rpi5-hardware.nix
+            ./systems/rpi5-disko.nix
             nixos-raspberrypi.nixosModules.raspberry-pi-5.base
             agenix.nixosModules.default
             disko.nixosModules.disko
@@ -115,8 +115,8 @@
           specialArgs = { inherit inputs outputs sshkeys account nixos-raspberrypi; };
           modules = [
             ./systems/rpi5-03/config.nix
-            ./systems/rpi5-03/hardware.nix
-            ./systems/rpi5-03/disko.nix
+            ./systems/rpi5-hardware.nix
+            ./systems/rpi5-disko.nix
             nixos-raspberrypi.nixosModules.raspberry-pi-5.base
             agenix.nixosModules.default
             disko.nixosModules.disko
@@ -128,7 +128,6 @@
           specialArgs = { inherit inputs outputs sshkeys account nixos-raspberrypi; };
           modules = [
             ./systems/rpi4-01/config.nix
-            ./systems/rpi4-01/hardware.nix
             nixos-raspberrypi.nixosModules.raspberry-pi-4.base
           ];
         };
@@ -138,7 +137,6 @@
           specialArgs = { inherit inputs outputs sshkeys account nixos-raspberrypi; };
           modules = [
             ./systems/rpi4-02/config.nix
-            ./systems/rpi4-02/hardware.nix
             nixos-raspberrypi.nixosModules.raspberry-pi-4.base
           ];
         };
@@ -210,8 +208,6 @@
       # SD card images. Also works for NVME drives!
       rpi5-01-sd = nixosConfigurations.rpi5-01.config.system.build.sdImage;
       rpi4-01-sd = nixosConfigurations.rpi4-01.config.system.build.sdImage;
-      rpi4-02-sd = nixosConfigurations.rpi4-02.config.system.build.sdImage;
-      printerpi-sd = nixosConfigurations.printerpi.config.system.build.sdImage;
 
       homeConfigurations = {
         "headb@gateway" = home-manager.lib.homeManagerConfiguration {

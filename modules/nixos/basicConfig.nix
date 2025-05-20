@@ -1,7 +1,10 @@
 { inputs, outputs, lib, config, pkgs, account, ... }:
 {
-  # Clear the tmp directory on boot.
-  boot.tmp.cleanOnBoot = true;
+  # Store /tmp in RAM.
+  boot.tmp.useTmpfs = true;
+  systemd.services.nix-daemon = {
+    environment.TMPDIR = "/var/tmp";
+  };
 
   # Enable nixos-help apps.
   documentation.nixos.enable = true;
@@ -46,14 +49,30 @@
     auto-optimise-store = true;
     substituters = [ "https://cache.edwardh.dev" ];
     trusted-public-keys = [ "cache.edwardh.dev-1:+Gafa747BGilG7GAbTC/1i6HX9NUwzMbdFAc+v5VOPk=" ];
-    download-buffer-size = 524288000; # 500MB
+    download-buffer-size = 524288000; # 500MiB
+  };
+
+  system.switch = {
+    enable = false;
+    enableNg = true;
   };
 
   environment.systemPackages = with pkgs; [
     git
     xc
     neovim
+    p7zip
+
+    pciutils
+    usbutils
+    inetutils
+    killall
+    btop
+    dig
   ];
+
+  # IRQ balancer
+  services.irqbalance.enable = true;
 
   networking.domain = lib.mkDefault "lan";
 }

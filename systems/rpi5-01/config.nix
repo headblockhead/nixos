@@ -2,10 +2,6 @@
 {
   networking.hostName = "rpi5-01";
 
-  disabledModules = [
-    "services/networking/ncps.nix" # upstream nixpkgs has errors, remove when #396901 and #397685 merged
-  ];
-
   imports = with outputs.nixosModules; [
     basicConfig
     distributedBuilds
@@ -15,7 +11,6 @@
     ssh
     users
     zsh
-    ncps # remove when #396901 and #397685 merged
   ];
 
   age.secrets.harmonia-signing-key.file = ../../secrets/harmonia-signing-key.age;

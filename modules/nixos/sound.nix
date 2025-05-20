@@ -7,10 +7,6 @@
     paprefs
     qjackctl
     jack2
-
-    vimpc
-    mpd
-    plattenalbum
   ];
 
   services.pipewire = {

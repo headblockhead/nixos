@@ -1,8 +1,8 @@
 { pkgs, ... }: {
   # GnuPG and smart card pinentry tools.
-  environment.systemPackages = [
-    pkgs.gnupg
-    pkgs.pinentry
+  environment.systemPackages = with pkgs; [
+    gnupg
+    gopass
   ];
 
   # Smart card daemon.
@@ -11,6 +11,5 @@
   programs.gnupg.agent = {
     enable = true;
     pinentryPackage = pkgs.pinentry-gnome3;
-    enableSSHSupport = true;
   };
 }
