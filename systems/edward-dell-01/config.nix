@@ -1,4 +1,4 @@
-{ config, outputs, netboot-client, ... }:
+{ config, pkgs, outputs, netboot-client, ... }:
 
 {
   networking.hostName = "edward-dell-01";
@@ -27,8 +27,6 @@
   age.secrets.wg1-edward-dell-01-preshared-key.file = ../../secrets/wg1-edward-dell-01-preshared-key.age;
   age.secrets.wg2-edward-dell-01-key.file = ../../secrets/wg2-edward-dell-01-key.age;
   age.secrets.wg2-edward-dell-01-preshared-key.file = ../../secrets/wg2-edward-dell-01-preshared-key.age;
-
-
 
   networking.wireguard = {
     enable = false;
@@ -97,6 +95,8 @@
   '';
 
   environment.systemPackages = [
+    pkgs.vscode
+    pkgs.gopass
   ];
 
   system.stateVersion = "22.05";

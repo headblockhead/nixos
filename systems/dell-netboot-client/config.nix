@@ -11,6 +11,8 @@
     network
     sound
     ssd
+    users
+    ssh
     zsh
   ];
 
@@ -26,17 +28,21 @@
 
     #extraConfig = ''
     #ldap_version 3
-    #pam_password md5
+    #pam_passord md5
     #'';
   };
 
   security.pam.services.sshd.makeHomeDir = true;
 
-  users.users.root = {
-    enable = true;
-    password = "root";
+  programs.ssh = {
+    # Redirect SSH connections to GitHub to port 443, to get around firewall.
+    extraConfig = ''
+      Host github.com
+        Hostname ssh.github.com
+        Port 443
+        User git
+    '';
   };
-
   environment.systemPackages = [
   ];
 

@@ -7,7 +7,7 @@
   boot.kernelModules = [ "kvm-intel" ];
 
   networking.useDHCP = lib.mkDefault true;
-  security.tpm2.enable = false;
+  security.tpm2.enable = lib.mkForce false;
 
   # Fix hardware sound issue
   boot.extraModprobeConfig = ''
