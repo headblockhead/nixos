@@ -11,6 +11,7 @@ let
         rev = ref;
         sha256 = sha;
       };
+      doCheck = false;
     };
 in
 {
@@ -33,6 +34,9 @@ in
       nil
       wakatime
       openscad-lsp
+      omnisharp-roslyn
+      mono
+      msbuild
     ];
   programs.neovim = {
     enable = true;
@@ -52,6 +56,8 @@ in
       (pluginGit "tklebanoff" "metal-vim"
         "6970494a5490a17033650849f0a1ad07506cef2e"
         "14i8q9ikp3v4q7mpid9ir1azfqfm7fbksc65cpp51424clnqcapl")
+      # Omnisharp
+      (pluginGit "OmniSharp" "omnisharp-vim" "cdbf65bc4385d7026428d2f392b40a317725cc9c" "mM1ePRbjp0bqQMm2KBLZ4zdlKlUF14Pod6jM82Z28L8=")
       # Add fuzzy searching (Ctrl-P to search file names, space-p to search content).
       fzf-vim
       # Maintain last location in files.

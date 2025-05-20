@@ -28,8 +28,10 @@
   age.secrets.wg2-edward-dell-01-key.file = ../../secrets/wg2-edward-dell-01-key.age;
   age.secrets.wg2-edward-dell-01-preshared-key.file = ../../secrets/wg2-edward-dell-01-preshared-key.age;
 
+
+
   networking.wireguard = {
-    enable = true;
+    enable = false;
     interfaces = {
       wg1 = {
         ips = [ "172.16.11.11/24" ];

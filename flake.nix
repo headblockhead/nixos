@@ -216,22 +216,22 @@
       homeConfigurations = {
         "headb@gateway" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
+          extraSpecialArgs = { inherit inputs outputs account; };
           modules = [ ./systems/gateway/users/headb.nix ];
         };
         "headb@edward-desktop-01" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
+          extraSpecialArgs = { inherit inputs outputs account; };
           modules = [ ./systems/edward-desktop-01/users/headb.nix ];
         };
         "headb@edward-laptop-01" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
+          extraSpecialArgs = { inherit inputs outputs account; };
           modules = [ ./systems/edward-laptop-01/users/headb.nix ];
         };
         "headb@edward-dell-01" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
+          extraSpecialArgs = { inherit inputs outputs account; };
           modules = [ ./systems/edward-dell-01/users/headb.nix ];
         };
       };

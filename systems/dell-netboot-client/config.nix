@@ -18,8 +18,23 @@
   users.ldap = {
     enable = true;
     timeLimit = 15;
-    server = "ldap://BRIDGE.ENTERPRISE";
-    base = "dc=BRIDGE,dc=ENTERPRISE";
+    server = "ldap://192.168.42.195";
+    base = "DC=BRIDGE,DC=ENTERPRISE";
+    loginPam = true;
+    nsswitch = true;
+    bind.policy = "soft";
+
+    #extraConfig = ''
+    #ldap_version 3
+    #pam_password md5
+    #'';
+  };
+
+  security.pam.services.sshd.makeHomeDir = true;
+
+  users.users.root = {
+    enable = true;
+    password = "root";
   };
 
   environment.systemPackages = [
