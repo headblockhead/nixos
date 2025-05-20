@@ -1,5 +1,4 @@
 { pkgs, account, ... }:
-
 {
   boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
   users.users.${account.username}.extraGroups = [ "i2c" ];

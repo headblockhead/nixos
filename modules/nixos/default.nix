@@ -6,10 +6,8 @@
   desktopApps = import ./desktopApps.nix;
   development = import ./development.nix;
   distributedBuilds = import ./distributedBuilds.nix;
-  docker = import ./docker.nix;
   fileSystems = import ./fileSystems.nix;
   fonts = import ./fonts.nix;
-  fzf = import ./fzf.nix;
   git = import ./git.nix;
   gpg = import ./gpg.nix;
   headless = import ./headless.nix;
@@ -26,7 +24,6 @@
   sound = import ./sound.nix;
   ssd = import ./ssd.nix;
   ssh = import ./ssh.nix;
-  transmission = import ./transmission.nix;
   users = import ./users.nix;
   virtualisation = import ./virtualisation.nix;
   xmrig = import ./xmrig.nix;

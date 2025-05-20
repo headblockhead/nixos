@@ -1,5 +1,5 @@
 {
-  description = "Reproducable NixOS (and homemanager) config for my local servers, cloud servers, desktops, and laptops.";
+  description = "NixOS configuration for my desktops, laptops, and local network.";
 
   nixConfig = {
     extra-substituters = [

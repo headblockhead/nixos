@@ -1,5 +1,5 @@
-{ account, outputs, pkgs, lib, ... }: {
-
+{ account, outputs, pkgs, lib, ... }:
+{
   # delete when NixOS/nixpkgs#391574 is merged
   disabledModules = [
     "services/ttys/kmscon.nix"

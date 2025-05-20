@@ -13,7 +13,6 @@
     distributedBuilds
     fileSystems
     fonts
-    fzf
     git
     gpg
     homeManager
@@ -24,7 +23,6 @@
     sound
     ssd
     ssh
-    transmission
     users
     virtualisation
     yubikey
@@ -36,11 +34,6 @@
     xmrig
   ];
   systemd.services.xmrig.wantedBy = lib.mkForce [ ];
-
-  boot.plymouth.extraConfig = ''
-    [Daemon]
-    DeviceScale=2
-  '';
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
@@ -57,10 +50,13 @@
     openFirewall = true;
   };
 
+  boot.plymouth.extraConfig = ''
+    [Daemon]
+    DeviceScale=2
+  '';
   services.kmscon.extraConfig = lib.mkAfter ''
     font-dpi=192
   '';
-
   systemd.tmpfiles.rules = [
     ''C+ /run/gdm/.config/monitors.xml - - - - ${./monitors.xml}''
     ''C+ /home/${account.username}/.config/monitors.xml - - - - ${./monitors.xml}''

@@ -1,3 +1,4 @@
+{ ... }:
 {
   boot = {
     consoleLogLevel = 0;
@@ -13,7 +14,7 @@
     ];
     initrd = {
       verbose = false;
-      systemd = true;
+      systemd.enable = true;
     };
     loader = {
       timeout = 0;
