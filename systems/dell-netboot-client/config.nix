@@ -32,6 +32,14 @@
     #'';
   };
 
+  services.avahi = {
+    enable = true;
+    publish = {
+      enable = true;
+      workstation = true;
+    };
+  };
+
   security.pam.services.sshd.makeHomeDir = true;
 
   programs.ssh = {
