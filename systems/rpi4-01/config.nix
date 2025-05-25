@@ -5,7 +5,6 @@
   imports = with outputs.nixosModules; [
     basicConfig
     distributedBuilds
-    fzf
     git
     headless
     monitoring

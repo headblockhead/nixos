@@ -5,7 +5,6 @@
 
   imports = with outputs.nixosModules; [
     basicConfig
-    fzf
     git
     headless
     homeManager

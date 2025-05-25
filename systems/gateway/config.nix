@@ -11,7 +11,7 @@ in
 
   imports = with outputs.nixosModules; [
     basicConfig
-    bootloaderText
+    bootloader
     distributedBuilds
     fileSystems
     git
@@ -104,8 +104,8 @@ in
             iifname {"${lan_port}", "${iot_port}", "${srv_port}", "wg2" } oifname "${wan_port}" accept
             iifname "${wan_port}" oifname {"${lan_port}", "${iot_port}", "${srv_port}", "wg2"} ct state { established, related } accept
 
-            iifname "${srv_port}" oifname "${iot_port}" accept
-            iifname "${iot_port}" oifname "${srv_port}" ct state { established, related } accept
+            iifname {"${srv_port}", "${lan_port}"} oifname "${iot_port}" accept
+            iifname "${iot_port}" oifname {"${srv_port}", "${lan_port}"} ct state { established, related } accept
 
             iifname {"${lan_port}", "${iot_port}", "wg0", "wg1"} oifname "${srv_port}" accept
             iifname "${srv_port}" oifname {"${lan_port}", "${iot_port}", "wg0", "wg1"} ct state { established, related } accept
@@ -263,7 +263,7 @@ in
     };
     http.enable = false;
 
-    sampleFormat = "44100:16:2";
+    sampleFormat = "44100:32:2";
     codec = "pcm";
     buffer = 1000;
     sendToMuted = true;
@@ -273,7 +273,7 @@ in
         type = "process";
         location = "${pkgs.librespot}/bin/librespot";
         query = {
-          params = "--zeroconf-port=5354 --name House --bitrate 320 --backend pipe --initial-volume 100 --quiet";
+          params = ''--zeroconf-port=5354 --name House --bitrate 320 --backend pipe --initial-volume 100 --quiet --format S32 --volume-ctrl fixed --device-type avr'';
         };
       };
     };
@@ -281,7 +281,7 @@ in
 
   services.unifi = {
     enable = true;
-    unifiPackage = pkgs.unifi8;
+    unifiPackage = pkgs.unifi;
     mongodbPackage = pkgs.mongodb-7_0;
   };
 
