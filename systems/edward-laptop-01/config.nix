@@ -5,14 +5,13 @@
   imports = with outputs.nixosModules; [
     basicConfig
     bluetooth
-    bootloaderGraphical
+    bootloader
     desktop
     desktopApps
     development
     distributedBuilds
     fileSystems
     fonts
-    fzf
     git
     gpg
     homeManager
