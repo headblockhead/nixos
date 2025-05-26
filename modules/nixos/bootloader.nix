@@ -14,7 +14,7 @@
     ];
     initrd = {
       verbose = false;
-      systemd.enable = true;
+      #systemd.enable = true;
     };
     loader = {
       timeout = 0;
