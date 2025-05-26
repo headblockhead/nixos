@@ -166,6 +166,22 @@ source: [firefox-gnome-theme](https://github.com/rafaelmardojai/firefox-gnome-th
 curl -s -o- https://raw.githubusercontent.com/rafaelmardojai/firefox-gnome-theme/master/scripts/install-by-curl.sh | bash
 ```
 
+#### GPG
+
+```bash
+gpg --card-edit
+> fetch
+> quit
+```
+
+#### Gopass
+
+Complete the first half of the setup form, then quit when reaching 'generating new key pair'.
+
+```bash
+gopas clone git@github.com:headblockhead/gopass
+```
+
 ## Troubleshooting
 
 ### Missing boot option
