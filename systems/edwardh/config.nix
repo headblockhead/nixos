@@ -454,20 +454,6 @@
               expires $expires;
             '';
           };
-
-          "/.well-known/matrix/server" = {
-            extraConfig = ''
-              default_type application/json;
-              return 200 '{ "m.server": "matrix.edwardh.dev:443" }';
-            '';
-          };
-          "/.well-known/matrix/client" = {
-            extraConfig = ''
-              default_type application/json;
-              return 200 '{ "m.homeserver": { "base_url": "https://matrix.edwardh.dev" } }';
-              add_header "Access-Control-Allow-Origin" *;
-            '';
-          };
         };
       };
       "calendar.edwardh.dev" = {
@@ -503,14 +489,6 @@
         locations."/" = {
           proxyPass = "http://172.16.3.41:8123"; # rpi4-01
           proxyWebsockets = true;
-          recommendedProxySettings = true;
-        };
-      };
-      "matrix.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
-        locations."/_matrix" = {
-          proxyPass = "http://172.16.3.51:8008"; # rpi5-01
           recommendedProxySettings = true;
         };
       };
