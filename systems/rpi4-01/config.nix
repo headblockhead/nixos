@@ -21,7 +21,7 @@
       fsType = "ext4";
     };
 
-  fileSystems."/boot" =
+  fileSystems."/boot/firmware" =
     {
       options = [ "fmask=0137" "dmask=0027" ];
       device = "/dev/disk/by-label/FIRMWARE";
