@@ -19,6 +19,7 @@
     monero-gui
     musescore
     obs-studio
+    watchmate
     obsidian
     onedrive
     openscad-unstable

@@ -37,6 +37,10 @@
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
+  virtualisation.docker.enable = true;
+
+  programs.gamescope.enable = true;
+
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
@@ -71,6 +75,7 @@
   environment.systemPackages = [
     pkgs.clonehero
     pkgs.unstable.blender-hip
+    pkgs.vscode-fhs
     pkgs.prismlauncher
   ];
 
