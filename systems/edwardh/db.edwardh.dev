@@ -1,6 +1,6 @@
 $TTL 86400
 @ IN SOA ns.edwardh.dev. admin.edwardh.dev. (
-2025042802 	; Serial, must be updated every change
+2025061201 	; Serial, must be updated every change
 86400       ; Refresh period
 86400       ; Retry period
 86400       ; Expire time
@@ -15,7 +15,6 @@ www 600 IN CNAME edwardh.dev.
 cache 600 IN A 18.135.222.143
 grafana 600 IN A 18.135.222.143
 hass 600 IN A 18.135.222.143
-matrix 600 IN A 18.135.222.143
 ; CalDAV and CardDAV
 calendar 600 IN A 18.135.222.143
 contacts 600 IN A 18.135.222.143
