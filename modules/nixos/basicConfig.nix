@@ -6,6 +6,9 @@
     environment.TMPDIR = "/var/tmp";
   };
 
+  # Enable irqbalancer, to balance IRQs across cores.
+  services.irqbalance.enable = true;
+
   # Enable nixos-help apps.
   documentation.nixos.enable = true;
 
@@ -14,27 +17,19 @@
   i18n.defaultLocale = "en_GB.UTF-8";
   console.keyMap = "us";
 
-  # Set the trusted users.
-  nix.settings.trusted-users = [ account.username ];
-
-  # Set the overlays.
-  nixpkgs = {
-    overlays = [
-      outputs.overlays.additions
-      outputs.overlays.modifications
-      outputs.overlays.unstable-packages
-    ];
-    config = {
-      allowUnfree = true;
-    };
+  nix.settings = {
+    trusted-users = [ account.username ];
+    experimental-features = "nix-command flakes";
+    auto-optimise-store = true;
+    substituters = [ "https://cache.edwardh.dev" ];
+    trusted-public-keys = [ "cache.edwardh.dev-1:+Gafa747BGilG7GAbTC/1i6HX9NUwzMbdFAc+v5VOPk=" ];
+    download-buffer-size = 524288000; # 500MiB
   };
 
-  # This will add each flake input as a registry
-  # To make nix3 commands consistent with your flake
+  # Add each input as a flake registry to make nix commands consistent.
   nix.registry = lib.mkOverride 10 ((lib.mapAttrs (_: flake: { inherit flake; })) ((lib.filterAttrs (_: lib.isType "flake")) inputs));
 
-  # This will additionally add your inputs to the system's legacy channels
-  # Making legacy nix commands consistent as well, awesome!
+  # Add each input to the system channels, to make nix-command consistent too.
   nix.nixPath = [ "/etc/nix/path" ];
   environment.etc =
     lib.mapAttrs'
@@ -44,19 +39,13 @@
       })
       config.nix.registry;
 
-  nix.settings = {
-    experimental-features = "nix-command flakes";
-    auto-optimise-store = true;
-    substituters = [ "https://cache.edwardh.dev" ];
-    trusted-public-keys = [ "cache.edwardh.dev-1:+Gafa747BGilG7GAbTC/1i6HX9NUwzMbdFAc+v5VOPk=" ];
-    download-buffer-size = 524288000; # 500MiB
-  };
-
+  # Use next-gen nixos switch.
   system.switch = {
     enable = false;
     enableNg = true;
   };
 
+  # Useful base packages for every system to have.
   environment.systemPackages = with pkgs; [
     git
     xc
@@ -70,9 +59,6 @@
     btop
     dig
   ];
-
-  # IRQ balancer
-  services.irqbalance.enable = true;
 
   networking.domain = lib.mkDefault "lan";
 }

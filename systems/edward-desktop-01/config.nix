@@ -3,36 +3,6 @@
 {
   networking.hostName = "edward-desktop-01";
 
-  imports = with outputs.nixosModules; [
-    basicConfig
-    bluetooth
-    bootloader
-    desktop
-    desktopApps
-    development
-    distributedBuilds
-    fileSystems
-    fonts
-    git
-    gpg
-    homeManager
-    network
-    openrgb
-    printer
-    sdr
-    sound
-    ssd
-    ssh
-    users
-    virtualisation
-    yubikey
-    zsh
-
-    #sheepit
-
-    p2pool
-    xmrig
-  ];
   systemd.services.xmrig.wantedBy = lib.mkForce [ ];
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -77,6 +47,7 @@
     pkgs.unstable.blender-hip
     pkgs.vscode-fhs
     pkgs.prismlauncher
+    pkgs.handbrake
   ];
 
   system.stateVersion = "22.05";

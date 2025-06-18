@@ -1,13 +1,5 @@
-{ account, outputs, pkgs, lib, ... }:
+{ account, pkgs, lib, ... }:
 {
-  # delete when NixOS/nixpkgs#391574 is merged
-  disabledModules = [
-    "services/ttys/kmscon.nix"
-  ];
-  imports = with outputs.nixosModules; [
-    kmscon
-  ];
-
   programs.dconf = {
     enable = true;
     profiles = {

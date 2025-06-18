@@ -10,7 +10,6 @@
             label = "FIRMWARE";
             priority = 1;
             type = "0700"; # Microsoft basic data
-            #attributes = [ 0 ];
             size = "1024M";
             content = {
               type = "filesystem";
@@ -27,7 +26,6 @@
           boot = {
             label = "boot";
             type = "EF00"; # EFI System Partition
-            #attributes = [ 2 ]; # deleteme?
             size = "1024M";
             content = {
               type = "filesystem";
