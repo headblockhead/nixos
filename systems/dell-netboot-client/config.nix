@@ -1,35 +1,13 @@
-{ outputs, lib, ... }:
+{ pkgs, ... }:
 
 {
   networking.hostName = "dell-netboot-client";
 
-  imports = with outputs.nixosModules; [
-    basicConfig
-    fzf
-    git
-    gpg
-    network
-    sound
-    ssd
-    users
-    ssh
-    zsh
-  ];
-
-  boot.loader.timeout = lib.mkForce 5;
   users.ldap = {
     enable = true;
-    timeLimit = 15;
-    server = "ldap://192.168.42.195";
-    base = "DC=BRIDGE,DC=ENTERPRISE";
+    server = "ldap://192.168.42.195:389";
+    base = "dc=BRIDGE,dc=ENTERPRISE";
     loginPam = true;
-    nsswitch = true;
-    bind.policy = "soft";
-
-    #extraConfig = ''
-    #ldap_version 3
-    #pam_passord md5
-    #'';
   };
 
   security.sudo.wheelNeedsPassword = false;
@@ -42,8 +20,6 @@
     };
   };
 
-  security.pam.services.sshd.makeHomeDir = true;
-
   programs.ssh = {
     # Redirect SSH connections to GitHub to port 443, to get around firewall.
     extraConfig = ''
@@ -53,8 +29,10 @@
         User git
     '';
   };
-  environment.systemPackages = [
+
+  environment.systemPackages = with pkgs; [
+    openldap
   ];
 
-  system.stateVersion = "22.05";
+  system.stateVersion = "25.05";
 }

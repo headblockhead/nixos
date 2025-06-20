@@ -6,7 +6,6 @@
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
   boot.kernelModules = [ "kvm-intel" ];
 
-  networking.useDHCP = lib.mkDefault true;
   security.tpm2.enable = false;
 
   # Fix hardware sound issue

@@ -247,11 +247,11 @@
       font-size=12
       hwaccel
     '';
-    hwRender = true;
-  };
 
-  # Use latest (non-LTS) kernel package by default for machines with desktops.
-  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+    # Can be removed when kmscon updated in nixpkgs.
+    hwRender = false;
+    extraOptions = "--no-drm";
+  };
 
   # High-performance version of D-Bus
   services.dbus.implementation = "broker";

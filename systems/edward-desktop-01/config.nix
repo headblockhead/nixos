@@ -44,7 +44,7 @@
 
   environment.systemPackages = [
     pkgs.clonehero
-    pkgs.unstable.blender-hip
+    pkgs.blender-hip
     pkgs.vscode-fhs
     pkgs.prismlauncher
     pkgs.handbrake
