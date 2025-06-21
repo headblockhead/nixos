@@ -67,6 +67,11 @@
           librespot = prev.librespot.overrideAttrs (oldAttrs: {
             withDNS-SD = true;
           });
+          gdm = prev.gdm.overrideAttrs (oldAttrs: {
+            #mesonFlags = oldAttrs.mesonFlags ++ [
+            #"-Dplymouth=enabled"
+            #];
+          });
 
           # Set pkgs.home-manager to be the flake version.
           home-manager = inputs.home-manager.packages.${final.system}.default;

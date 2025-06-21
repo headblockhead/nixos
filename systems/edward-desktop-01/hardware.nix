@@ -7,7 +7,6 @@
     ];
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "uas" "sd_mod" ];
-  boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ "kvm-amd" ];
 
   environment.systemPackages = with pkgs; [
@@ -32,7 +31,6 @@
   };
 
   hardware.amdgpu = {
-    initrd.enable = true;
     opencl.enable = true;
     amdvlk = {
       enable = true;

@@ -158,7 +158,6 @@
       gdm = {
         enable = true;
         wayland = true;
-        autoSuspend = false;
       };
     };
     desktopManager.gnome = {
@@ -171,6 +170,18 @@
     "f+ /var/lib/AccountsService/users/${account.username} 0600 root root - [User]\\nSession=gnome\\nIcon=/var/lib/AccountsService/icons/${account.username}\\nSystemAccount=false\\n"
     "L+ /var/lib/AccountsService/icons/${account.username} - - - - ${account.profileicon}"
   ];
+
+  boot = {
+    consoleLogLevel = 0;
+    kernelParams = [
+      "quiet"
+      "splash"
+      "plymouth.use-simpledrm=1"
+    ];
+    initrd.verbose = false;
+    loader.timeout = 0;
+    plymouth.enable = true;
+  };
 
   # Touchpad/touchscreen support.
   services.libinput.enable = true;
@@ -238,6 +249,11 @@
     pkgs.unstable.nerd-fonts.sauce-code-pro
   ];
 
+  disabledModules = [ "services/ttys/kmscon.nix" ];
+  imports = [
+    ./kmscon.nix
+  ];
+
   services.kmscon = {
     enable = true;
     fonts = [
@@ -247,10 +263,7 @@
       font-size=12
       hwaccel
     '';
-
-    # Can be removed when kmscon updated in nixpkgs.
-    hwRender = false;
-    extraOptions = "--no-drm";
+    hwRender = true;
   };
 
   # High-performance version of D-Bus

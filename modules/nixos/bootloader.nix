@@ -1,29 +1,19 @@
-{ ... }:
+{ lib, ... }:
 {
   boot = {
-    consoleLogLevel = 0;
-    kernelParams = [
-      "quiet"
-      "splash"
-      "rd.systemd.show_status=false"
-      "rd.udev.log_level=3"
-      "udev.log_priority=3"
-      "amdgpu.seamless=1"
-      "amdgpu.freesync_video=1"
-      "plymouth.use-simpledrm"
-    ];
+    consoleLogLevel = lib.mkDefault 6; # info
     initrd = {
-      verbose = false;
-      #systemd.enable = true;
+      verbose = lib.mkDefault true;
     };
     loader = {
-      timeout = 0;
       efi = {
         canTouchEfiVariables = true;
         efiSysMountPoint = "/boot";
       };
-      systemd-boot.enable = true;
+      systemd-boot = {
+        enable = true;
+        editor = false;
+      };
     };
-    plymouth.enable = true;
   };
 }

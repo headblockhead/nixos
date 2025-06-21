@@ -25,7 +25,6 @@
   };
 
   boot.plymouth.extraConfig = ''
-    [Daemon]
     DeviceScale=2
   '';
   services.kmscon.extraConfig = lib.mkAfter ''
