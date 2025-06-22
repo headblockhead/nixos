@@ -14,7 +14,7 @@
     inkscape
     kicad
     libimobiledevice
-    libreoffice
+    libreoffice-fresh
     lmms
     monero-gui
     musescore

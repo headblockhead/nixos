@@ -240,7 +240,7 @@
 
   qt = {
     enable = true;
-    style = "adwaita";
+    style = "adwaita-dark";
     platformTheme = "gnome";
   };
 
@@ -275,5 +275,6 @@
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     GSK_RENDERER = "ngl";
+    GTK_THEME = "Adwaita:dark";
   };
 }

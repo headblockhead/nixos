@@ -39,5 +39,6 @@
     pkgs.vscode-fhs
     pkgs.prismlauncher
     pkgs.handbrake
+    pkgs.anki
   ];
 }
