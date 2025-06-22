@@ -1,4 +1,4 @@
-{ lib, account, ... }:
+{ lib, usernames, ... }:
 {
   # Disable serial consoles
   systemd.services."serial-getty@ttyS0".enable = lib.mkDefault false;
@@ -17,10 +17,14 @@
   # Don't allow emergency mode, because we don't have a console.
   systemd.enableEmergencyMode = false;
 
-  # Disable password-based login to the user account
-  users.users.${account.username}.hashedPassword = "!";
+  # Allow passwordless sudo for the wheel group.
+  security.sudo.wheelNeedsPassword = false;
 
-  # Minimal options
+  # Disable password-based login to the user accounts.
+  users.users = lib.genAttrs usernames (username: { hashedPassword = "!"; });
+
+  # --- Minimal profile options below ---
+
   documentation = {
     enable = lib.mkDefault false;
     doc.enable = lib.mkDefault false;

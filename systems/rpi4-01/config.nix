@@ -1,18 +1,5 @@
-{ outputs, ... }:
+{ ... }:
 {
-  networking.hostName = "rpi4-01";
-
-  imports = with outputs.nixosModules; [
-    basicConfig
-    distributedBuilds
-    git
-    headless
-    monitoring
-    ssh
-    users
-    zsh
-  ];
-
   networking.firewall.allowedTCPPorts = [ 8123 9002 ];
 
   fileSystems."/" =
@@ -43,11 +30,4 @@
       ];
     };
   };
-
-  environment.systemPackages = [
-  ];
-
-  security.sudo.wheelNeedsPassword = false;
-
-  system.stateVersion = "23.05";
 }

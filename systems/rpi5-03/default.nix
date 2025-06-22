@@ -1,8 +1,8 @@
 { inputs, nixosModules, useCustomNixpkgsNixosModule, accountsForSystem, accountFromUsername, hostname, ... }:
 let
-  system = "x86_64-linux";
+  system = "aarch64-linux";
   canLogin = [ "headb" ];
-  hasHomeManager = true;
+  hasHomeManager = false;
 in
 {
   nixosConfiguration = inputs.nixpkgs.lib.nixosSystem {
@@ -13,11 +13,7 @@ in
       accounts = accountsForSystem canLogin;
       usernames = canLogin;
 
-      # Pass the netbooted-system system to the host-netboot.nix file.
-      netbooted-system = import ./dell-netboot-client {
-        inherit inputs nixosModules useCustomNixpkgsNixosModule accountsForSystem;
-        hostname = "dell-netboot-client";
-      };
+      nixos-raspberrypi = inputs.nixos-raspberrypi;
     };
 
     modules = with nixosModules; [
@@ -25,28 +21,22 @@ in
 
       {
         networking.hostName = hostname;
-        system.stateVersion = "22.05";
+        system.stateVersion = "23.05";
       }
 
       ./config.nix
-      ./hardware.nix
+      ../rpi5-hardware.nix
+      ../rpi5-disko.nix
 
-      ./host-netboot.nix
-
+      inputs.nixos-raspberrypi.nixosModules.raspberry-pi-5.base
       inputs.agenix.nixosModules.default
+      inputs.disko.nixosModules.disko
 
       basicConfig
-      bootloader
-      desktop
-      desktopApps
-      fileSystems
-      fonts
-      fzf
+      distributedBuilds
       git
-      gpg
-      network
-      sound
-      ssd
+      headless
+      monitoring
       ssh
       users
       zsh

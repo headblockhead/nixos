@@ -1,7 +1,10 @@
-{ pkgs, account, ... }:
+{ pkgs, lib, usernames, accountFromUsername, ... }:
+let
+  trustedUsernames = builtins.filter (username: (accountFromUsername username).trusted) usernames;
+in
 {
   boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
-  users.users.${account.username}.extraGroups = [ "i2c" ];
+  users.users = lib.genAttrs trustedUsernames (username: { extraGroups = [ "i2c" ]; });
   hardware.i2c.enable = true;
 
   environment.systemPackages = with pkgs; [

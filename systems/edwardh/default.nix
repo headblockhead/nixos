@@ -1,8 +1,8 @@
 { inputs, nixosModules, useCustomNixpkgsNixosModule, accountsForSystem, accountFromUsername, hostname, ... }:
 let
-  system = "x86_64-linux";
+  system = "aarch64-linux";
   canLogin = [ "headb" ];
-  hasHomeManager = true;
+  hasHomeManager = false;
 in
 {
   nixosConfiguration = inputs.nixpkgs.lib.nixosSystem {
@@ -12,12 +12,6 @@ in
       inherit inputs accountFromUsername;
       accounts = accountsForSystem canLogin;
       usernames = canLogin;
-
-      # Pass the netbooted-system system to the host-netboot.nix file.
-      netbooted-system = import ./dell-netboot-client {
-        inherit inputs nixosModules useCustomNixpkgsNixosModule accountsForSystem;
-        hostname = "dell-netboot-client";
-      };
     };
 
     modules = with nixosModules; [
@@ -25,31 +19,23 @@ in
 
       {
         networking.hostName = hostname;
+        networking.domain = "dev";
         system.stateVersion = "22.05";
       }
 
       ./config.nix
-      ./hardware.nix
 
-      ./host-netboot.nix
-
+      "${inputs.nixpkgs}/nixos/modules/virtualisation/amazon-image.nix"
       inputs.agenix.nixosModules.default
 
       basicConfig
-      bootloader
-      desktop
-      desktopApps
-      fileSystems
-      fonts
-      fzf
       git
-      gpg
-      network
-      sound
-      ssd
+      headless
+      monitoring
       ssh
       users
       zsh
+
     ] ++ (if hasHomeManager then [ nixosModules.homeManager ] else [ ]);
   };
   inherit system canLogin hasHomeManager;

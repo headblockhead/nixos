@@ -1,8 +1,5 @@
 { pkgs, ... }:
-
 {
-  networking.hostName = "dell-netboot-client";
-
   users.ldap = {
     enable = true;
     server = "ldap://192.168.42.195:389";
@@ -33,6 +30,4 @@
   environment.systemPackages = with pkgs; [
     openldap
   ];
-
-  system.stateVersion = "25.05";
 }

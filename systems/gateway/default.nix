@@ -2,7 +2,7 @@
 let
   system = "x86_64-linux";
   canLogin = [ "headb" ];
-  hasHomeManager = true;
+  hasHomeManager = false;
 in
 {
   nixosConfiguration = inputs.nixpkgs.lib.nixosSystem {
@@ -12,12 +12,6 @@ in
       inherit inputs accountFromUsername;
       accounts = accountsForSystem canLogin;
       usernames = canLogin;
-
-      # Pass the netbooted-system system to the host-netboot.nix file.
-      netbooted-system = import ./dell-netboot-client {
-        inherit inputs nixosModules useCustomNixpkgsNixosModule accountsForSystem;
-        hostname = "dell-netboot-client";
-      };
     };
 
     modules = with nixosModules; [
@@ -31,21 +25,16 @@ in
       ./config.nix
       ./hardware.nix
 
-      ./host-netboot.nix
-
       inputs.agenix.nixosModules.default
 
       basicConfig
       bootloader
-      desktop
-      desktopApps
+      distributedBuilds
       fileSystems
-      fonts
-      fzf
       git
-      gpg
-      network
-      sound
+      headless
+      homeManager
+      monitoring
       ssd
       ssh
       users

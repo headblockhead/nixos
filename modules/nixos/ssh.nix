@@ -1,4 +1,5 @@
-{ sshkeys, account, lib, ... }: {
+{ lib, usernames, accountFromUsername, ... }:
+{
   networking.firewall.allowedTCPPorts = [ 22 ];
   services.openssh = {
     enable = true;
@@ -9,5 +10,5 @@
       X11Forwarding = false;
     };
   };
-  users.users.${account.username}.openssh.authorizedKeys.keys = sshkeys;
+  users.users = lib.genAttrs usernames (username: { openssh.authorizedKeys.keys = (accountFromUsername username).sshkeys; });
 }

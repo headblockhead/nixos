@@ -1,4 +1,4 @@
-{ pkgs, account, ... }:
+{ pkgs, username, ... }:
 
 let
   pluginGit = owner: repo: ref: sha:
@@ -16,11 +16,11 @@ let
 in
 {
   systemd.user.tmpfiles.rules = [
-    "d /home/${account.username}/.vim 700 ${account.username} users - -"
-    "d /home/${account.username}/.vim/backup 700 ${account.username} users - -"
-    "d /home/${account.username}/.vim/swap 700 ${account.username} users - -"
-    "d /home/${account.username}/.vim/undo 700 ${account.username} users - -"
-    "L+ /home/${account.username}/.config/nvim/lua - - - - ${../../neovim}"
+    "d /home/${username}/.vim 700 ${username} users - -"
+    "d /home/${username}/.vim/backup 700 ${username} users - -"
+    "d /home/${username}/.vim/swap 700 ${username} users - -"
+    "d /home/${username}/.vim/undo 700 ${username} users - -"
+    "L+ /home/${username}/.config/nvim/lua - - - - ${../../neovim}"
   ];
 
   home.packages = with pkgs;
@@ -35,8 +35,7 @@ in
       wakatime
       openscad-lsp
       omnisharp-roslyn
-      mono
-      msbuild
+      dotnet-sdk
     ];
   programs.neovim = {
     enable = true;

@@ -1,24 +1,31 @@
-{ inputs, nixosModules, sshkeys, account, useCustomNixpkgsNixosModule, ... }:
+{ inputs, nixosModules, useCustomNixpkgsNixosModule, accountsForSystem, accountFromUsername, hostname, ... }:
 let
   system = "x86_64-linux";
+  canLogin = [ "headb" ];
+  hasHomeManager = true;
 in
-(
-  inputs.nixpkgs.lib.nixosSystem {
+{
+  nixosConfiguration = inputs.nixpkgs.lib.nixosSystem {
     inherit system;
 
     specialArgs = {
-      # Pass on inputs, sshkeys, and account to the modules' inputs.
-      inherit inputs sshkeys account;
+      inherit inputs accountFromUsername;
+      accounts = accountsForSystem canLogin;
+      usernames = canLogin;
     };
 
     modules = with nixosModules; [
       useCustomNixpkgsNixosModule
 
+      {
+        networking.hostName = hostname;
+        system.stateVersion = "22.05";
+      }
+
       ./config.nix
       ./hardware.nix
 
       basicConfig
-      bluetooth
       bootloader
       desktop
       desktopApps
@@ -28,7 +35,6 @@ in
       fonts
       git
       gpg
-      homeManager
       network
       openrgb
       printer
@@ -40,6 +46,7 @@ in
       virtualisation
       yubikey
       zsh
-    ];
-  }
-)
+    ] ++ (if hasHomeManager then [ nixosModules.homeManager ] else [ ]);
+  };
+  inherit system canLogin hasHomeManager;
+}

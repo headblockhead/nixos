@@ -1,17 +1,6 @@
-{ outputs, config, lib, ... }:
+{ config, ... }:
 {
-  networking.hostName = "rpi5-01";
-
-  imports = with outputs.nixosModules; [
-    basicConfig
-    distributedBuilds
-    git
-    headless
-    monitoring
-    ssh
-    users
-    zsh
-  ];
+  networking.firewall.allowedTCPPorts = [ 80 9002 8008 9003 9005 ];
 
   age.secrets.harmonia-signing-key.file = ../../secrets/harmonia-signing-key.age;
   age.secrets.ncps-signing-key.file = ../../secrets/ncps-signing-key.age;
@@ -55,8 +44,6 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ 80 9002 8008 9003 9005 ];
-
   services.nginx = {
     enable = true;
     statusPage = true;
@@ -72,10 +59,4 @@
     enable = true;
     port = 9005;
   };
-
-  environment.systemPackages = [
-  ];
-
-  security.sudo.wheelNeedsPassword = false;
-  system.stateVersion = "23.05";
 }

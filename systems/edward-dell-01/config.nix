@@ -1,28 +1,5 @@
-{ config, pkgs, outputs, netboot-client, ... }:
-
+{ config, pkgs, ... }:
 {
-  networking.hostName = "edward-dell-01";
-
-  imports = with outputs.nixosModules; [
-    basicConfig
-    bluetooth
-    bootloaderGraphical
-    desktop
-    desktopApps
-    fileSystems
-    fonts
-    fzf
-    git
-    gpg
-    homeManager
-    network
-    sound
-    ssh
-    ssd
-    users
-    zsh
-  ];
-
   age.secrets.wg1-edward-dell-01-key.file = ../../secrets/wg1-edward-dell-01-key.age;
   age.secrets.wg1-edward-dell-01-preshared-key.file = ../../secrets/wg1-edward-dell-01-preshared-key.age;
   age.secrets.wg2-edward-dell-01-key.file = ../../secrets/wg2-edward-dell-01-key.age;
@@ -66,18 +43,6 @@
     };
   };
 
-  services.pixiecore = {
-    enable = true;
-    openFirewall = true;
-    dhcpNoBind = true; # Use existing DHCP server.
-
-    mode = "boot";
-    kernel = "${netboot-client.kernel}/bzImage";
-    initrd = "${netboot-client.netbootRamdisk}/initrd";
-    cmdLine = "init=${netboot-client.toplevel}/init loglevel=4";
-    debug = true;
-  };
-
   programs.ssh = {
     # Redirect SSH connections to GitHub to port 443, to get around firewall.
     extraConfig = ''
@@ -98,6 +63,4 @@
     pkgs.vscode
     pkgs.gopass
   ];
-
-  system.stateVersion = "22.05";
 }

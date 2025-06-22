@@ -1,11 +1,14 @@
-{ account, ... }:
+{ lib, usernames, accountFromUsername, ... }:
 {
-  users.users = {
-    root.hashedPassword = "!"; # Disable root login
-    ${account.username} = {
-      description = account.realname;
-      isNormalUser = true;
-      extraGroups = [ "wheel" "dialout" ];
-    };
-  };
+  users.users = lib.genAttrs usernames
+    (username:
+      let
+        account = accountFromUsername username;
+      in
+      {
+        description = account.realname;
+        isNormalUser = true;
+        extraGroups = (if account.trusted then [ "wheel" "dialout" ] else [ ]);
+      }
+    );
 }

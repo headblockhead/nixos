@@ -1,4 +1,4 @@
-{ account, pkgs, lib, ... }:
+{ pkgs, lib, accounts, ... }:
 {
   programs.dconf = {
     enable = true;
@@ -166,10 +166,10 @@
   };
 
   # Set default desktopManager type to gnome-wayland, and add user icon.
-  systemd.tmpfiles.rules = [
-    "f+ /var/lib/AccountsService/users/${account.username} 0600 root root - [User]\\nSession=gnome\\nIcon=/var/lib/AccountsService/icons/${account.username}\\nSystemAccount=false\\n"
-    "L+ /var/lib/AccountsService/icons/${account.username} - - - - ${account.profileicon}"
-  ];
+  systemd.tmpfiles.rules =
+    lib.forEach accounts (account: "f+ /var/lib/AccountsService/users/${account.username} 0600 root root - [User]\\nSession=gnome\\nIcon=/var/lib/AccountsService/icons/${account.username}\\nSystemAccount=false\\n")
+    ++
+    lib.forEach accounts (account: "L+ /var/lib/AccountsService/icons/${account.username} - - - - ${account.profileicon}");
 
   boot = {
     consoleLogLevel = 0;
@@ -186,6 +186,9 @@
   # Touchpad/touchscreen support.
   services.libinput.enable = true;
   services.touchegg.enable = true; # x11-gestures support
+
+  # Bluetooth support.
+  hardware.bluetooth.enable = true;
 
   # Exclude certain xserver packages.
   services.xserver.excludePackages = [ pkgs.xterm ];

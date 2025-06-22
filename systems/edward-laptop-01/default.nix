@@ -12,12 +12,6 @@ in
       inherit inputs accountFromUsername;
       accounts = accountsForSystem canLogin;
       usernames = canLogin;
-
-      # Pass the netbooted-system system to the host-netboot.nix file.
-      netbooted-system = import ./dell-netboot-client {
-        inherit inputs nixosModules useCustomNixpkgsNixosModule accountsForSystem;
-        hostname = "dell-netboot-client";
-      };
     };
 
     modules = with nixosModules; [
@@ -25,30 +19,31 @@ in
 
       {
         networking.hostName = hostname;
-        system.stateVersion = "22.05";
+        system.stateVersion = "25.05";
       }
 
       ./config.nix
       ./hardware.nix
 
-      ./host-netboot.nix
-
-      inputs.agenix.nixosModules.default
-
       basicConfig
+      bluetooth
       bootloader
       desktop
       desktopApps
+      development
+      distributedBuilds
       fileSystems
       fonts
-      fzf
       git
       gpg
       network
+      printer
+      sdr
       sound
       ssd
       ssh
       users
+      yubikey
       zsh
     ] ++ (if hasHomeManager then [ nixosModules.homeManager ] else [ ]);
   };

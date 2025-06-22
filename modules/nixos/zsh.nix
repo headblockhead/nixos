@@ -1,15 +1,14 @@
-{ pkgs, account, ... }:
-let
-  customTheme = pkgs.replaceVars ../../custom.zsh-theme { username = account.username; };
-in
+{ pkgs, lib, accounts, ... }:
 {
   # Default user shell is zsh.
   users.defaultUserShell = pkgs.zsh;
 
-  systemd.tmpfiles.rules = [
-    "f /home/${account.username}/.zprofile"
-  ];
+  systemd.tmpfiles.rules = lib.forEach accounts (account: "f /home/${account.username}/.zprofile");
+
+  programs.nix-index.enable = true;
   programs.nix-index.enableZshIntegration = true;
+  programs.command-not-found.enable = false;
+
   programs.zsh = {
     # Enable zsh as a shell, add it to the environment.
     enable = true;
@@ -20,10 +19,11 @@ in
       enable = true;
       plugins = [ "aws" "git" ];
     };
-    shellInit = ''
-      source ${customTheme}
+    interactiveShellInit = ''
+      source ${../../custom.zsh-theme}
       export EDITOR='vim'
       source ${pkgs.zsh-nix-shell}/share/zsh-nix-shell/nix-shell.plugin.zsh
+      source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
     '';
     shellAliases = {
       q = "exit";

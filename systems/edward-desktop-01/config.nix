@@ -1,23 +1,16 @@
-{ outputs, lib, pkgs, account, ... }:
-
+{ lib, pkgs, accounts, ... }:
 {
-  networking.hostName = "edward-desktop-01";
-
-  systemd.services.xmrig.wantedBy = lib.mkForce [ ];
-
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   virtualisation.docker.enable = true;
 
   programs.gamescope.enable = true;
-
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
     package = pkgs.unstable.steam;
   };
-
   programs.alvr = {
     enable = true;
     package = pkgs.unstable.alvr;
@@ -32,8 +25,7 @@
   '';
   systemd.tmpfiles.rules = [
     ''C+ /run/gdm/.config/monitors.xml - - - - ${./monitors.xml}''
-    ''C+ /home/${account.username}/.config/monitors.xml - - - - ${./monitors.xml}''
-  ];
+  ] ++ lib.lists.forEach accounts (account: "C+ /home/${account.username}/.config/monitors.xml - - - - ${./monitors.xml}");
 
   # find / -name '*.desktop' 2> /dev/null
   services.xserver.desktopManager.gnome.favoriteAppsOverride = ''
@@ -48,6 +40,4 @@
     pkgs.prismlauncher
     pkgs.handbrake
   ];
-
-  system.stateVersion = "22.05";
 }

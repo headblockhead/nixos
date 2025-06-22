@@ -14,6 +14,11 @@ in
     modules = with nixosModules; [
       useCustomNixpkgsNixosModule
 
+      {
+        networking.hostName = "dell-netboot-client";
+        system.stateVersion = "25.05";
+      }
+
       ./config.nix
       ./hardware.nix
 

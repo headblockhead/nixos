@@ -1,29 +1,11 @@
-{ outputs, pkgs, lib, config, ... }:
+{ pkgs, lib, config, ... }:
 let
-  # Physical ports. Defined seperatly so they can be changed easily.
   wan_port = "enp5s0";
   lan_port = "enp6s0";
   iot_port = "enp9s0";
   srv_port = "enp1s0f0";
 in
 {
-  networking.hostName = "gateway";
-
-  imports = with outputs.nixosModules; [
-    basicConfig
-    bootloader
-    distributedBuilds
-    fileSystems
-    git
-    headless
-    homeManager
-    monitoring
-    ssd
-    ssh
-    users
-    zsh
-  ];
-
   age.secrets.wg0-gateway-key.file = ../../secrets/wg0-gateway-key.age;
   age.secrets.wg0-gateway-preshared-key.file = ../../secrets/wg0-gateway-preshared-key.age;
   age.secrets.wg1-gateway-key.file = ../../secrets/wg1-gateway-key.age;
@@ -39,10 +21,10 @@ in
   };
 
   networking = {
-    # Builtin firewall is replaced by nftables
-    firewall.enable = false;
-    enableIPv6 = false;
-    useDHCP = lib.mkDefault false;
+    firewall.enable = false; # replaced by nftables
+    enableIPv6 = false; # TODO
+
+    useDHCP = lib.mkDefault false; # disable DHCP client by default.
     interfaces = {
       ${wan_port} = {
         # DHCP client.
@@ -499,11 +481,4 @@ in
       };
     };
   };
-
-  environment.systemPackages = [
-  ];
-
-  security.sudo.wheelNeedsPassword = false;
-
-  system.stateVersion = "22.05";
 }

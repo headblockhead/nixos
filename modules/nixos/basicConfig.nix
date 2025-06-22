@@ -1,4 +1,7 @@
-{ inputs, outputs, lib, config, pkgs, account, ... }:
+{ inputs, lib, config, pkgs, usernames, accountFromUsername, ... }:
+let
+  trustedUsernames = builtins.filter (username: (accountFromUsername username).trusted) usernames;
+in
 {
   # Store /tmp in RAM.
   boot.tmp.useTmpfs = true;
@@ -17,8 +20,10 @@
   i18n.defaultLocale = "en_GB.UTF-8";
   console.keyMap = "us";
 
+  users.users.root.hashedPassword = "!"; # Disable root login.
+
   nix.settings = {
-    trusted-users = [ account.username ];
+    trusted-users = trustedUsernames;
     experimental-features = "nix-command flakes";
     auto-optimise-store = true;
     substituters = [ "https://cache.edwardh.dev" ];

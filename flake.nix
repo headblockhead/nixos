@@ -28,19 +28,20 @@
 
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixos-raspberrypi, disko, agenix, edwardh-dev, ... }@inputs:
     let
-      # Keys used for SSH access to systems.
-      sshkeys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvr2FrC9i1bjoVzg+mdytOJ1P0KRtah/HeiMBuKD3DX cardno:23_836_181" # crystal-peak
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIvDaJmOSXV24B83sIfZqAUurs+cZ7582L4QDePuc3p7 cardno:17_032_332" # depot-37
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBexdKZYlyseEcm1S3xNDqPTGZMfm/NcW1ygY91weDhC cardno:30_797_561" # thunder-mountain
+      # Which accounts can access which systems is handled per-system.
+      accounts = [
+        {
+          username = "headb";
+          realname = "Edward Hesketh";
+          profileicon = ./users/headb.png;
+          sshkeys = [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvr2FrC9i1bjoVzg+mdytOJ1P0KRtah/HeiMBuKD3DX cardno:23_836_181" # crystal-peak
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIvDaJmOSXV24B83sIfZqAUurs+cZ7582L4QDePuc3p7 cardno:17_032_332" # depot-37
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBexdKZYlyseEcm1S3xNDqPTGZMfm/NcW1ygY91weDhC cardno:30_797_561" # thunder-mountain
+          ];
+          trusted = true; # Root access (trusted-user, wheel)
+        }
       ];
-
-      # Account details to create my user.
-      account = {
-        username = "headb";
-        realname = "Edward Hesketh";
-        profileicon = ./profileicon.png;
-      };
 
       # Packages in nixpkgs that I want to override.
       nixpkgs-overlay = (
@@ -67,11 +68,6 @@
           librespot = prev.librespot.overrideAttrs (oldAttrs: {
             withDNS-SD = true;
           });
-          gdm = prev.gdm.overrideAttrs (oldAttrs: {
-            #mesonFlags = oldAttrs.mesonFlags ++ [
-            #"-Dplymouth=enabled"
-            #];
-          });
 
           # Set pkgs.home-manager to be the flake version.
           home-manager = inputs.home-manager.packages.${final.system}.default;
@@ -83,36 +79,70 @@
         allowUnfree = true;
       };
 
-      # Create an array of every system in the systems directory.
-      systemNames = builtins.attrNames (builtins.readDir ./systems);
-      # Create another array of only the systems that have home-manager configured.
-      systemNamesWithHomeManager = builtins.filter (system: builtins.pathExists ./systems/${system}/users/${account.username}.nix) systemNames;
-      # Create an array of all the NixOS modules.
+      # An array of every system folder in ./systems.
+      systemNames = builtins.attrNames (inputs.nixpkgs.lib.filterAttrs (path: type: type == "directory") (builtins.readDir ./systems));
+
+      # An array of all the NixOS modules in ./modules/nixos.
       nixosModuleNames = map (name: inputs.nixpkgs.lib.removeSuffix ".nix" name) (builtins.attrNames (builtins.readDir ./modules/nixos));
-      # Create an array of all the home-manager modules.
-      homeManagerModuleNames = map (name: inputs.nixpkgs.lib.removeSuffix ".nix" name) (builtins.attrNames (builtins.readDir ./modules/home-manager));
-    in
-    rec {
+      # An attribute set of all the NixOS modules in ./modules/nixos.
       nixosModules = inputs.nixpkgs.lib.genAttrs nixosModuleNames (module: ./modules/nixos/${module}.nix);
+
+      # An array of all the home-manager modules in ./modules/home-manager.
+      homeManagerModuleNames = map (name: inputs.nixpkgs.lib.removeSuffix ".nix" name) (builtins.attrNames (builtins.readDir ./modules/home-manager));
+      # An attribute set of all the home-manager modules in ./modules/home-manager.
       homeManagerModules = inputs.nixpkgs.lib.genAttrs homeManagerModuleNames (module: ./modules/home-manager/${module}.nix);
 
-      nixosConfigurations = inputs.nixpkgs.lib.genAttrs systemNames (hostname: import ./systems/${hostname} {
-        inherit inputs nixosModules sshkeys account;
-        # Custom mini module to configure nixpkgs for every system.
-        useCustomNixpkgsNixosModule = {
-          nixpkgs = {
-            overlays = [ nixpkgs-overlay ];
-            config = nixpkgs-config;
-          };
-        };
-      });
+      # A filtered array of system names that have a home-manager module.
+      systemNamesWithHomeManager = builtins.filter (system: (callSystem system).hasHomeManager) systemNames;
+      # A function that takes a username and a system name and returns whether that user can log in to that system.
+      canLoginToSystem = username: system: builtins.elem username (callSystem system).canLogin;
 
-      # Generates home-manager configurations for machines where I want home-manager enabled.
-      homeConfigurations = inputs.nixpkgs.lib.genAttrs systemNamesWithHomeManager (hostname:
+      # An array of the username of every account.
+      usernames = builtins.map (account: account.username) accounts;
+      # An array of every username@hostname pair that has home-manager enabled.
+      usernamesAtHostsWithHomeManager = inputs.nixpkgs.lib.flatten (builtins.map (username: builtins.map (system: if canLoginToSystem username system then "${username}@${system}" else null) systemNamesWithHomeManager) usernames);
+
+      # A mini-module that configures nixpkgs to use our custom overlay and configuration.
+      useCustomNixpkgsNixosModule = {
+        nixpkgs = {
+          overlays = [ nixpkgs-overlay ];
+          config = nixpkgs-config;
+        };
+      };
+
+      # A function that returns for a given system's name:
+      # - its NixOS configuration (nixosConfiguration)
+      # - its system architecture (system)
+      # - the accounts that can log in to it (canLogin)
+      # - if the system uses home-manager (hasHomeManager)
+      callSystem = (hostname: import ./systems/${hostname} {
+        # Pass on the inputs and nixosModules.
+        inherit inputs nixosModules hostname useCustomNixpkgsNixosModule;
+
+        # Pass on a function that returns a filtered list of accounts based on an array of usernames.
+        accountsForSystem = canLogin: builtins.filter (account: builtins.elem account.username canLogin) accounts;
+        # Pass on a function that returns the account for a given username.
+        accountFromUsername = username: builtins.elemAt (builtins.filter (account: account.username == username) accounts) 0;
+      });
+    in
+    rec {
+      inherit nixosModules homeManagerModules;
+
+      # Gets the NixOS configuration for every system in ./systems.
+      nixosConfigurations = inputs.nixpkgs.lib.genAttrs systemNames (hostname: (callSystem hostname).nixosConfiguration);
+
+      # Generate a home-manager configuration for every user that can log in to a system with home-manager enabled.
+      homeConfigurations = inputs.nixpkgs.lib.genAttrs usernamesAtHostsWithHomeManager (username-hostname:
+        let
+          username-hostname-split = builtins.split "@" username-hostname;
+          username = builtins.elemAt username-hostname-split 0;
+          hostname = builtins.elemAt username-hostname-split 2;
+          architecture = (callSystem (builtins.head (builtins.filter (system: system == hostname) systemNames))).system;
+        in
         inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux; # FIXME!
-          extraSpecialArgs = { inherit inputs account; };
-          modules = [ ./systems/${hostname}/users/${account.username}.nix ];
+          pkgs = inputs.nixpkgs.legacyPackages.${architecture};
+          extraSpecialArgs = { inherit inputs homeManagerModules username useCustomNixpkgsNixosModule; };
+          modules = [ ./users/${username}.nix ];
         });
     };
 }

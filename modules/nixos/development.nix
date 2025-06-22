@@ -1,9 +1,12 @@
-{ pkgs, account, ... }:
+{ pkgs, lib, usernames, accountFromUsername, ... }:
+let
+  trustedUsernames = builtins.filter (username: (accountFromUsername username).trusted) usernames;
+in
 {
   programs.adb.enable = true;
   programs.wireshark.enable = true;
 
-  users.users.${account.username}.extraGroups = [ "wireshark" "adbusers" ];
+  users.users = lib.genAttrs trustedUsernames (username: { extraGroups = [ "wireshark" "adbusers" ]; });
 
   environment.systemPackages = with pkgs; [
     asciinema
