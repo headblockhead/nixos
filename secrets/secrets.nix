@@ -30,12 +30,10 @@ in
   "wg1-edwardh-key.age".publicKeys = [ edwardh ];
   # Clients
   "wg1-gateway-key.age".publicKeys = [ gateway ];
-  "wg1-edward-laptop-01-key.age".publicKeys = [ edward-laptop-01 ];
 
   # WG2 (remote access to home WAN): 172.16.12.0/24
   # Server
   "wg2-edwardh-key.age".publicKeys = [ edwardh ];
   # Clients
   "wg2-gateway-key.age".publicKeys = [ gateway ];
-  "wg2-edward-laptop-01-key.age".publicKeys = [ edward-laptop-01 ];
 }

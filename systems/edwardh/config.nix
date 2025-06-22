@@ -254,11 +254,11 @@
             publicKey = "N/BghPeRn6f2FbeW7fhh1WR3dd5rdsirfM+Otplxu1k=";
             allowedIPs = [ "172.16.11.1/32" ]; # edwardh can connect to gateway
           }
-          #          {
-          #name = "edward-laptop-01";
-          #publicKey = "";
-          #allowedIPs = [ "172.16.11.10/32" ];
-          #}
+          {
+            name = "edward-laptop-01";
+            publicKey = "cc9joB4JjXNuM5mIeyjN9wsr2NF6fY6DfDqca29jNxA=";
+            allowedIPs = [ "172.16.11.10/32" ];
+          }
         ];
       };
       wg2 = {
@@ -271,11 +271,11 @@
             publicKey = "wktxkYndiWThccdNLRXmaFYupDP6Yhb+J584zgz1u2Y=";
             allowedIPs = [ "172.16.12.1/32" ]; # edwardh can connect to gateway
           }
-          #          {
-          #name = "edward-laptop-01";
-          #publicKey = "";
-          #allowedIPs = [ "172.16.12.10/32" ];
-          #}
+          {
+            name = "edward-laptop-01";
+            publicKey = "pTSih86eiTD0SlcYiHXX7CagDZT3/FKpmcgCz4DzsUg=";
+            allowedIPs = [ "172.16.12.10/32" ];
+          }
         ];
       };
     };
