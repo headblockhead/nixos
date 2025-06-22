@@ -5,7 +5,7 @@ let
   hasHomeManager = false;
 in
 {
-  nixosConfiguration = inputs.nixpkgs.lib.nixosSystem {
+  nixosConfiguration = inputs.nixos-raspberrypi.lib.nixosSystem {
     inherit system;
 
     specialArgs = {

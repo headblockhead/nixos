@@ -3,7 +3,7 @@
 # A theme by agnoster, modified by headblockhead for NixOS.
 
 CURRENT_BG='NONE'
-DEFAULT_USER='@username@' # Value overwritten using Nix using replaceVars
+# DEFAULT_USER is set by home-manager.
 
 () {
   local LC_ALL="" LC_CTYPE="en_US.UTF-8"
