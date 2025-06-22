@@ -26,7 +26,6 @@ in
       ./hardware.nix
 
       basicConfig
-      bluetooth
       bootloader
       desktop
       desktopApps
