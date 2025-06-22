@@ -63,12 +63,6 @@
   age.secrets.wg0-edwardh-key.file = ../../secrets/wg0-edwardh-key.age;
   age.secrets.wg1-edwardh-key.file = ../../secrets/wg1-edwardh-key.age;
   age.secrets.wg2-edwardh-key.file = ../../secrets/wg2-edwardh-key.age;
-  age.secrets.wg0-gateway-preshared-key.file = ../../secrets/wg0-gateway-preshared-key.age;
-  age.secrets.wg1-gateway-preshared-key.file = ../../secrets/wg1-gateway-preshared-key.age;
-  age.secrets.wg2-gateway-preshared-key.file = ../../secrets/wg2-gateway-preshared-key.age;
-  age.secrets.wg1-edward-dell-01-preshared-key.file = ../../secrets/wg1-edward-dell-01-preshared-key.age;
-  age.secrets.wg2-edward-dell-01-preshared-key.file = ../../secrets/wg2-edward-dell-01-preshared-key.age;
-
 
   # Manually set DNS nameservers, to avoid trying to use our own non-recursive BIND service.
   environment.etc."resolv.conf".text = ''
@@ -247,7 +241,6 @@
             name = "gateway";
             publicKey = "1Gs85rAE+d++lojXtc04P448bXcZNdLZjIx/uWo0pSM=";
             allowedIPs = [ "172.16.0.0/12" ]; # edwardh can connect to server network
-            presharedKeyFile = config.age.secrets.wg0-gateway-preshared-key.path;
           }
         ];
       };
@@ -260,20 +253,12 @@
             name = "gateway";
             publicKey = "N/BghPeRn6f2FbeW7fhh1WR3dd5rdsirfM+Otplxu1k=";
             allowedIPs = [ "172.16.11.1/32" ]; # edwardh can connect to gateway
-            presharedKeyFile = config.age.secrets.wg1-gateway-preshared-key.path;
           }
           #          {
           #name = "edward-laptop-01";
           #publicKey = "";
           #allowedIPs = [ "172.16.11.10/32" ];
-          #presharedKeyFile = config.age.secrets.wg1-edward-laptop-01-preshared-key.path;
           #}
-          {
-            name = "edward-dell-01";
-            publicKey = "JM26AmQkP0ZmPme7PU4kB8bUAEgIPovPxxlC4fJAK00=";
-            allowedIPs = [ "172.16.11.11/32" ];
-            presharedKeyFile = config.age.secrets.wg1-edward-dell-01-preshared-key.path;
-          }
         ];
       };
       wg2 = {
@@ -285,20 +270,12 @@
             name = "gateway";
             publicKey = "wktxkYndiWThccdNLRXmaFYupDP6Yhb+J584zgz1u2Y=";
             allowedIPs = [ "172.16.12.1/32" ]; # edwardh can connect to gateway
-            presharedKeyFile = config.age.secrets.wg2-gateway-preshared-key.path;
           }
           #          {
           #name = "edward-laptop-01";
           #publicKey = "";
           #allowedIPs = [ "172.16.12.10/32" ];
-          #presharedKeyFile = config.age.secrets.wg2-edward-laptop-01-preshared-key.path;
           #}
-          {
-            name = "edward-dell-01";
-            publicKey = "GfqLz2aiUIYy5U+m6QpKhXfV9LqZLcsamZTSUJwMdwo=";
-            allowedIPs = [ "172.16.12.11/32" ];
-            presharedKeyFile = config.age.secrets.wg2-edward-dell-01-preshared-key.path;
-          }
         ];
       };
     };

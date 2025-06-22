@@ -7,11 +7,8 @@ let
 in
 {
   age.secrets.wg0-gateway-key.file = ../../secrets/wg0-gateway-key.age;
-  age.secrets.wg0-gateway-preshared-key.file = ../../secrets/wg0-gateway-preshared-key.age;
   age.secrets.wg1-gateway-key.file = ../../secrets/wg1-gateway-key.age;
-  age.secrets.wg1-gateway-preshared-key.file = ../../secrets/wg1-gateway-preshared-key.age;
   age.secrets.wg2-gateway-key.file = ../../secrets/wg2-gateway-key.age;
-  age.secrets.wg2-gateway-preshared-key.file = ../../secrets/wg2-gateway-preshared-key.age;
   age.secrets.grafana-admin-password.file = ../../secrets/grafana-admin-password.age;
 
   # Allow packet forwarding
@@ -278,7 +275,6 @@ in
           {
             name = "edwardh";
             publicKey = "JMk7o494sDBjq9EAOeeAwPHxbF6TpbpFSHGSk2DnJHU=";
-            presharedKeyFile = config.age.secrets.wg0-gateway-preshared-key.path;
             endpoint = "18.135.222.143:51800";
 
             allowedIPs = [ "172.16.10.2/32" ];
@@ -294,7 +290,6 @@ in
           {
             name = "edwardh";
             publicKey = "N+Zy+x/CG3CW78b3+7JqQTIYy7jSURjugKhPjJjDW2M=";
-            presharedKeyFile = config.age.secrets.wg1-gateway-preshared-key.path;
             endpoint = "18.135.222.143:51801";
 
             allowedIPs = [ "172.16.11.2/32" ];
@@ -310,7 +305,6 @@ in
           {
             name = "edwardh";
             publicKey = "GccFAvCqia8Q5yK45FOb3zROp7bdtz9NLBoqDRoif2I=";
-            presharedKeyFile = config.age.secrets.wg2-gateway-preshared-key.path;
             endpoint = "18.135.222.143:51802";
 
             allowedIPs = [ "172.16.12.2/32" ];

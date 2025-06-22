@@ -33,8 +33,6 @@ in
 
       ./host-netboot.nix
 
-      inputs.agenix.nixosModules.default
-
       basicConfig
       bootloader
       desktop

@@ -24,29 +24,18 @@ in
   "wg0-edwardh-key.age".publicKeys = [ edwardh ];
   # Client
   "wg0-gateway-key.age".publicKeys = [ gateway ];
-  "wg0-gateway-preshared-key.age".publicKeys = [ edwardh gateway ];
 
   # WG1 (remote access to home servers and LAN): 172.16.11.0/24
   # Server
   "wg1-edwardh-key.age".publicKeys = [ edwardh ];
   # Clients
   "wg1-gateway-key.age".publicKeys = [ gateway ];
-  "wg1-gateway-preshared-key.age".publicKeys = [ edwardh gateway ];
   "wg1-edward-laptop-01-key.age".publicKeys = [ edward-laptop-01 ];
-  "wg1-edward-laptop-01-preshared-key.age".publicKeys = [ edwardh edward-laptop-01 ];
-  "wg1-edward-dell-01-key.age".publicKeys = [ edward-dell-01 ];
-  "wg1-edward-dell-01-preshared-key.age".publicKeys = [ edwardh edward-dell-01 ];
 
   # WG2 (remote access to home WAN): 172.16.12.0/24
   # Server
   "wg2-edwardh-key.age".publicKeys = [ edwardh ];
   # Clients
   "wg2-gateway-key.age".publicKeys = [ gateway ];
-  "wg2-gateway-preshared-key.age".publicKeys = [ edwardh gateway ];
   "wg2-edward-laptop-01-key.age".publicKeys = [ edward-laptop-01 ];
-  "wg2-edward-laptop-01-preshared-key.age".publicKeys = [ edwardh edward-laptop-01 ];
-  "wg2-edward-dell-01-key.age".publicKeys = [ edward-dell-01 ];
-  "wg2-edward-dell-01-preshared-key.age".publicKeys = [ edwardh edward-dell-01 ];
-  # Clients: Phones
-  "wg2-edwards-iphone-preshared-key.age".publicKeys = [ edwardh ];
 }
