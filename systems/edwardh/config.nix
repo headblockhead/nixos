@@ -1,4 +1,4 @@
-{ config, edwardh-dev, ... }:
+{ config, inputs, ... }:
 {
   imports = [
     (builtins.fetchTarball {
@@ -335,7 +335,7 @@
         enableACME = true;
         locations = {
           "/" = {
-            root = edwardh-dev.packages.edwardh-dev;
+            root = inputs.edwardh-dev.packages.edwardh-dev;
             extraConfig = ''
               gzip on;
               gzip_types text/html text/css;
