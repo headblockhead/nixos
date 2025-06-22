@@ -65,9 +65,7 @@
               "-Dssh-agent=false"
             ];
           });
-          librespot = prev.librespot.overrideAttrs (oldAttrs: {
-            withDNS-SD = true;
-          });
+          librespot = prev.librespot.override { withDNS-SD = true; };
 
           # Set pkgs.home-manager to be the flake version.
           home-manager = inputs.home-manager.packages.${final.system}.default;
