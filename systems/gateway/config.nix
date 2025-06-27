@@ -189,6 +189,7 @@ in
         "48:e1:e9:2d:c9:76,172.16.2.111,meross-printer-lamp"
         "48:e1:e9:2d:c9:70,172.16.2.112,meross-printer-power"
         "ec:64:c9:e9:97:9a,172.16.2.113,prusa-mk4"
+        "24:78:23:01:57:b1,172.16.2.114,panasonic-bluray"
         # SRV
         "d8:3a:dd:97:a9:c4,172.16.3.51,rpi5-01"
         "2c:cf:67:94:37:82,172.16.3.52,rpi5-02"
