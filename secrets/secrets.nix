@@ -24,16 +24,4 @@ in
   "wg0-edwardh-key.age".publicKeys = [ edwardh ];
   # Client
   "wg0-gateway-key.age".publicKeys = [ gateway ];
-
-  # WG1 (remote access to home servers and LAN): 172.16.11.0/24
-  # Server
-  "wg1-edwardh-key.age".publicKeys = [ edwardh ];
-  # Clients
-  "wg1-gateway-key.age".publicKeys = [ gateway ];
-
-  # WG2 (remote access to home WAN): 172.16.12.0/24
-  # Server
-  "wg2-edwardh-key.age".publicKeys = [ edwardh ];
-  # Clients
-  "wg2-gateway-key.age".publicKeys = [ gateway ];
 }

@@ -7,8 +7,6 @@ let
 in
 {
   age.secrets.wg0-gateway-key.file = ../../secrets/wg0-gateway-key.age;
-  age.secrets.wg1-gateway-key.file = ../../secrets/wg1-gateway-key.age;
-  age.secrets.wg2-gateway-key.file = ../../secrets/wg2-gateway-key.age;
   age.secrets.grafana-admin-password.file = ../../secrets/grafana-admin-password.age;
 
   # Allow packet forwarding
@@ -52,7 +50,6 @@ in
             iifname "lo" accept
 
             iifname "${lan_port}" accept
-            iifname "wg1" accept
 
             iifname "${iot_port}" tcp dport { 53, 1704 } accept
             iifname "${iot_port}" udp dport { 53, 67, 5353 } accept
@@ -62,9 +59,9 @@ in
             iifname "${srv_port}" udp dport { 53, 67, 5353 } accept
             iifname "${srv_port}" ct state { established, related } accept
 
-            iifname {"wg0", "wg2"} tcp dport { 53 } accept
-            iifname {"wg0", "wg2"} udp dport { 53 } accept
-            iifname {"wg0", "wg2"} ct state { established, related } accept
+            iifname "wg0" tcp dport { 53 } accept
+            iifname "wg0" udp dport { 53 } accept
+            iifname "wg0" ct state { established, related } accept
 
             iifname "wg0" tcp dport { 3000, 3100 } accept
 
@@ -80,17 +77,14 @@ in
           chain forward {
             type filter hook forward priority 0; policy drop;
 
-            iifname {"${lan_port}", "${iot_port}", "${srv_port}", "wg2" } oifname "${wan_port}" accept
-            iifname "${wan_port}" oifname {"${lan_port}", "${iot_port}", "${srv_port}", "wg2"} ct state { established, related } accept
+            iifname {"${lan_port}", "${iot_port}", "${srv_port}"} oifname "${wan_port}" accept
+            iifname "${wan_port}" oifname {"${lan_port}", "${iot_port}", "${srv_port}"} ct state { established, related } accept
 
             iifname {"${srv_port}", "${lan_port}"} oifname "${iot_port}" accept
             iifname "${iot_port}" oifname {"${srv_port}", "${lan_port}"} ct state { established, related } accept
 
-            iifname {"${lan_port}", "${iot_port}", "wg0", "wg1"} oifname "${srv_port}" accept
-            iifname "${srv_port}" oifname {"${lan_port}", "${iot_port}", "wg0", "wg1"} ct state { established, related } accept
-
-            iifname "wg1" oifname "${lan_port}" accept
-            iifname "${lan_port}" oifname "wg1" ct state { established, related } accept
+            iifname {"${lan_port}", "${iot_port}", "wg0" } oifname "${srv_port}" accept
+            iifname "${srv_port}" oifname {"${lan_port}", "${iot_port}", "wg0" } ct state { established, related } accept
 
             counter drop
           }
@@ -118,7 +112,6 @@ in
       lan_port
       iot_port
       srv_port
-      "wg1"
       wan_port # DELETEME: allow mdns on WAN
     ];
     publish = {
@@ -133,7 +126,7 @@ in
   services.dnsmasq = {
     enable = true;
     settings = {
-      interface = [ lan_port iot_port srv_port "wg0" "wg1" "wg2" ];
+      interface = [ lan_port iot_port srv_port "wg0" ];
       bind-dynamic = true; # Bind only to interfaces specified above.
 
       domain-needed = true; # Don't forward DNS requests without dots/domain parts to upstream servers.
@@ -278,36 +271,6 @@ in
             endpoint = "18.135.222.143:51800";
 
             allowedIPs = [ "172.16.10.2/32" ];
-            persistentKeepalive = 25;
-          }
-        ];
-      };
-      wg1 = {
-        ips = [ "172.16.11.1/24" ];
-        listenPort = 51801;
-        privateKeyFile = config.age.secrets.wg1-gateway-key.path;
-        peers = [
-          {
-            name = "edwardh";
-            publicKey = "N+Zy+x/CG3CW78b3+7JqQTIYy7jSURjugKhPjJjDW2M=";
-            endpoint = "18.135.222.143:51801";
-
-            allowedIPs = [ "172.16.11.2/32" ];
-            persistentKeepalive = 25;
-          }
-        ];
-      };
-      wg2 = {
-        ips = [ "172.16.12.1/24" ];
-        listenPort = 51802;
-        privateKeyFile = config.age.secrets.wg2-gateway-key.path;
-        peers = [
-          {
-            name = "edwardh";
-            publicKey = "GccFAvCqia8Q5yK45FOb3zROp7bdtz9NLBoqDRoif2I=";
-            endpoint = "18.135.222.143:51802";
-
-            allowedIPs = [ "172.16.12.2/32" ];
             persistentKeepalive = 25;
           }
         ];

@@ -275,6 +275,6 @@
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     GSK_RENDERER = "ngl";
-    GTK_THEME = "Adwaita:dark";
+    #GTK_THEME = "Adwaita:dark";
   };
 }

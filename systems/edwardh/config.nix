@@ -18,8 +18,6 @@
   networking.firewall.allowedUDPPorts = [
     53 # DNS
     51800 # wg0
-    51801 # wg1
-    51802 # wg2
   ];
   networking.firewall.interfaces."wg0".allowedTCPPorts = [
     # Prometheus exporters
@@ -61,8 +59,6 @@
     mode = "400";
   };
   age.secrets.wg0-edwardh-key.file = ../../secrets/wg0-edwardh-key.age;
-  age.secrets.wg1-edwardh-key.file = ../../secrets/wg1-edwardh-key.age;
-  age.secrets.wg2-edwardh-key.file = ../../secrets/wg2-edwardh-key.age;
 
   # Manually set DNS nameservers, to avoid trying to use our own non-recursive BIND service.
   environment.etc."resolv.conf".text = ''
@@ -241,40 +237,6 @@
             name = "gateway";
             publicKey = "1Gs85rAE+d++lojXtc04P448bXcZNdLZjIx/uWo0pSM=";
             allowedIPs = [ "172.16.0.0/12" ]; # edwardh can connect to server network
-          }
-        ];
-      };
-      wg1 = {
-        ips = [ "172.16.11.2/24" ];
-        listenPort = 51801;
-        privateKeyFile = config.age.secrets.wg1-edwardh-key.path;
-        peers = [
-          {
-            name = "gateway";
-            publicKey = "N/BghPeRn6f2FbeW7fhh1WR3dd5rdsirfM+Otplxu1k=";
-            allowedIPs = [ "172.16.11.1/32" ]; # edwardh can connect to gateway
-          }
-          {
-            name = "edward-laptop-01";
-            publicKey = "cc9joB4JjXNuM5mIeyjN9wsr2NF6fY6DfDqca29jNxA=";
-            allowedIPs = [ "172.16.11.10/32" ];
-          }
-        ];
-      };
-      wg2 = {
-        ips = [ "172.16.12.2/24" ];
-        listenPort = 51802;
-        privateKeyFile = config.age.secrets.wg2-edwardh-key.path;
-        peers = [
-          {
-            name = "gateway";
-            publicKey = "wktxkYndiWThccdNLRXmaFYupDP6Yhb+J584zgz1u2Y=";
-            allowedIPs = [ "172.16.12.1/32" ]; # edwardh can connect to gateway
-          }
-          {
-            name = "edward-laptop-01";
-            publicKey = "pTSih86eiTD0SlcYiHXX7CagDZT3/FKpmcgCz4DzsUg=";
-            allowedIPs = [ "172.16.12.10/32" ];
           }
         ];
       };
