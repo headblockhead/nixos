@@ -33,11 +33,18 @@
         {
           username = "headb";
           realname = "Edward Hesketh";
+          email = "inbox@edwardh.dev";
           profileicon = ./users/headb.png;
           sshkeys = [
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvr2FrC9i1bjoVzg+mdytOJ1P0KRtah/HeiMBuKD3DX cardno:23_836_181" # crystal-peak
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIvDaJmOSXV24B83sIfZqAUurs+cZ7582L4QDePuc3p7 cardno:17_032_332" # depot-37
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBexdKZYlyseEcm1S3xNDqPTGZMfm/NcW1ygY91weDhC cardno:30_797_561" # thunder-mountain
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIvDaJmOSXV24B83sIfZqAUurs+cZ7582L4QDePuc3p7 cardno:17_032_332" # depot-37
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvr2FrC9i1bjoVzg+mdytOJ1P0KRtah/HeiMBuKD3DX cardno:23_836_181" # crystal-peak
+          ];
+          # The first GPG key is used as the default for signing git commits.
+          gpgkeys = [
+            "8E972E26D6D48C46" # thunder-mountain
+            "672FFB8B28B17E09" # depot-37
+            "AE25B4F5B6346CCF" # crystal-peak
           ];
           trusted = true; # Root access (trusted-user, wheel)
         }
@@ -100,6 +107,9 @@
       # An array of every username@hostname pair that has home-manager enabled.
       usernamesAtHostsWithHomeManager = inputs.nixpkgs.lib.flatten (builtins.map (username: builtins.map (system: if canLoginToSystem username system then "${username}@${system}" else null) systemNamesWithHomeManager) usernames);
 
+      # A function that returns the account for a given username.
+      accountFromUsername = username: builtins.elemAt (builtins.filter (account: account.username == username) accounts) 0;
+
       # A mini-module that configures nixpkgs to use our custom overlay and configuration.
       useCustomNixpkgsNixosModule = {
         nixpkgs = {
@@ -115,12 +125,10 @@
       # - if the system uses home-manager (hasHomeManager)
       callSystem = (hostname: import ./systems/${hostname} {
         # Pass on the inputs and nixosModules.
-        inherit inputs nixosModules hostname useCustomNixpkgsNixosModule;
+        inherit inputs nixosModules hostname useCustomNixpkgsNixosModule accountFromUsername;
 
         # Pass on a function that returns a filtered list of accounts based on an array of usernames.
         accountsForSystem = canLogin: builtins.filter (account: builtins.elem account.username canLogin) accounts;
-        # Pass on a function that returns the account for a given username.
-        accountFromUsername = username: builtins.elemAt (builtins.filter (account: account.username == username) accounts) 0;
       });
     in
     rec {
@@ -139,7 +147,10 @@
         in
         inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = inputs.nixpkgs.legacyPackages.${architecture};
-          extraSpecialArgs = { inherit inputs homeManagerModules username useCustomNixpkgsNixosModule; };
+          extraSpecialArgs = {
+            inherit inputs homeManagerModules useCustomNixpkgsNixosModule;
+            account = accountFromUsername username;
+          };
           modules = [ ./users/${username}.nix ];
         });
     };
