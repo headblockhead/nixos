@@ -210,6 +210,8 @@
     dconf-editor
     plattenalbum
 
+    gopass
+
     adwaita-icon-theme
     adwaita-qt
   ];
