@@ -1,32 +1,40 @@
-{ inputs, nixosModules, sshkeys, account, useCustomNixpkgsNixosModule, ... }:
+{ inputs, nixosModules, useCustomNixpkgsNixosModule, accountsForSystem, accountFromUsername, hostname, ... }:
 let
   system = "x86_64-linux";
+  canLogin = [ "headb" ];
+  hasHomeManager = false;
 in
-(
-  inputs.nixpkgs.lib.nixosSystem {
+{
+  nixosConfiguration = inputs.nixpkgs.lib.nixosSystem {
     inherit system;
 
     specialArgs = {
-      # Pass on inputs, sshkeys, and account to the modules' inputs.
-      inherit inputs sshkeys account;
+      inherit inputs accountFromUsername;
+      accounts = accountsForSystem canLogin;
+      usernames = canLogin;
     };
 
     modules = with nixosModules; [
       useCustomNixpkgsNixosModule
 
       {
-        networking.hostName = "dell-netboot-client";
+        networking.hostName = hostname;
         system.stateVersion = "25.05";
       }
 
       ./config.nix
       ./hardware.nix
 
+      "${inputs.nixpkgs}/nixos/modules/installer/netboot/netboot.nix"
+      "${inputs.nixpkgs}/nixos/modules/profiles/minimal.nix"
+      "${inputs.nixpkgs}/nixos/modules/profiles/base.nix"
+
       basicConfig
       network
-      users
       ssh
+      users
       zsh
-    ];
-  }
-)
+    ] ++ (if hasHomeManager then [ nixosModules.homeManager ] else [ ]);
+  };
+  inherit system canLogin hasHomeManager;
+}

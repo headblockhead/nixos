@@ -14,10 +14,10 @@ in
       usernames = canLogin;
 
       # Pass the netbooted-system system to the host-netboot.nix file.
-      netbooted-system = import ./dell-netboot-client {
-        inherit inputs nixosModules useCustomNixpkgsNixosModule accountsForSystem;
+      netbooted-system = (import ./dell-netboot-client {
+        inherit inputs nixosModules useCustomNixpkgsNixosModule accountsForSystem accountFromUsername;
         hostname = "dell-netboot-client";
-      };
+      }).nixosConfiguration.config.system.build;
     };
 
     modules = with nixosModules; [
@@ -39,7 +39,6 @@ in
       desktopApps
       fileSystems
       fonts
-      fzf
       git
       gpg
       network
