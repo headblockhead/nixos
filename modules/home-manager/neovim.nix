@@ -43,76 +43,54 @@ in
     vimAlias = true;
     defaultEditor = true;
     plugins = with pkgs.vimPlugins; [
-      # OpenSCAD
+
+      # LSP, highlighting, and non-AI autocompletion.
+      nvim-treesitter.withAllGrammars
+      (pluginGit "stewartimel" "Metal-Vim-Syntax-Highlighting" "f2d69c2a048394bc47ad2b02dd9abc9cb89ee6c1" "sha256-XifdXHgTtGlKqk6oN8BbZku2eMGs8FQHID1Kh65DnFA=")
+      lsp_signature-nvim
+      nvim-lspconfig
+      nvim-cmp
+      luasnip
+      cmp_luasnip
+      cmp-nvim-lsp
+      vim-nix
+      (pluginGit "vrischmann" "tree-sitter-templ" "cf84ea53e2e2531f23009d676ac206090c1e2392" "sha256-CQ11t4beqkjhtZktrawuavgQPSFzbwJrU/aSbPsqBPA=")
       openscad-nvim
-      # HACKATIME
-      vim-wakatime
-      # Theming plugins
+      (pluginGit "rafaelsq" "nvim-goc.lua" "7d23d820feeb30c6346b8a4f159466ee77e855fd" "1b9ri5s4mcs0k539kfhf5zd3fajcr7d4lc0216pbjq2bvg8987wn")
+
+      # Errors, diagnostics, and debugging.
+      trouble-nvim
+      (pluginGit "sebdah" "vim-delve" "41d6ad294fb6dd5090f5f938318fc4ed73b6e1ea" "sha256-wMDTMMvtjkPaWtlV6SWlQ5B7YVsJ4gjPZKPactW8HAE=")
+
+      # IDE features + helpful bits and bobs.
+      nvim-tree-lua
+      nerdcommenter
+      vim-sleuth
+      vim-surround
+      vim-test
+      vim-visual-multi
+      targets-vim
+      outline-nvim
+      fzf-vim
+      nvim-coverage
+      (pluginGit "dkprice" "vim-easygrep" "d0c36a77cc63c22648e792796b1815b44164653a" "0y2p5mz0d5fhg6n68lhfhl8p4mlwkb82q337c22djs4w5zyzggbc")
+      vim-lastplace
+
+      # UI + themes.
+      nvim-web-devicons
       lualine-nvim
       dracula-nvim
-      # Everything else
-      # Metal syntax highlighting.
-      (pluginGit "tklebanoff" "metal-vim"
-        "6970494a5490a17033650849f0a1ad07506cef2e"
-        "14i8q9ikp3v4q7mpid9ir1azfqfm7fbksc65cpp51424clnqcapl")
-      # Omnisharp
-      (pluginGit "OmniSharp" "omnisharp-vim" "cdbf65bc4385d7026428d2f392b40a317725cc9c" "mM1ePRbjp0bqQMm2KBLZ4zdlKlUF14Pod6jM82Z28L8=")
-      # Add fuzzy searching (Ctrl-P to search file names, space-p to search content).
-      fzf-vim
-      # Maintain last location in files.
-      vim-lastplace
-      # Syntax highlighting for Nix files.
-      vim-nix
-      # Github Copilot
+
+      # Code time-tracking.
+      vim-wakatime
+
+      # VIM extras.
+      plenary-nvim
+
+      # AI features.
       copilot-vim
-      # Colour scheme.
-      # Use :TSHighlightCapturesUnderCursor to see the syntax under cursor.
-      playground
-      nvim-treesitter.withAllGrammars
-      # Go test coverage highlighting.
-      (pluginGit "rafaelsq" "nvim-goc.lua"
-        "7d23d820feeb30c6346b8a4f159466ee77e855fd"
-        "1b9ri5s4mcs0k539kfhf5zd3fajcr7d4lc0216pbjq2bvg8987wn")
-      # General test coverage highlighting.
-      (pluginGit "ruanyl" "coverage.vim"
-        "1d4cd01e1e99d567b640004a8122be8105046921"
-        "1vr6ylppwd61rj0l7m6xb0scrld91wgqm0bvnxs54b20vjbqcsap")
-      # Grep plugin to improve grep UX.
-      (pluginGit "dkprice" "vim-easygrep"
-        "d0c36a77cc63c22648e792796b1815b44164653a"
-        "0y2p5mz0d5fhg6n68lhfhl8p4mlwkb82q337c22djs4w5zyzggbc")
-      # Templ highlighting.
-      (pluginGit "Joe-Davidson1802" "templ.vim"
-        "2d1ca014c360a46aade54fc9b94f065f1deb501a"
-        "1bc3p0i3jsv7cbhrsxffnmf9j3zxzg6gz694bzb5d3jir2fysn4h")
-      # Add function signatures to autocomplete.
-      lsp_signature-nvim
-      # Configure autocomplete.
-      nvim-cmp
-      # Configure autocomplete.
-      nvim-lspconfig
-      # Snippets manager.
-      luasnip
-      # Add snippets to the autocomplete.
-      cmp_luasnip
-      # Show diagnostic errors inline.
-      trouble-nvim
-      # Go debugger.
-      (pluginGit "sebdah" "vim-delve" "5c8809d9c080fd00cc82b4c31900d1bc13733571"
-        "01nlzfwfmpvp0q09h1k1j5z82i925hrl9cg9n6gbmcdqsvdrzy55")
-      # Replacement for netrw.
-      nvim-web-devicons
-      nvim-tree-lua
-      # \c to toggle commenting out a line.
-      nerdcommenter # preservim/nerdcommenter
-      # Work out tabs vs spaces etc. automatically.
-      vim-sleuth # tpope/vim-sleuth
-      # Change surrounding characters, e.g. cs"' to change from double to single quotes.
-      vim-surround # tpope/vim-surround
-      vim-test # janko/vim-test
-      vim-visual-multi # mg979/vim-visual-multi
-      cmp-nvim-lsp
-      targets-vim # https://github.com/wellle/targets.vim
+      CopilotChat-nvim
+      codecompanion-nvim
     ];
     extraConfig = "lua require('init')";
   };
