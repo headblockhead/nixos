@@ -19,5 +19,6 @@
   environment.systemPackages = [
     pkgs.vscode
     pkgs.gopass
+    pkgs.openldap
   ];
 }

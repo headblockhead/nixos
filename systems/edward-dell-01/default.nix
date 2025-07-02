@@ -37,6 +37,7 @@ in
       bootloader
       desktop
       desktopApps
+      development
       fileSystems
       fonts
       git
