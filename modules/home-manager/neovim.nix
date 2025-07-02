@@ -43,7 +43,6 @@ in
     vimAlias = true;
     defaultEditor = true;
     plugins = with pkgs.vimPlugins; [
-
       # LSP, highlighting, and non-AI autocompletion.
       nvim-treesitter.withAllGrammars
       (pluginGit "stewartimel" "Metal-Vim-Syntax-Highlighting" "f2d69c2a048394bc47ad2b02dd9abc9cb89ee6c1" "sha256-XifdXHgTtGlKqk6oN8BbZku2eMGs8FQHID1Kh65DnFA=")
@@ -75,6 +74,7 @@ in
       nvim-coverage
       (pluginGit "dkprice" "vim-easygrep" "d0c36a77cc63c22648e792796b1815b44164653a" "0y2p5mz0d5fhg6n68lhfhl8p4mlwkb82q337c22djs4w5zyzggbc")
       vim-lastplace
+      nvim-test
 
       # UI + themes.
       nvim-web-devicons
