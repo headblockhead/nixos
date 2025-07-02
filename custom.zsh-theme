@@ -78,7 +78,7 @@ prompt_status() {
 
 # user@hostname, but only if we are in SSH, or have changed user and are not root
 prompt_context() {
-  if [[ "$USERNAME" != "$DEFAULT_USER" && "$UID" != 0 || -n "$SSH_CLIENT" ]]; then
+  if [[ "$USERNAME" != "$DEFAULT_USER" && "$UID" != 0 && -v DEFAULT_USER || -n "$SSH_CLIENT" ]]; then
     prompt_segment 92 255 "%(!.%{%F{bright-white}%}.)%n@%m"
   fi
 }

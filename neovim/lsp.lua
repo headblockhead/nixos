@@ -59,7 +59,7 @@ end
 local configs = require('lspconfig.configs')
 configs.templ = {
   default_config = {
-    cmd = { "templ", "lsp" },
+    cmd = { "templ", "lsp", "-http=localhost:7474" },
     filetypes = { 'templ' },
     root_dir = nvim_lsp.util.root_pattern("go.mod", ".git"),
     settings = {},
@@ -104,7 +104,7 @@ local server_settings = {
     format = { enable = true }, -- this will enable formatting
     packageManager = "npm",
     autoFixOnSave = true,
-    codeActionsOnSave = {
+    codeActionOnSave = {
       mode = "all",
       rules = { "!debugger", "!no-only-tests/*" },
     },
@@ -121,9 +121,9 @@ local server_settings = {
       diagnostics = {
         globals = { 'playdate', 'import', 'vim' },
       },
-      --      workspace = {
-      --        library = { "/home/headb/playdatesdk-2.6.2/CoreLibs/" },
-      --      },
+      workspace = {
+        library = { "/Users/adrian/Developer/PlaydateSDK/CoreLibs" },
+      },
       -- Do not send telemetry data containing a randomized but unique identifier
       telemetry = {
         enable = false,
@@ -132,32 +132,47 @@ local server_settings = {
   },
 }
 
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 -- eslint comes from:
 -- npm i -g vscode-langservers-extracted
-local servers = { 'gopls', 'ccls', 'cmake', 'ts_ls', 'templ', 'rls', 'eslint', 'lua_ls', 'jdtls', 'nil_ls',
-  'openscad_lsp' }
+local servers = {
+  'gopls',
+  'ccls',
+  'cmake',
+  'superhtml',
+  'ts_ls',
+  'templ',
+  'rls',
+  'eslint',
+  'lua_ls',
+  'jdtls',
+  'terraformls',
+  'tailwindcss',
+  'tflint',
+  'pylsp',
+  'nil_ls',
+  'yamlls',
+  'openscad_lsp',
+}
 for _, lsp in ipairs(servers) do
-  local opts = {
+  local lsp_opts = {
     on_attach = on_attach,
     capabilities = capabilities,
     flags = {
       debounce_text_changes = 150,
     },
   }
-  if server_settings[lsp] then opts.settings = server_settings[lsp] end
-  nvim_lsp[lsp].setup(opts)
+  if server_settings[lsp] then lsp_opts.settings = server_settings[lsp] end
+  nvim_lsp[lsp].setup(lsp_opts)
 end
 --vim.lsp.set_log_level("debug")
+--Use :lua vim.lsp.set_log_level("debug") to enable debug logging interactively.
 -- Use :LspLog to see logs.
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
-
--- copilot-vim mapping: control + [ accepts autocomplete.
-vim.cmd('inoremap <silent><expr> <C-]> copilot#Accept("")')
-vim.cmd('let g:copilot_no_tab_map = 1')
 
 -- luasnip setup
 local luasnip = require 'luasnip'
@@ -229,41 +244,17 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   }
 )
 
--- coverage configuration.
--- https://github.com/ruanyl/coverage.vim configuration
--- Specify the path to `coverage.json` file relative to your current working directory.
-vim.g.coverage_json_report_path = 'coverage/coverage-final.json'
--- Define the symbol display for covered lines
-vim.g.coverage_sign_covered = '⦿'
--- Define the interval time of updating the coverage lines
-vim.g.coverage_interval = 5000
--- Do not display signs on covered lines
-vim.g.coverage_show_covered = 1
--- Display signs on uncovered lines
-vim.g.coverage_show_uncovered = 1
-
-
--- https://github.com/rafaelsq/nvim-goc.lua
-vim.opt.switchbuf = 'useopen'
-local goc = require 'nvim-goc'
-goc.setup({ verticalSplit = false })
-
-vim.api.nvim_set_keymap('n', '<Leader>gcr', ':lua require("nvim-goc").Coverage()<CR>', { silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>gcc', ':lua require("nvim-goc").ClearCoverage()<CR>', { silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>gct', ':lua require("nvim-goc").CoverageFunc()<CR>', { silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>gca', ':lua cf(false)<CR><CR>', { silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>gcb', ':lua cf(true)<CR><CR>', { silent = true })
-
-_G.cf = function(testCurrentFunction)
-  local cb = function(path)
-    if path then
-      vim.cmd(":silent exec \"!xdg-open " .. path .. "\"")
-    end
-  end
-
-  if testCurrentFunction then
-    goc.CoverageFunc(nil, cb, 0)
-  else
-    goc.Coverage(nil, cb)
-  end
-end
+-- Copilot setup.
+vim.g.copilot_no_tab_map = true
+vim.g.copilot_assume_mapped = true
+-- Accept the current completion with Ctrl-].
+vim.keymap.set('i', '<C-]>', 'copilot#Accept("\\<CR>")', {
+  expr = true,
+  replace_keycodes = false
+})
+-- Accept the current completion word with Ctrl-\.
+vim.keymap.set('i', '<C-\\>', '<Plug>(copilot-accept-word)')
+-- Accept the current completion line with Ctrl-|.
+vim.keymap.set('i', '<C-|>', '<Plug>(copilot-accept-line)')
+-- Request a suggestion with Ctrl-.
+vim.keymap.set('i', '<C-.>', '<Plug>(copilot-suggest)')
