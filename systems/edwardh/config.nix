@@ -140,6 +140,7 @@
       "School" = { auto = "subscribe"; };
       "Performances" = { auto = "subscribe"; };
       "Music" = { auto = "subscribe"; };
+      "OpenRailData" = { auto = "subscribe"; };
       "Security" = { auto = "subscribe"; }; # LetsEncrypt
 
       # Forwarded from my old email address

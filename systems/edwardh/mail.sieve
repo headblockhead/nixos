@@ -89,6 +89,10 @@ if address :contains "To" "ubisoft" {
   stop;
 }
 
+if address :contains "To" "openraildata" {
+  fileinto "OpenRailData";
+  stop;
+}
 if address :contains "To" "security" {
   fileinto "Security";
   stop;
