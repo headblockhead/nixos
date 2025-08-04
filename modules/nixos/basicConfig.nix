@@ -3,11 +3,8 @@ let
   trustedUsernames = builtins.filter (username: (accountFromUsername username).trusted) usernames;
 in
 {
-  # Store /tmp in RAM.
-  boot.tmp.useTmpfs = true;
-  systemd.services.nix-daemon = {
-    environment.TMPDIR = "/var/tmp";
-  };
+  # Delete the /tmp directory every boot.
+  boot.tmp.cleanOnBoot = true;
 
   # Enable irqbalancer, to balance IRQs across cores.
   services.irqbalance.enable = true;

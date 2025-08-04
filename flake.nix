@@ -2,12 +2,12 @@
   description = "NixOS configuration for my desktops, laptops, and local network.";
 
   nixConfig = {
-    #   extra-substituters = [
+    #    extra-substituters = [
     #"https://cache.edwardh.dev"
     #];
     #extra-trusted-public-keys = [
     #"cache.edwardh.dev-1:+Gafa747BGilG7GAbTC/1i6HX9NUwzMbdFAc+v5VOPk="
-    #];
+    #    ];
   };
 
   inputs = {
