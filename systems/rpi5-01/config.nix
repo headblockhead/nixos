@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   networking.firewall.allowedTCPPorts = [ 80 9002 8008 9003 9005 ];
 
@@ -46,14 +46,19 @@
 
   services.nginx = {
     enable = true;
+    package = pkgs.nginxQuic;
     virtualHosts = {
       "cache.edwardh.dev" = {
         quic = true;
         http3 = true;
         http3_hq = true;
-
-        recommendedProxySettings = true;
-        locations."/".proxyPass = "http://127.0.0.1:8501";
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyPass = "http://127.0.0.1:8501";
+          extraConfig = ''
+            add_header Alt-Svc 'h3=":443"; ma=86400';
+          '';
+        };
       };
     };
   };

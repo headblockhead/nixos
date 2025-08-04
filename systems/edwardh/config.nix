@@ -22,11 +22,16 @@ in
   networking.firewall.allowedTCPPorts = [
     80 # HTTP
     443 # HTTPS
+
     53 # DNS
     4243 # Automx2
     22 # SSH
   ];
   networking.firewall.allowedUDPPorts = [
+    # QUIC
+    80 # HTTP
+    443 # HTTPS
+
     53 # DNS
     51800 # wg0
   ];
@@ -224,8 +229,8 @@ in
   security.acme.defaults.email = "security@edwardh.dev";
 
   services.nginx = {
-    package = pkgs.nginxQuic;
     enable = true;
+    package = pkgs.nginxQuic;
     appendHttpConfig = ''
       map $sent_http_content_type $expires {
         default                    off;
@@ -250,6 +255,7 @@ in
             gzip_types text/html text/css;
             etag on;
             expires $expires;
+            add_header Alt-Svc 'h3=":443"; ma=86400';
           '';
         };
       };
@@ -263,6 +269,9 @@ in
         locations."/" = {
           recommendedProxySettings = true;
           proxyPass = "http://127.0.0.1:5232";
+          extraConfig = ''
+            add_header Alt-Svc 'h3=":443"; ma=86400';
+          '';
         };
         serverAliases = [ "contacts.edwardh.dev" ];
       };
@@ -277,6 +286,9 @@ in
         locations."/" = {
           recommendedProxySettings = true;
           proxyPass = "http://172.16.3.51"; # rpi5-01
+          extraConfig = ''
+            add_header Alt-Svc 'h3=":443"; ma=86400';
+          '';
         };
       };
       "grafana.edwardh.dev" = {
@@ -290,6 +302,12 @@ in
           recommendedProxySettings = true;
           proxyWebsockets = true;
           proxyPass = "http://172.16.3.1:3000"; # gateway
+          extraConfig = ''
+            gzip on;
+            gzip_types text/html text/css;
+            etag on;
+            add_header Alt-Svc 'h3=":443"; ma=86400';
+          '';
         };
       };
       "hass.edwardh.dev" = {
@@ -303,6 +321,12 @@ in
           recommendedProxySettings = true;
           proxyPass = "http://172.16.3.41:8123"; # rpi4-01
           proxyWebsockets = true;
+          extraConfig = ''
+            gzip on;
+            gzip_types text/html text/css;
+            etag on;
+            add_header Alt-Svc 'h3=":443"; ma=86400';
+          '';
         };
       };
     };
