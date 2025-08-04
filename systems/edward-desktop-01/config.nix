@@ -40,5 +40,6 @@
     pkgs.prismlauncher
     pkgs.handbrake
     pkgs.anki
+    pkgs.go-migrate
   ];
 }

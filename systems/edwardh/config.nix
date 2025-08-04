@@ -1,4 +1,15 @@
-{ config, inputs, ... }:
+{ config, inputs, pkgs, ... }:
+let
+  mailboxMappings = import ./mailbox-mappings.nix;
+  mailboxList = builtins.map (m: m.mailbox) mailboxMappings;
+  autoScript = builtins.concatStringsSep "\n" (builtins.map
+    (m: ''
+      if address :contains "From" "${m.username}" {
+        fileinto "${m.mailbox}";
+        stop;
+      }'')
+    mailboxMappings);
+in
 {
   imports = [
     (builtins.fetchTarball {
@@ -18,13 +29,6 @@
   networking.firewall.allowedUDPPorts = [
     53 # DNS
     51800 # wg0
-  ];
-  networking.firewall.interfaces."wg0".allowedTCPPorts = [
-    # Prometheus exporters
-    9002
-    9004
-    9005
-    9006
   ];
 
   services.fail2ban = {
@@ -85,7 +89,8 @@
         # mkpasswd -sm bcrypt
         hashedPasswordFile = config.age.secrets.mail-hashed-password.path;
         aliases = [ "@edwardh.dev" ];
-        sieveScript = builtins.readFile ./mail.sieve;
+        sieveScript =
+          builtins.concatStringsSep "\n" [ (builtins.readFile ./mail.sieve) autoScript ];
       };
     };
 
@@ -112,40 +117,16 @@
         specialUse = "Archive";
       };
 
-      "Organizations.AbuseIPDB" = { auto = "subscribe"; };
-      "Organizations.Airtable" = { auto = "subscribe"; };
-      "Organizations.Apple" = { auto = "subscribe"; };
-      "Organizations.BAFTA" = { auto = "subscribe"; }; # not autosorted
-      "Organizations.Bluesky" = { auto = "subscribe"; };
-      "Organizations.GitHub" = { auto = "subscribe"; }; # sorted via sender
-      "Organizations.Google" = { auto = "subscribe"; };
-      "Organizations.Hack Club" = { auto = "subscribe"; };
-      "Organizations.Immobilise" = { auto = "subscribe"; };
-      "Organizations.Itch" = { auto = "subscribe"; };
-      "Organizations.JLCPCB" = { auto = "subscribe"; };
-      "Organizations.LNER" = { auto = "subscribe"; };
-      "Organizations.Meta" = { auto = "subscribe"; };
-      "Organizations.Microsoft" = { auto = "subscribe"; };
-      "Organizations.Modrinth" = { auto = "subscribe"; };
-      "Organizations.NASA" = { auto = "subscribe"; };
-      "Organizations.Obsidian" = { auto = "subscribe"; };
-      "Organizations.PCBWay" = { auto = "subscribe"; }; # sorted via sender
-      "Organizations.PCBX" = { auto = "subscribe"; }; # sorted via sender
-      "Organizations.Prusa" = { auto = "subscribe"; };
-      "Organizations.Ubisoft" = { auto = "subscribe"; };
-      "Organizations.Steam" = { auto = "subscribe"; };
-      "Organizations.ThePiHut" = { auto = "subscribe"; };
-
+      # non-auto-sorted mailboxes
       "Shipping and Recipts" = { auto = "subscribe"; };
       "School" = { auto = "subscribe"; };
       "Performances" = { auto = "subscribe"; };
       "Music" = { auto = "subscribe"; };
-      "OpenRailData" = { auto = "subscribe"; };
-      "Security" = { auto = "subscribe"; }; # LetsEncrypt
+    } // builtins.listToAttrs
+      (builtins.map
+        (m: { name = m; value = { auto = "subscribe"; }; })
+        mailboxList);
 
-      # Forwarded from my old email address
-      "headblockhead" = { auto = "subscribe"; };
-    };
 
     certificateScheme = "acme-nginx";
   };
@@ -221,12 +202,6 @@
     };
   };
 
-  services.prometheus.exporters.bind = {
-    enable = true;
-    port = 9004;
-    listenAddress = "172.16.10.2";
-  };
-
   networking.wireguard = {
     enable = true;
     interfaces = {
@@ -245,89 +220,91 @@
     };
   };
 
-  services.prometheus.exporters.wireguard = {
-    enable = true;
-    port = 9006;
-    listenAddress = "172.16.10.2";
-
-    withRemoteIp = true; # Show the remote IP address of the peer
-  };
-
   security.acme.acceptTerms = true;
   security.acme.defaults.email = "security@edwardh.dev";
 
   services.nginx = {
+    package = pkgs.nginxQuic;
     enable = true;
-    statusPage = true; # localhost only, used by prometheus exporter
     appendHttpConfig = ''
       map $sent_http_content_type $expires {
         default                    off;
         text/html                  epoch;
         text/css                   max;
-        application/javascript     max;
-        ~image/                    max;
-        ~font/                     max;
       }
     '';
     virtualHosts = {
       "edwardh.dev" = {
         default = true;
-        forceSSL = true;
+
+        addSSL = true;
         enableACME = true;
-        locations = {
-          "/" = {
-            root = inputs.edwardh-dev.packages.edwardh-dev;
-            extraConfig = ''
-              gzip on;
-              gzip_types text/html text/css;
-              etag on;
-              expires $expires;
-            '';
-          };
+        quic = true;
+        http3 = true;
+        http3_hq = true;
+
+        locations."/" = {
+          root = inputs.edwardh-dev.packages.edwardh-dev;
+          extraConfig = ''
+            gzip on;
+            gzip_types text/html text/css;
+            etag on;
+            expires $expires;
+          '';
         };
       };
       "calendar.edwardh.dev" = {
         forceSSL = true;
         enableACME = true;
-        serverAliases = [ "contacts.edwardh.dev" ];
+        quic = true;
+        http3 = true;
+        http3_hq = true;
+
         locations."/" = {
-          proxyPass = "http://127.0.0.1:5232";
           recommendedProxySettings = true;
+          proxyPass = "http://127.0.0.1:5232";
         };
+        serverAliases = [ "contacts.edwardh.dev" ];
       };
       # Local services
       "cache.edwardh.dev" = {
         forceSSL = true;
         enableACME = true;
+        quic = true;
+        http3 = true;
+        http3_hq = true;
+
         locations."/" = {
-          proxyPass = "http://172.16.3.51"; # rpi5-01
           recommendedProxySettings = true;
+          proxyPass = "http://172.16.3.51"; # rpi5-01
         };
       };
       "grafana.edwardh.dev" = {
         forceSSL = true;
         enableACME = true;
+        quic = true;
+        http3 = true;
+        http3_hq = true;
+
         locations."/" = {
-          proxyPass = "http://172.16.3.1:3000"; # gateway
-          proxyWebsockets = true;
           recommendedProxySettings = true;
+          proxyWebsockets = true;
+          proxyPass = "http://172.16.3.1:3000"; # gateway
         };
       };
       "hass.edwardh.dev" = {
         forceSSL = true;
         enableACME = true;
+        quic = true;
+        http3 = true;
+        http3_hq = true;
+
         locations."/" = {
+          recommendedProxySettings = true;
           proxyPass = "http://172.16.3.41:8123"; # rpi4-01
           proxyWebsockets = true;
-          recommendedProxySettings = true;
         };
       };
     };
-  };
-
-  services.prometheus.exporters.nginx = {
-    enable = true;
-    port = 9005;
-    listenAddress = "172.16.10.2";
   };
 }
