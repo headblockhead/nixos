@@ -62,17 +62,11 @@
           };
 
           google-chrome = prev.google-chrome.overrideAttrs (oldAttrs: {
-            commandLineArgs = [
-              "--ozone-platform=wayland"
-              "--disable-features=WaylandFractionalScaleV1"
-            ];
+            commandLineArgs = [ "--ozone-platform=wayland" "--disable-features=WaylandFractionalScaleV1" ];
           });
-          gnome-keyring = prev.gnome-keyring.overrideAttrs (oldAttrs: {
-            mesonFlags = (builtins.filter (flag: flag != "-Dssh-agent=true") oldAttrs.mesonFlags) ++ [
-              "-Dssh-agent=false"
-            ];
-          });
+          gnome-keyring = prev.gnome-keyring.overrideAttrs (oldAttrs: { mesonFlags = (builtins.filter (flag: flag != "-Dssh-agent=true") oldAttrs.mesonFlags) ++ [ "-Dssh-agent=false" ]; });
           librespot = prev.librespot.override { withDNS-SD = true; };
+          go-migrate = prev.go-migrate.overrideAttrs (oldAttrs: { tags = [ "postgres" ]; });
 
           # Set pkgs.home-manager to be the flake version.
           home-manager = inputs.home-manager.packages.${final.system}.default;

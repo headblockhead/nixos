@@ -46,17 +46,15 @@
 
   services.nginx = {
     enable = true;
-    statusPage = true;
-    recommendedProxySettings = true;
     virtualHosts = {
       "cache.edwardh.dev" = {
+        quic = true;
+        http3 = true;
+        http3_hq = true;
+
+        recommendedProxySettings = true;
         locations."/".proxyPass = "http://127.0.0.1:8501";
       };
     };
-  };
-
-  services.prometheus.exporters.nginx = {
-    enable = true;
-    port = 9005;
   };
 }

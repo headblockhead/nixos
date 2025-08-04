@@ -358,18 +358,6 @@ in
           targets = [ "172.16.3.53:9002" ];
         }];
       }
-      #      {
-      #job_name = "rpi5-01-postgres-exporter";
-      #static_configs = [{
-      #targets = [ "172.16.3.51:9003" ];
-      #}];
-      #}
-      {
-        job_name = "rpi5-01-nginx-exporter";
-        static_configs = [{
-          targets = [ "172.16.3.51:9005" ];
-        }];
-      }
       {
         job_name = "rpi4-01-node-exporter";
         static_configs = [{
@@ -386,24 +374,6 @@ in
         job_name = "edwardh-node-exporter";
         static_configs = [{
           targets = [ "172.16.10.2:9002" ];
-        }];
-      }
-      {
-        job_name = "edwardh-bind-exporter";
-        static_configs = [{
-          targets = [ "172.16.10.2:9004" ];
-        }];
-      }
-      {
-        job_name = "edwardh-nginx-exporter";
-        static_configs = [{
-          targets = [ "172.16.10.2:9005" ];
-        }];
-      }
-      {
-        job_name = "edwardh-wireguard-exporter";
-        static_configs = [{
-          targets = [ "172.16.10.2:9006" ];
         }];
       }
     ];
