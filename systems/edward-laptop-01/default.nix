@@ -31,7 +31,6 @@ in
       desktopApps
       development
       distributedBuilds
-      fileSystems
       fonts
       git
       gpg
