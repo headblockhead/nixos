@@ -82,11 +82,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1754341556,
-        "narHash": "sha256-lOTgGRW1MHshDdw8H08D7T1lWUQHGSdAac7Uld7PQZ8=",
+        "lastModified": 1754362229,
+        "narHash": "sha256-UjvF1zCK7okdV5Jj5DJLu46bIWhitViJOPQciiZxjyc=",
         "owner": "headblockhead",
         "repo": "edwardh.dev",
-        "rev": "23c9c81b6a458feb1319c9102d6a9d3f13fc8de6",
+        "rev": "eb9872db09607c00f2882a325b015fcf8717dc05",
         "type": "github"
       },
       "original": {
