@@ -235,7 +235,7 @@ in
       map $sent_http_content_type $expires {
         default                    off;
         text/html                  epoch;
-        text/css                   max;
+        text/css                   1h;
       }
     '';
     virtualHosts = {

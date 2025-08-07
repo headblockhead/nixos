@@ -15,6 +15,6 @@
 
   environment.systemPackages = [
     pkgs.ardour
-    pkgs.x32edit
+    #pkgs.x32edit
   ];
 }

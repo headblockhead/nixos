@@ -4,6 +4,8 @@
 
   virtualisation.docker.enable = true;
 
+  networking.firewall.allowedTCPPorts = [ 8080 ];
+
   programs.gamescope.enable = true;
   programs.steam = {
     enable = true;

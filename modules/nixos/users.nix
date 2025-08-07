@@ -9,6 +9,7 @@
         description = account.realname;
         isNormalUser = true;
         extraGroups = (if account.trusted then [ "wheel" "dialout" ] else [ ]);
+        initialPassword = account.defaultPassword;
       }
     );
 }
