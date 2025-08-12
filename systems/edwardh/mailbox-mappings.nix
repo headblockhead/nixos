@@ -46,6 +46,7 @@
   { username = "thunderbird"; mailbox = "Newsletters.Thunderbird"; }
   { username = "ticketsource"; mailbox = "Organizations.TicketSource"; }
   { username = "tryhackme"; mailbox = "Organizations.TryHackMe"; }
+  { username = "tsy"; mailbox = "Organizations.Travel South Yorkshire"; }
   { username = "ubisoft"; mailbox = "Organizations.Ubisoft"; }
   { username = "unmannedtech"; mailbox = "Organizations.UnmannedTech"; }
 ]
