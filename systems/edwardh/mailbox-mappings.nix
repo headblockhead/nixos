@@ -1,11 +1,13 @@
 # Autosorted mailbox mappings.
 [
+  { username = "123-3D"; mailbox = "Organizations.123-3D"; }
   { username = "abuseipdb"; mailbox = "Organizations.AbuseIPDB"; }
   { username = "airtable"; mailbox = "Organizations.Airtable"; }
   { username = "altova"; mailbox = "Organizations.Altova"; }
   { username = "amazon"; mailbox = "Organizations.Amazon"; }
   { username = "apple"; mailbox = "Organizations.Apple"; }
   { username = "bafta"; mailbox = "Organizations.BAFTA"; }
+  { username = "bambu"; mailbox = "Organizations.Bambu Lab"; }
   { username = "bsky"; mailbox = "Organizations.Bluesky"; }
   { username = "chartdb"; mailbox = "Organizations.ChartDB"; }
   { username = "epipen"; mailbox = "Organizations.EpiPen"; }
