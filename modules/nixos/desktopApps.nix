@@ -28,6 +28,7 @@
     slack
     spotify
     thonny
+    signal-desktop-bin
     unstable.thunderbird-latest
     tor-browser-bundle-bin
     vlc

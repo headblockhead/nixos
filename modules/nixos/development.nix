@@ -42,7 +42,7 @@ in
     rustc
     templ
     tmux
-    unstable.go_1_24
+    unstable.go_1_25
     wireguard-tools
     wireshark
   ];

@@ -43,5 +43,6 @@
     pkgs.handbrake
     pkgs.anki
     pkgs.go-migrate
+    pkgs.qgis
   ];
 }
