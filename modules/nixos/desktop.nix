@@ -39,6 +39,10 @@
             "org/gnome/shell/extensions/blur-my-shell/panel" = {
               override-background-dynamically = true;
             };
+            "org/gnome/shell/extensions/unblank" = {
+              time = lib.gvariant.mkInt32 300;
+              power = true;
+            };
             "org/gnome/desktop/session" = {
               idle-delay = lib.gvariant.mkUint32 0;
             };
