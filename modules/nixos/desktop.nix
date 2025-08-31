@@ -279,4 +279,7 @@
     GSK_RENDERER = "ngl";
     #GTK_THEME = "Adwaita:dark";
   };
+
+  # Do not wait for network on boot.
+  systemd.network.wait-online.timeout = 0;
 }
