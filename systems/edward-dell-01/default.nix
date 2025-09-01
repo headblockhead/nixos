@@ -31,6 +31,8 @@ in
       ./config.nix
       ./hardware.nix
 
+      inputs.agenix.nixosModules.default
+
       ./host-netboot.nix
 
       basicConfig
