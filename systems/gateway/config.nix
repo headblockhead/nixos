@@ -19,11 +19,15 @@ in
     firewall.enable = false; # replaced by nftables
     enableIPv6 = false; # TODO
 
+    # temporary
+    defaultGateway = "10.42.0.1";
+
     useDHCP = lib.mkDefault false; # disable DHCP client by default.
     interfaces = {
       ${wan_port} = {
-        # DHCP client.
-        useDHCP = true;
+        useDHCP = false;
+        # temporary
+        ipv4 = { addresses = [{ address = "10.42.0.2"; prefixLength = 24; }]; };
       };
       ${lan_port} = {
         useDHCP = false;
@@ -68,10 +72,6 @@ in
             iifname "${wan_port}" ct state { established, related } accept
             iifname "${wan_port}" icmp type { echo-request, destination-unreachable, time-exceeded } accept
 
-            iifname "${wan_port}" udp dport mdns counter accept comment "DELETEME: allow mdns on WAN"
-            iifname "${wan_port}" tcp dport 5354 counter accept comment "DELETEME: allow zeroconf"
-            iifname "${wan_port}" udp dport 5354 counter accept comment "DELETEME: allow zeroconf"
-
             counter drop
           }
           chain forward {
@@ -112,7 +112,6 @@ in
       lan_port
       iot_port
       srv_port
-      wan_port # DELETEME: allow mdns on WAN
     ];
     publish = {
       enable = true;
@@ -191,8 +190,8 @@ in
         "ec:64:c9:e9:97:9a,172.16.2.113,prusa-mk4"
         "24:78:23:01:57:b1,172.16.2.114,panasonic-bluray"
         # SRV
-        "d8:3a:dd:97:a9:c4,172.16.3.51,rpi5-01"
-        "2c:cf:67:94:37:82,172.16.3.52,rpi5-02"
+        "2c:cf:67:94:37:82,172.16.3.51,rpi5-01"
+        "d8:3a:dd:97:a9:c4,172.16.3.52,rpi5-02"
         "2c:cf:67:94:38:23,172.16.3.53,rpi5-03"
         "dc:a6:32:31:50:3b,172.16.3.41,rpi4-01"
         "e4:5f:01:11:a6:8e,172.16.3.42,rpi4-02"
