@@ -20,8 +20,8 @@
   # Allow passwordless sudo for the wheel group.
   security.sudo.wheelNeedsPassword = false;
 
-  # Disable password-based login to the user accounts.
-  users.users = lib.genAttrs usernames (username: { hashedPassword = "!"; hashedPasswordFile = lib.mkForce null; });
+  # Disable password-based login to all user accounts.
+  users.users = lib.genAttrs usernames (username: { hashedPassword = "!"; });
 
   # --- Minimal profile options below ---
 

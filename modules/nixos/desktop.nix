@@ -1,4 +1,4 @@
-{ pkgs, lib, accounts, ... }:
+{ pkgs, usernames, accountFromUsername, lib, accounts, config, ... }:
 {
   programs.dconf = {
     enable = true;
@@ -277,6 +277,18 @@
 
   # High-performance version of D-Bus
   services.dbus.implementation = "broker";
+
+  # Set user passwords.
+  age.secrets = lib.genAttrs usernames
+    (username:
+      let
+        account = accountFromUsername username;
+      in
+      {
+        file = account.hashedPasswordAgeFile;
+      }
+    );
+  users.users = lib.genAttrs usernames (username: { hashedPasswordFile = config.age.secrets.${username}.path; });
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
