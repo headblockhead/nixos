@@ -47,7 +47,7 @@
             "AE25B4F5B6346CCF" # crystal-peak
           ];
           trusted = true; # Root access (trusted-user, wheel)
-          defaultPassword = "password"; # This should be changed immediately after the first login.
+          hashedPasswordAgeFile = ./secrets/headb-hashed-password.age;
         }
       ];
 

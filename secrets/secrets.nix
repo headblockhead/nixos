@@ -15,6 +15,9 @@ in
   "grafana-admin-password.age".publicKeys = [ gateway ];
   "radicale-htpasswd.age".publicKeys = [ edwardh ];
 
+  # User passwords
+  "headb-hashed-password.age".publicKeys = [ edward-desktop-01 edward-laptop-01 edward-dell-01 ];
+
   # Nix Cache signing private keys
   "harmonia-signing-key.age".publicKeys = [ rpi5-01 ];
   "ncps-signing-key.age".publicKeys = editing-keys ++ [ rpi5-01 ];

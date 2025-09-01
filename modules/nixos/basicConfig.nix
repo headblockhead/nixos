@@ -17,7 +17,9 @@ in
   i18n.defaultLocale = "en_GB.UTF-8";
   console.keyMap = "us";
 
-  users.users.root.hashedPassword = "!"; # Disable root login.
+  # Do not allow password changes or user additions/removals outside of nixos configuration.
+  users.mutableUsers = false;
+  users.users.root = { hashedPassword = "!"; }; # Disable root login.
 
   nix.settings = {
     trusted-users = trustedUsernames;

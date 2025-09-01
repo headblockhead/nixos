@@ -25,6 +25,8 @@ in
       ./config.nix
       ./hardware.nix
 
+      inputs.agenix.nixosModules.default
+
       basicConfig
       bootloader
       desktop
