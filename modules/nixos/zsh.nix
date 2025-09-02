@@ -5,8 +5,6 @@
 
   systemd.tmpfiles.rules = lib.forEach accounts (account: "f /home/${account.username}/.zprofile");
 
-  programs.nix-index.enable = true;
-  programs.nix-index.enableZshIntegration = true;
   programs.command-not-found.enable = false;
 
   programs.zsh = {
@@ -23,7 +21,6 @@
       source ${../../custom.zsh-theme}
       export EDITOR='vim'
       source ${pkgs.zsh-nix-shell}/share/zsh-nix-shell/nix-shell.plugin.zsh
-      source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
     '';
     shellAliases = {
       q = "exit";
