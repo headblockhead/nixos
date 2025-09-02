@@ -1,6 +1,6 @@
 { ... }:
 {
-  networking.firewall.allowedTCPPorts = [ 9002 ];
+  networking.firewall.allowedTCPPorts = [ 9002 8019 ];
 
   fileSystems."/" =
     {

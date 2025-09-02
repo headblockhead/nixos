@@ -1,6 +1,6 @@
 $TTL 86400
 @ IN SOA ns.edwardh.dev. admin.edwardh.dev. (
-2025061201 	; Serial, must be updated every change
+2025090201 	; Serial, MUST be updated every change
 86400       ; Refresh period
 86400       ; Retry period
 86400       ; Expire time
@@ -15,6 +15,7 @@ www 600 IN CNAME edwardh.dev.
 cache 600 IN A 18.135.222.143
 grafana 600 IN A 18.135.222.143
 hass 600 IN A 18.135.222.143
+lcd 600 IN A 18.135.222.143
 ; CalDAV and CardDAV
 calendar 600 IN A 18.135.222.143
 contacts 600 IN A 18.135.222.143
@@ -28,9 +29,6 @@ _pop3_._tcp 3600 IN SRV 0 1 110 . ; POP3 is unavailable
 _pop3s_._tcp 3600 IN SRV 0 1 995 . ; POP3S is unavailable
 _smtp_._tcp 3600 IN SRV 10 20 25 mail.edwardh.dev.
 _submission._tcp 3600 IN SRV 10 20 587 mail.edwardh.dev.
-; Mailserver A records for autodiscovery (automx2)
-autoconfig 600 IN A 18.135.222.143 ; Mozilla Thunderbird
-autodiscover 600 IN A 18.135.222.143 ; Microsoft Outlook
 ; Mailserver SPF, DKIM, and DMARC
 @ 10800 IN TXT "v=spf1 a:mail.edwardh.dev -all"
 mail._domainkey 10800 IN TXT "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCqdWWB1LMiqpeNve6nTiYSQDtMcTw8KzNESEomkTvsWstjjRA2IQC7oGeW8yMqeCFniKx+TJ1QyH8UTktUvm/XPv0mSSzR4mjYGpY6sSiRB7z57CGtpcV4Tsi5Oz7NNOGt/vm3fZbi7xLQHfIpFrjdBtIbYFfc1LrQOWzceTt+VQIDAQAB"

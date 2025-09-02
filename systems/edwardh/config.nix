@@ -276,6 +276,14 @@ in
           '';
         };
       };
+      "lcd.edwardh.dev" = {
+        addSSL = true;
+        enableACME = true;
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyPass = "http://172.16.3.42:8019"; # rpi4-02
+        };
+      };
       "grafana.edwardh.dev" = {
         forceSSL = true;
         enableACME = true;
