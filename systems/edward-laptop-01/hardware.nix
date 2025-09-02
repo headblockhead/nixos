@@ -31,6 +31,7 @@
       yubikeySupport = true;
       devices."encrypted" = {
         device = "/dev/sda3";
+        bypassWorkqueues = true; # Fixes mysterious significant performance issues when running on an SSD.
         yubikey = {
           slot = 2;
           twoFactor = true;
