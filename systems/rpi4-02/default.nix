@@ -25,6 +25,7 @@ in
       }
 
       ./config.nix
+      ./hardware.nix
 
       inputs.nixos-raspberrypi.nixosModules.raspberry-pi-4.base
 
