@@ -16,6 +16,7 @@
   { username = "github"; mailbox = "Organizations.GitHub"; } # also sorted via sender
   { username = "google"; mailbox = "Organizations.Google"; }
   { username = "govuk"; mailbox = "Organizations.UK Government"; }
+  { username = "grafana"; mailbox = "Organizations.Grafana"; }
   { username = "hackclub"; mailbox = "Hack Club"; }
   { username = "headblockhead"; mailbox = "headblockhead"; }
   { username = "immobilise"; mailbox = "Organizations.Immobilise"; }
