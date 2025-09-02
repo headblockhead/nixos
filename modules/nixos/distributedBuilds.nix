@@ -6,7 +6,7 @@ let
 
   buildMachines = [
     {
-      hostName = "edward-desktop-01";
+      hostName = "172.16.1.3";
       systems = [ "x86_64-linux" ];
       sshUser = "nixbuilder";
       sshKey = "/etc/ssh/ssh_host_ed25519_key";
@@ -19,7 +19,7 @@ let
       speedFactor = 10;
     }
     {
-      hostName = "rpi5-01";
+      hostName = "172.16.3.51";
       systems = [ "aarch64-linux" ];
       sshUser = "nixbuilder";
       sshKey = "/etc/ssh/ssh_host_ed25519_key";
@@ -32,7 +32,7 @@ let
       speedFactor = 3;
     }
     {
-      hostName = "rpi5-02";
+      hostName = "172.16.3.52";
       systems = [ "aarch64-linux" ];
       sshUser = "nixbuilder";
       sshKey = "/etc/ssh/ssh_host_ed25519_key";
@@ -45,7 +45,7 @@ let
       speedFactor = 3;
     }
     {
-      hostName = "rpi5-03";
+      hostName = "172.16.3.53";
       systems = [ "aarch64-linux" ];
       sshUser = "nixbuilder";
       sshKey = "/etc/ssh/ssh_host_ed25519_key";
