@@ -285,9 +285,10 @@ in
 
         locations."/" = {
           recommendedProxySettings = true;
-          proxyPass = "http://172.16.3.51"; # rpi5-01
+          proxyPass = "http://172.16.3.51:8501"; # rpi5-01
           extraConfig = ''
             add_header Alt-Svc 'h3=":443"; ma=86400';
+            proxy_read_timeout 300;
           '';
         };
       };

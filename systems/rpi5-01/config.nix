@@ -1,6 +1,6 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 {
-  networking.firewall.allowedTCPPorts = [ 80 9002 8008 9003 9005 ];
+  networking.firewall.allowedTCPPorts = [ 8501 9002 ];
 
   age.secrets.harmonia-signing-key.file = ../../secrets/harmonia-signing-key.age;
   age.secrets.ncps-signing-key.file = ../../secrets/ncps-signing-key.age;
@@ -18,7 +18,7 @@
 
   services.ncps = {
     enable = true;
-    server.addr = "127.0.0.1:8501";
+    server.addr = "0.0.0.0:8501";
     upstream.caches = [
       "http://localhost:5000" # Harmonia
 
@@ -38,28 +38,9 @@
     cache = {
       secretKeyPath = config.age.secrets.ncps-signing-key.path;
       hostName = "cache.edwardh.dev";
-      maxSize = "100G";
+      maxSize = "128G";
       allowPutVerb = false;
       allowDeleteVerb = false;
-    };
-  };
-
-  services.nginx = {
-    enable = true;
-    package = pkgs.nginxQuic;
-    virtualHosts = {
-      "cache.edwardh.dev" = {
-        quic = true;
-        http3 = true;
-        http3_hq = true;
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyPass = "http://127.0.0.1:8501";
-          extraConfig = ''
-            add_header Alt-Svc 'h3=":443"; ma=86400';
-          '';
-        };
-      };
     };
   };
 }
