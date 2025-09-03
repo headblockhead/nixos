@@ -1,6 +1,6 @@
 { config, ... }:
 {
-  networking.firewall.allowedTCPPorts = [ 8501 ];
+  networking.firewall.allowedTCPPorts = [ 9002 8501 ];
 
   age.secrets.harmonia-signing-key.file = ../../secrets/harmonia-signing-key.age;
   age.secrets.ncps-signing-key.file = ../../secrets/ncps-signing-key.age;
