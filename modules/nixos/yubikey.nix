@@ -7,5 +7,8 @@
     pkgs.yubioath-flutter
     pkgs.yubikey-personalization-gui
   ];
-  # services.pcscd.enable = true;
+  services.pcscd.enable = true;
+  systemd.services.pcscd = {
+    wantedBy = [ ];
+  };
 }
