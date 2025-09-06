@@ -34,7 +34,7 @@ in
 
       basicConfig
       distributedBuilds
-      git
+      gc
       headless
       monitoring
       ssh

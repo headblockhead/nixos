@@ -33,6 +33,7 @@ in
     nmap
     nodePackages.aws-cdk
     nodejs
+    openssl
     pico-sdk
     picotool
     platformio
