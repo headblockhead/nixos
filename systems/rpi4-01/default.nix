@@ -9,7 +9,7 @@ in
     inherit system;
 
     specialArgs = {
-      inherit inputs accountFromUsername;
+      inherit inputs accountFromUsername system;
       accounts = accountsForSystem canLogin;
       usernames = canLogin;
 
