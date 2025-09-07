@@ -19,15 +19,10 @@ in
     firewall.enable = false; # replaced by nftables
     enableIPv6 = false; # TODO
 
-    # temporary
-    defaultGateway = "10.42.0.1";
-
     useDHCP = lib.mkDefault false; # disable DHCP client by default.
     interfaces = {
       ${wan_port} = {
-        useDHCP = false;
-        # temporary
-        ipv4 = { addresses = [{ address = "10.42.0.2"; prefixLength = 24; }]; };
+        useDHCP = true; # boring
       };
       ${lan_port} = {
         useDHCP = false;

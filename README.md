@@ -242,3 +242,17 @@ nixos-rebuild switch --target-host 172.16.3.52 --use-remote-sudo --flake .#rpi5-
 nixos-rebuild switch --target-host 172.16.3.53 --use-remote-sudo --flake .#rpi5-03 --fast
 nixos-rebuild switch --target-host edwardh.dev --use-remote-sudo --flake .#edwardh --fast
 ```
+
+### poweroff
+
+TODO: replace with power.ups options.
+Poweroff all lab machines.
+
+```bash
+ssh 172.16.3.53 'sudo systemctl poweroff' 
+ssh 172.16.3.52 'sudo systemctl poweroff' 
+ssh 172.16.3.51 'sudo systemctl poweroff' 
+ssh 172.16.3.42 'sudo systemctl poweroff'
+ssh 172.16.3.41 'sudo systemctl poweroff' 
+ssh 172.16.1.1 'sudo systemctl poweroff'  
+```
