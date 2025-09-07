@@ -1,17 +1,8 @@
 { ... }:
 {
-  networking.firewall.allowedTCPPorts = [ 9002 8019 ];
-
-  fileSystems."/" =
-    {
-      device = "/dev/disk/by-label/NIXOS_SD";
-      fsType = "ext4";
-    };
-
-  fileSystems."/boot/firmware" =
-    {
-      options = [ "fmask=0137" "dmask=0027" ];
-      device = "/dev/disk/by-label/FIRMWARE";
-      fsType = "vfat";
-    };
+  networking.firewall.allowedTCPPorts = [ 9002 ];
+  services.keepalived.vrrpInstances.haproxy_vip = {
+    state = "BACKUP";
+    priority = 100;
+  };
 }

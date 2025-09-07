@@ -32,6 +32,8 @@ in
       inputs.agenix.nixosModules.default
       inputs.disko.nixosModules.disko
 
+      k3s
+
       basicConfig
       distributedBuilds
       gc

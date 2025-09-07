@@ -165,6 +165,8 @@ in
       address = [
         "/gateway/172.16.1.1"
         "/gateway.lan/172.16.1.1"
+
+        "/k3s.edwardh.dev/172.16.3.100"
       ];
 
       # Custom static IPs and hostnames

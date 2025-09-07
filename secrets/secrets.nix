@@ -5,6 +5,8 @@ let
   edward-dell-01 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHiyDjr1nhiNjMkH4BCptfyb3UQ5xiPgMJlTxEA01FBr";
   edwardh = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOlOFRdX4CqbBfeikQKXibVIxhFjg0gTcTUdTgDIL7H8";
   rpi5-01 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKtvhxOROlavY2jNZUgpD1BkTgDNavy/TuoLnDyGWxlV";
+  rpi5-02 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMRrQrfqhA5er+AW9/wcd6Wjex79Jn+IB6YNdXfzYbTY";
+  rpi5-03 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ/4Qh6r7a065byYqI9gEba44DRXDuUF6vbIUduk/EJF";
   gateway = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFl5CJU+QEKdSV/ybMegoKGT+NamF1FBYcMcSRACZLvJ";
 
   editing-keys = [ edward-desktop-01 ];
@@ -27,4 +29,7 @@ in
   "wg0-edwardh-key.age".publicKeys = [ edwardh ];
   # Client
   "wg0-gateway-key.age".publicKeys = [ gateway ];
+
+  # K3s cluster
+  "k3s-token.age".publicKeys = [ rpi5-01 rpi5-02 rpi5-03 ];
 }

@@ -25,8 +25,11 @@ in
       }
 
       ./config.nix
+      ../rpi4-hardware.nix
 
       inputs.nixos-raspberrypi.nixosModules.raspberry-pi-4.base
+
+      loadBalancer
 
       basicConfig
       distributedBuilds

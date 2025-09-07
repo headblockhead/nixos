@@ -1,9 +1,14 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
-  networking.firewall.allowedTCPPorts = [ 9002 8501 ];
-
   age.secrets.harmonia-signing-key.file = ../../secrets/harmonia-signing-key.age;
   age.secrets.ncps-signing-key.file = ../../secrets/ncps-signing-key.age;
+
+  networking.firewall.allowedTCPPorts = [ 9002 8501 ];
+
+  services.k3s = {
+    clusterInit = true;
+    serverAddr = lib.mkForce "";
+  };
 
   services.harmonia = {
     enable = true;
