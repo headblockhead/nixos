@@ -26,6 +26,7 @@ in
 
       53 # DNS
       22 # SSH
+      822 # railreader
     ];
     allowedUDPPorts = [
       # QUIC
@@ -220,6 +221,17 @@ in
         default                    off;
         text/html                  epoch;
         text/css                   1h;
+      }
+    '';
+    appendConfig = ''
+      stream {
+        upstream railreader {
+          server 172.16.3.51:64022;
+        }
+        server {
+          listen 822;
+          proxy_pass railreader;
+        }
       }
     '';
     virtualHosts = {
