@@ -13,7 +13,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    railreader.url = "git+ssh://git@github.com/headblockhead/railreader.git";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
@@ -24,10 +23,11 @@
     disko.url = "github:nix-community/disko";
     agenix.url = "github:ryantm/agenix";
 
+    railreader.url = "git+ssh://git@github.com/headblockhead/railreader.git";
     edwardh-dev.url = "github:headblockhead/edwardh.dev";
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixos-raspberrypi, disko, agenix, edwardh-dev, ... }@inputs:
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixos-raspberrypi, disko, agenix, railreader, edwardh-dev, ... }@inputs:
     let
       # Which accounts can access which systems is handled per-system.
       accounts = [

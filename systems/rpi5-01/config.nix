@@ -2,8 +2,12 @@
 {
   age.secrets.harmonia-signing-key.file = ../../secrets/harmonia-signing-key.age;
   age.secrets.ncps-signing-key.file = ../../secrets/ncps-signing-key.age;
+  age.secrets.railreader-sftp-hashed-password.file = ../../secrets/railreader-sftp-hashed-password.age;
+  age.secrets.railreader-sftp-host-key.file = ../../secrets/railreader-sftp-host-key.age;
+  age.secrets.railreader-darwin-kafka-username.file = ../../secrets/railreader-darwin-kafka-username.age;
+  age.secrets.railreader-darwin-kafka-password.file = ../../secrets/railreader-darwin-kafka-password.age;
 
-  networking.firewall.allowedTCPPorts = [ 9002 8501 ];
+  networking.firewall.allowedTCPPorts = [ 9002 8501 64022 ];
 
   services.k3s = {
     clusterInit = true;
@@ -53,6 +57,27 @@
       maxSize = "128G";
       allowPutVerb = false;
       allowDeleteVerb = false;
+    };
+  };
+
+  services.railreader = {
+    enable = true;
+    sftp = {
+      hashedPasswordFile = config.age.secrets.railreader-sftp-hashed-password.path;
+      privateHostKeyFile = config.age.secrets.railreader-sftp-host-key.path;
+      listenAddresses = [
+        {
+          host = "0.0.0.0";
+          port = 64022;
+        }
+      ];
+    };
+    ingest.darwin = {
+      kafka = {
+        group = "SC-7e52557e-c29e-4915-b236-d81ad2b06b17";
+        usernameFile = config.age.secrets.railreader-darwin-kafka-username.path;
+        passwordFile = config.age.secrets.railreader-darwin-kafka-password.path;
+      };
     };
   };
 }

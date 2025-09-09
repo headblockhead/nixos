@@ -32,4 +32,10 @@ in
 
   # K3s cluster
   "k3s-token.age".publicKeys = [ rpi5-01 rpi5-02 rpi5-03 ];
+
+  # Railreader
+  "railreader-sftp-hashed-password.age".publicKeys = [ rpi5-01 rpi5-02 rpi5-03 ];
+  "railreader-sftp-host-key.age".publicKeys = [ rpi5-01 rpi5-02 rpi5-03 ];
+  "railreader-darwin-kafka-username.age".publicKeys = [ rpi5-01 rpi5-02 rpi5-03 ];
+  "railreader-darwin-kafka-password.age".publicKeys = [ rpi5-01 rpi5-02 rpi5-03 ];
 }

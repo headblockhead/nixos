@@ -29,8 +29,9 @@ in
       ../rpi5-disko.nix
 
       inputs.nixos-raspberrypi.nixosModules.raspberry-pi-5.base
-      inputs.agenix.nixosModules.default
+      inputs.agenix.nixosModules.age
       inputs.disko.nixosModules.disko
+      inputs.railreader.nixosModules.railreader
 
       k3s
 
