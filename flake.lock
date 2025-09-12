@@ -82,11 +82,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1754747838,
-        "narHash": "sha256-WeSHwNn9ZXHH9cP8z5RhHavn6iDzOmvYa/KklcZ4DDk=",
+        "lastModified": 1757708631,
+        "narHash": "sha256-9W9WMbmqibWBMQEVCesbmdYi3CF5UGGQPkwLE1H1c28=",
         "owner": "headblockhead",
         "repo": "edwardh.dev",
-        "rev": "e7c0ccd36b078e5a8b3e3c5e169b37b6834643a1",
+        "rev": "f07504933ee80f7a2230d0bb28fe5e71a4983df5",
         "type": "github"
       },
       "original": {
@@ -300,11 +300,11 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1757379693,
-        "narHash": "sha256-nVgE1fiWMb6YFWT6D9ZY6LNzNWSSjBNYDnj5rfDv0oc=",
+        "lastModified": 1757595765,
+        "narHash": "sha256-ksV6d8a7U+5aWLWVCsEvFEEI3EULkpb6H4AFK/7B50M=",
         "ref": "refs/heads/master",
-        "rev": "8b41535c65ba4a22e8500ce217936477e228b2c9",
-        "revCount": 94,
+        "rev": "e7f1d96541f8cd2657fc46b4dd6dcce0a2af0f3d",
+        "revCount": 99,
         "type": "git",
         "url": "ssh://git@github.com/headblockhead/railreader.git"
       },

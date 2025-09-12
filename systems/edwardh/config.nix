@@ -1,4 +1,4 @@
-{ config, inputs, pkgs, ... }:
+{ config, inputs, pkgs, lib, ... }:
 let
   mailboxMappings = import ./mailbox-mappings.nix;
   mailboxList = builtins.map (m: m.mailbox) mailboxMappings;
@@ -18,6 +18,25 @@ in
       sha256 = "0r8c0mkj7cn2cz0r6m45h51w5qwf2cyiiv956bz75p3fcps4qj1n";
     })
   ];
+
+  #services.openssh = {
+  #allowSFTP = true;
+  #settings = {
+  #PasswordAuthentication = lib.mkForce true;
+  #HostKeyAlgorithms = "ssh-ed25519,ssh-rsa";
+  #Macs = [
+  #"hmac-sha2-512-etm@openssh.com"
+  #"hmac-sha2-256-etm@openssh.com"
+  #"umac-128-etm@openssh.com"
+  #"hmac-sha2-256"
+  #];
+  #};
+  #};
+  #users.users.rdm = {
+  #isNormalUser = true;
+  #description = "Rail data marketplace bs delete this please god help us all";
+  #password = "letmein"; # this will cause no problems
+  #};
 
   networking.firewall.interfaces.ens5 = {
     allowedTCPPorts = [

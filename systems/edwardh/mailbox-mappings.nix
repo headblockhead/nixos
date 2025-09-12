@@ -36,7 +36,7 @@
   { username = "northern"; mailbox = "Organizations.Northern Trains"; }
   { username = "obsidian"; mailbox = "Organizations.Obsidian"; }
   { username = "openhome"; mailbox = "Newsletters.Open Home Foundation"; }
-  { username = "openraildata"; mailbox = "OpenRailData"; }
+  { username = "openraildata"; mailbox = "Groups.OpenRailData"; }
   { username = "pcbway"; mailbox = "Organizations.PCBWay"; } # also sorted via sender
   { username = "pcbx"; mailbox = "Organizations.PCBX"; } # also sorted via sender
   { username = "playdate"; mailbox = "Organizations.Playdate"; }
