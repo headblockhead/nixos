@@ -44,5 +44,6 @@
     pkgs.anki
     pkgs.go-migrate
     pkgs.qgis
+    pkgs.obinskit
   ];
 }

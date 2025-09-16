@@ -9,7 +9,7 @@ if address :contains "From" "pcbx.com" {
   stop;
 }
 if address :contains "X-Original-To" "openraildata" {
-  fileinto "OpenRailData";
+  fileinto "Groups.OpenRailData";
   stop;
 }
 

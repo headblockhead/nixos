@@ -12,6 +12,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    oldnixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     home-manager = {
@@ -69,6 +70,17 @@
           gnome-keyring = prev.gnome-keyring.overrideAttrs (oldAttrs: { mesonFlags = (builtins.filter (flag: flag != "-Dssh-agent=true") oldAttrs.mesonFlags) ++ [ "-Dssh-agent=false" ]; });
           librespot = prev.librespot.override { withDNS-SD = true; };
           go-migrate = prev.go-migrate.overrideAttrs (oldAttrs: { tags = [ "postgres" ]; });
+          obinskit = (import inputs.oldnixpkgs {
+            system = final.system;
+            config = {
+              allowUnfree = true;
+              permittedInsecurePackages = [
+                # bad
+                "electron-13.6.9"
+              ];
+            };
+          }).callPackage ./custom-packages/obinskit.nix
+            { };
 
           # Set pkgs.home-manager to be the flake version.
           home-manager = inputs.home-manager.packages.${final.system}.default;

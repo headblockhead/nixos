@@ -295,16 +295,32 @@
         "type": "github"
       }
     },
+    "oldnixpkgs": {
+      "locked": {
+        "lastModified": 1704290814,
+        "narHash": "sha256-LWvKHp7kGxk/GEtlrGYV68qIvPHkU9iToomNFGagixU=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "70bdadeb94ffc8806c0570eb5c2695ad29f0e421",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-23.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "railreader": {
       "inputs": {
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1757595765,
-        "narHash": "sha256-ksV6d8a7U+5aWLWVCsEvFEEI3EULkpb6H4AFK/7B50M=",
+        "lastModified": 1757980417,
+        "narHash": "sha256-lN15mzYbevxFWppXKi8ui2JzQ6Mf0yj1+NDxydMYx80=",
         "ref": "refs/heads/master",
-        "rev": "e7f1d96541f8cd2657fc46b4dd6dcce0a2af0f3d",
-        "revCount": 99,
+        "rev": "701cbee4dbbf8da47cd8e1adc419f1df20a260c1",
+        "revCount": 102,
         "type": "git",
         "url": "ssh://git@github.com/headblockhead/railreader.git"
       },
@@ -322,6 +338,7 @@
         "nixos-raspberrypi": "nixos-raspberrypi",
         "nixpkgs": "nixpkgs_5",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "oldnixpkgs": "oldnixpkgs",
         "railreader": "railreader"
       }
     },
