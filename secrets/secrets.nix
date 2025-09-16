@@ -38,4 +38,6 @@ in
   "railreader-sftp-host-key.age".publicKeys = [ rpi5-01 rpi5-02 rpi5-03 ];
   "railreader-darwin-kafka-username.age".publicKeys = [ rpi5-01 rpi5-02 rpi5-03 ];
   "railreader-darwin-kafka-password.age".publicKeys = [ rpi5-01 rpi5-02 rpi5-03 ];
+  "railreader-darwin-s3-access-key.age".publicKeys = [ rpi5-01 rpi5-02 rpi5-03 ];
+  "railreader-darwin-s3-secret-key.age".publicKeys = [ rpi5-01 rpi5-02 rpi5-03 ];
 }

@@ -316,17 +316,17 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1757980417,
-        "narHash": "sha256-lN15mzYbevxFWppXKi8ui2JzQ6Mf0yj1+NDxydMYx80=",
-        "ref": "refs/heads/master",
-        "rev": "701cbee4dbbf8da47cd8e1adc419f1df20a260c1",
-        "revCount": 102,
-        "type": "git",
-        "url": "ssh://git@github.com/headblockhead/railreader.git"
+        "lastModified": 1758060883,
+        "narHash": "sha256-HGdXM2jhL1u+BBgPird2mtm6nnOCeJCKKBMIlFId05s=",
+        "owner": "headblockhead",
+        "repo": "railreader",
+        "rev": "28606ccfe23f9fd497136ed4e6b973205c8ba750",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/headblockhead/railreader.git"
+        "owner": "headblockhead",
+        "repo": "railreader",
+        "type": "github"
       }
     },
     "root": {

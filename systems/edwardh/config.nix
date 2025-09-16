@@ -19,7 +19,7 @@ in
     })
   ];
 
-  #services.openssh = {
+  #  services.openssh = {
   #allowSFTP = true;
   #settings = {
   #PasswordAuthentication = lib.mkForce true;
@@ -34,7 +34,7 @@ in
   #};
   #users.users.rdm = {
   #isNormalUser = true;
-  #description = "Rail data marketplace bs delete this please god help us all";
+  #description = "Rail Data Marketplace";
   #password = "letmein"; # this will cause no problems
   #};
 

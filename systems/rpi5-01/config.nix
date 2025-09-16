@@ -6,6 +6,8 @@
   age.secrets.railreader-sftp-host-key.file = ../../secrets/railreader-sftp-host-key.age;
   age.secrets.railreader-darwin-kafka-username.file = ../../secrets/railreader-darwin-kafka-username.age;
   age.secrets.railreader-darwin-kafka-password.file = ../../secrets/railreader-darwin-kafka-password.age;
+  age.secrets.railreader-darwin-s3-access-key.file = ../../secrets/railreader-darwin-s3-access-key.age;
+  age.secrets.railreader-darwin-s3-secret-key.file = ../../secrets/railreader-darwin-s3-secret-key.age;
 
   networking.firewall.allowedTCPPorts = [ 9002 8501 64022 ];
 
@@ -62,21 +64,15 @@
 
   services.railreader = {
     enable = true;
-    sftp = {
-      hashedPasswordFile = config.age.secrets.railreader-sftp-hashed-password.path;
-      privateHostKeyFile = config.age.secrets.railreader-sftp-host-key.path;
-      listenAddresses = [
-        {
-          host = "0.0.0.0";
-          port = 64022;
-        }
-      ];
-    };
     ingest.darwin = {
       kafka = {
         group = "SC-7e52557e-c29e-4915-b236-d81ad2b06b17";
         usernameFile = config.age.secrets.railreader-darwin-kafka-username.path;
         passwordFile = config.age.secrets.railreader-darwin-kafka-password.path;
+      };
+      s3 = {
+        accessKeyFile = config.age.secrets.railreader-darwin-s3-access-key.path;
+        secretKeyFile = config.age.secrets.railreader-darwin-s3-secret-key.path;
       };
     };
   };

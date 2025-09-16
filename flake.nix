@@ -24,7 +24,7 @@
     disko.url = "github:nix-community/disko";
     agenix.url = "github:ryantm/agenix";
 
-    railreader.url = "git+ssh://git@github.com/headblockhead/railreader.git";
+    railreader.url = "github:headblockhead/railreader";
     edwardh-dev.url = "github:headblockhead/edwardh.dev";
   };
 
