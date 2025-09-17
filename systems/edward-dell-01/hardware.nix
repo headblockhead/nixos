@@ -7,6 +7,7 @@
   boot.kernelModules = [ "kvm-intel" ];
 
   security.tpm2.enable = lib.mkForce false;
+  boot.initrd.systemd.tpm2.enable = lib.mkForce false;
 
   # Fix hardware sound issue
   boot.extraModprobeConfig = ''

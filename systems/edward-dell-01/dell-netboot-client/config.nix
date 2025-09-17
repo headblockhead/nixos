@@ -1,5 +1,14 @@
 { pkgs, lib, ... }:
 {
+  networking = {
+    useDHCP = lib.mkDefault false;
+    interfaces = {
+      enp2s0 = {
+        ipv4.addresses = [{ address = "192.168.42.35"; prefixLength = 26; }];
+      };
+    };
+  };
+
   users.ldap = {
     enable = true;
     base = "dc=BRIDGE,dc=ENTERPRISE";
