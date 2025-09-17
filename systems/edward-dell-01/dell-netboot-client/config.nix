@@ -1,11 +1,22 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   users.ldap = {
     enable = true;
-    server = "ldap://192.168.42.195:389";
     base = "dc=BRIDGE,dc=ENTERPRISE";
+    server = "ldap://192.168.42.195:389";
     loginPam = true;
+    extraConfig = ''
+      ldap_version 3
+      pam_password md5
+    '';
   };
+  services.openssh.settings.PasswordAuthentication = lib.mkForce true;
+  services.openssh.settings.KbdInteractiveAuthentication = lib.mkForce true;
+  security.pam.services.sshd.makeHomeDir = true;
+  # evil, horrifying hack
+  systemd.tmpfiles.rules = [
+    "L /bin/bash - - - - /run/current-system/sw/bin/bash"
+  ];
 
   security.sudo.wheelNeedsPassword = false;
 
