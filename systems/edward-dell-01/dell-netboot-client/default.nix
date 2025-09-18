@@ -25,11 +25,14 @@ in
       ./config.nix
       ./hardware.nix
 
+      inputs.agenix.nixosModules.default
+
       "${inputs.nixpkgs}/nixos/modules/installer/netboot/netboot.nix"
       "${inputs.nixpkgs}/nixos/modules/profiles/minimal.nix"
       "${inputs.nixpkgs}/nixos/modules/profiles/base.nix"
 
       basicConfig
+      #desktop
       network
       ssh
       users
