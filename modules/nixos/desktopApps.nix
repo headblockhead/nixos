@@ -3,6 +3,7 @@
   environment.systemPackages = with pkgs; [
     arduino
     audacity
+    anki
     chiaki
     discord
     firefox
