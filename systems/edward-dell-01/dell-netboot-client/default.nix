@@ -32,8 +32,10 @@ in
       "${inputs.nixpkgs}/nixos/modules/profiles/base.nix"
 
       basicConfig
-      #desktop
+      git
+      gpg
       network
+      sound
       ssh
       users
       zsh
