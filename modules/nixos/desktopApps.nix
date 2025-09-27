@@ -1,15 +1,16 @@
 { pkgs, ... }: {
   services.usbmuxd.enable = true;
   environment.systemPackages = with pkgs; [
+    anki
     arduino
     audacity
-    anki
     chiaki
     discord
     firefox
     fractal # matrix messenger
     furnace # chiptune tracker
     gimp
+    godot
     google-chrome
     ifuse # optional, to mount using 'ifuse'
     inkscape
@@ -20,19 +21,19 @@
     monero-gui
     musescore
     obs-studio
-    watchmate
     obsidian
     onedrive
     openscad-unstable
     prusa-slicer
     rpi-imager
+    signal-desktop-bin
     slack
     spotify
     thonny
-    signal-desktop-bin
-    unstable.thunderbird-latest
     tor-browser-bundle-bin
+    unstable.thunderbird-latest
     vlc
+    watchmate
     zoom-us
   ];
 }
