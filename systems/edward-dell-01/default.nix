@@ -45,6 +45,7 @@ in
       git
       gpg
       network
+      passwords
       sound
       ssd
       ssh

@@ -35,7 +35,6 @@ in
       ssh
       users
       zsh
-
     ] ++ (if hasHomeManager then [ nixosModules.homeManager ] else [ ]);
   };
   inherit system canLogin hasHomeManager;

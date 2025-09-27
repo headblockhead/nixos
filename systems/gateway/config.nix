@@ -67,6 +67,10 @@ in
             iifname "${wan_port}" ct state { established, related } accept
             iifname "${wan_port}" icmp type { echo-request, destination-unreachable, time-exceeded } accept
 
+            iifname "${wan_port}" udp dport mdns counter accept comment "DELETEME: allow mdns on WAN"
+            iifname "${wan_port}" tcp dport 5354 counter accept comment "DELETEME: allow zeroconf"
+            iifname "${wan_port}" udp dport 5354 counter accept comment "DELETEME: allow zeroconf"
+
             counter drop
           }
           chain forward {
@@ -107,6 +111,7 @@ in
       lan_port
       iot_port
       srv_port
+      wan_port
     ];
     publish = {
       enable = true;

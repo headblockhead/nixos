@@ -38,6 +38,7 @@ in
       git
       gpg
       network
+      passwords
       openrgb
       printer
       sdr
