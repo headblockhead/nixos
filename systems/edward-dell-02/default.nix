@@ -9,7 +9,7 @@ in
     inherit system;
 
     specialArgs = {
-      inherit inputs accountFromUsername;
+      inherit inputs accountFromUsername system;
       accounts = accountsForSystem canLogin;
       usernames = canLogin;
     };
@@ -27,15 +27,17 @@ in
 
       inputs.agenix.nixosModules.default
 
-      "${inputs.nixpkgs}/nixos/modules/installer/netboot/netboot.nix"
-      "${inputs.nixpkgs}/nixos/modules/profiles/minimal.nix"
-      "${inputs.nixpkgs}/nixos/modules/profiles/base.nix"
-
       basicConfig
+      bootloader
+      desktop
+      fileSystems
+      fonts
       git
       gpg
       network
+      passwords
       sound
+      ssd
       ssh
       users
       zsh
