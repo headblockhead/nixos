@@ -21,7 +21,7 @@
   security.sudo.wheelNeedsPassword = false;
 
   # Disable password-based login to all user accounts.
-  users.users = lib.genAttrs usernames (username: { hashedPassword = "!"; });
+  users.users = lib.genAttrs usernames (username: { hashedPassword = "!"; }) // { root.hashedPassword = "!"; };
 
   # --- Minimal profile options below ---
 
