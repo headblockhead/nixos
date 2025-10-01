@@ -49,7 +49,6 @@
             "AE25B4F5B6346CCF" # crystal-peak
           ];
           trusted = true; # Root access (trusted-user, wheel)
-          hashedPasswordAgeFile = ./secrets/headb-hashed-password.age;
         }
       ];
 
