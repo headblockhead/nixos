@@ -35,6 +35,8 @@
     favorite-apps=[ 'firefox.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Settings.desktop', 'org.gnome.Calculator.desktop', 'org.freecad.FreeCAD.desktop', 'org.kicad.kicad.desktop', 'gnome-system-monitor.desktop', 'thunderbird.desktop', 'slack.desktop', 'spotify.desktop', 'steam.desktop', 'org.openrgb.OpenRGB.desktop']
   '';
 
+  nix.settings.extra-substituters = [ "http://172.16.3.51:8501" ];
+
   environment.systemPackages = [
     pkgs.clonehero
     pkgs.blender-hip
@@ -45,5 +47,7 @@
     pkgs.go-migrate
     pkgs.qgis
     pkgs.obinskit
+
+    pkgs.kdePackages.kdenlive
   ];
 }
