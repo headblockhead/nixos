@@ -35,6 +35,15 @@ Here is an overview of the most important files and folders in my config:
 ![neovim and mouth dreams](screenshots/edward-desktop-01-02.png)
 ![cube](screenshots/edward-desktop-01-03.png)
 
+## Want to try it out?
+
+Try out my 'demo-vm' configuration in a virtual machine!
+To log in, use the password `demo` for my user.
+
+```bash
+nix run nixpkgs#nixos-rebuild -- build-vm --flake .#demo-vm
+```
+
 ## Installation
 
 ### Boot from NixOS installation media
