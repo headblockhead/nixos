@@ -7,7 +7,12 @@ let
 in
 {
   age.secrets.wg0-gateway-key.file = ../../secrets/wg0-gateway-key.age;
-  age.secrets.grafana-admin-password.file = ../../secrets/grafana-admin-password.age;
+  age.secrets.grafana-admin-password = {
+    file = ../../secrets/grafana-admin-password.age;
+    mode = "0400";
+    owner = "grafana";
+    group = "grafana";
+  };
 
   # Allow packet forwarding
   boot.kernel.sysctl = {
@@ -279,10 +284,6 @@ in
       };
     };
   };
-
-  systemd.tmpfiles.rules = [
-    "z ${config.age.secrets.grafana-admin-password.path} 400 grafana grafana - -"
-  ];
 
   services.grafana = {
     enable = true;
