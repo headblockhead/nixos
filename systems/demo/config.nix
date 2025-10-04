@@ -1,5 +1,11 @@
 { ... }:
 {
+  users.users.headb.password = "demo";
+  virtualisation.vmVariant = {
+    virtualisation.memorySize = 4096;
+    virtualisation.cores = 2;
+  };
+
   # find / -name '*.desktop' 2> /dev/null
   services.xserver.desktopManager.gnome.favoriteAppsOverride = ''
     [org.gnome.shell]

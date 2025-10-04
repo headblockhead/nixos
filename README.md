@@ -43,12 +43,14 @@ Here is an overview of the most important files and folders in my config:
 
 ## Want to try it out?
 
-Try out my 'demo-vm' configuration in a virtual machine!
+Try out my demo configuration in a virtual machine with [Nix](https://nixos.org)!
 To log in, use the password `demo` for my user.
 
-```bash
-nix run nixpkgs#nixos-rebuild -- build-vm --flake .#demo-vm
 ```
+nix run nixpkgs#nixos-rebuild -- build-vm --flake .#demo
+```
+
+Just want to see it in-action? Check out this breif [demo video](https://youtu.be/7JM02mBS0js).
 
 ## Installation
 

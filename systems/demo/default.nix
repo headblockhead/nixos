@@ -24,10 +24,6 @@ in
 
       ./config.nix
 
-      {
-        users.users.headb.password = "demo";
-      }
-
       basicConfig
       bootloader
       desktop

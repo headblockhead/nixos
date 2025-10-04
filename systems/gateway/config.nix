@@ -240,7 +240,9 @@ in
       listenAddress = "172.16.3.1";
       port = 1705;
     };
-    http.enable = false;
+    http = {
+      enable = true;
+    };
 
     sampleFormat = "44100:32:2";
     codec = "pcm";
