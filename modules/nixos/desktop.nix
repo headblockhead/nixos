@@ -18,7 +18,6 @@
                 "next-up@artisticat1.github.com"
                 "appindicatorsupport@rgcjonas.gmail.com"
                 "desktop-cube@schneegans.github.com"
-                "x11gestures@joseexposito.github.io"
                 "AlphabeticalAppGrid@stuarthayhurst"
                 "blur-my-shell@aunetx"
               ];
@@ -193,7 +192,6 @@
 
   # Touchpad/touchscreen support.
   services.libinput.enable = true;
-  services.touchegg.enable = true; # x11-gestures support
 
   # Bluetooth support.
   hardware.bluetooth.enable = true;
@@ -204,7 +202,6 @@
   environment.systemPackages = with pkgs; [
     gnomeExtensions.appindicator # Tray icons
     gnomeExtensions.unblank # Prevent screen from blanking when locked
-    gnomeExtensions.x11-gestures
     gnomeExtensions.desktop-cube
     gnomeExtensions.alphabetical-app-grid
     gnomeExtensions.blur-my-shell
