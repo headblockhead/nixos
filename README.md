@@ -15,6 +15,8 @@ Where **everything** about my systems is controlled by NixOS in plenty of detail
 
   * [Tour](#tour)
   * [Desktop Screenshots](#desktop-screenshots)
+  * [Network Layout](#network-layout)
+  * [Want to try it out?](#want-to-try-it-out)
   * [Installation](#installation)
   * [Troubleshooting](#troubleshooting)
   * [Tasks](#tasks)
