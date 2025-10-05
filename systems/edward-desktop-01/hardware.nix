@@ -13,11 +13,9 @@
 
   systemd.packages = with pkgs; [ lact ];
   systemd.services.lactd.wantedBy = [ "multi-user.target" ];
-  boot.kernelParams = [ "amdgpu.ppfeaturemask=0xfffd7fff" ];
 
   hardware.graphics = {
     enable = true;
-    enable32Bit = true;
     extraPackages = with pkgs; [
       rocmPackages.clr.icd
       amdvlk
@@ -28,11 +26,15 @@
   };
 
   hardware.amdgpu = {
+    initrd.enable = true;
+    overdrive = {
+      enable = true;
+      ppfeaturemask = "0xffffffff";
+    };
     opencl.enable = true;
     amdvlk = {
       enable = true;
       supportExperimental.enable = true;
-      support32Bit.enable = true;
     };
   };
 
