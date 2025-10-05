@@ -10,7 +10,7 @@
     fractal # matrix messenger
     furnace # chiptune tracker
     gimp
-    godot
+    unstable.godot
     google-chrome
     ifuse # optional, to mount using 'ifuse'
     inkscape
