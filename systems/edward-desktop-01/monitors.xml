@@ -355,4 +355,63 @@
       </monitor>
     </logicalmonitor>
   </configuration>
+  <configuration>
+    <layoutmode>logical</layoutmode>
+    <logicalmonitor>
+      <x>0</x>
+      <y>0</y>
+      <scale>1</scale>
+      <monitor>
+        <monitorspec>
+          <connector>HDMI-2</connector>
+          <vendor>AOC</vendor>
+          <product>2270W</product>
+          <serial>AUNL71A000510</serial>
+        </monitorspec>
+        <mode>
+          <width>1080</width>
+          <height>1920</height>
+          <rate>60.000</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+    <logicalmonitor>
+      <x>3000</x>
+      <y>613</y>
+      <scale>1.7518248558044434</scale>
+      <primary>yes</primary>
+      <monitor>
+        <monitorspec>
+          <connector>DP-1</connector>
+          <vendor>DEL</vendor>
+          <product>DELL S2721QSA</product>
+          <serial>BDJRM43</serial>
+        </monitorspec>
+        <mode>
+          <width>3840</width>
+          <height>2160</height>
+          <rate>59.997</rate>
+          <ratemode>variable</ratemode>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+    <logicalmonitor>
+      <x>1080</x>
+      <y>333</y>
+      <scale>1</scale>
+      <monitor>
+        <monitorspec>
+          <connector>HDMI-3</connector>
+          <vendor>AOC</vendor>
+          <product>2270W</product>
+          <serial>GREK7HA020731</serial>
+        </monitorspec>
+        <mode>
+          <width>1920</width>
+          <height>1080</height>
+          <rate>60.000</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+  </configuration>
 </monitors>
