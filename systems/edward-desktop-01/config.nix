@@ -28,7 +28,7 @@
   systemd.tmpfiles.rules = [
     ''C+ /run/gdm/.config/monitors.xml - - - - ${./monitors.xml}''
   ] ++ lib.lists.forEach accounts (account: "C+ /home/${account.username}/.config/monitors.xml - - - - ${./monitors.xml}");
-  boot.kernelParams = [ "video=HDMI-A-2:panel_orientation=left_side_up" ];
+  boot.kernelParams = [ "video=HDMI-A-1:panel_orientation=left_side_up" ];
 
   # find / -name '*.desktop' 2> /dev/null
   services.xserver.desktopManager.gnome.favoriteAppsOverride = ''
