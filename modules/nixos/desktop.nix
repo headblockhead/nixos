@@ -1,4 +1,4 @@
-{ pkgs, usernames, accountFromUsername, lib, accounts, config, ... }:
+{ pkgs, lib, accounts, ... }:
 {
   programs.dconf = {
     enable = true;
@@ -6,53 +6,10 @@
       user.databases = [
         {
           settings = {
-            "org/gnome/shell" = {
-              disabled-extentions = [
-                "window-list@gnome-shell-extensions.gcampax.github.com"
-                "apps-menu@gnome-shell-extensions.gcampax.github.com"
-              ];
-              enabled-extensions = [
-                "system-monitor@gnome-shell-extensions.gcampax.github.com"
-                "display-brightness-ddcutil@themightydeity.github.com"
-                "unblank@sun.wxg@gmail.com"
-                "next-up@artisticat1.github.com"
-                "appindicatorsupport@rgcjonas.gmail.com"
-                "desktop-cube@schneegans.github.com"
-                "AlphabeticalAppGrid@stuarthayhurst"
-                "blur-my-shell@aunetx"
-              ];
+            "ca/desrt/dconf-editor" = {
+              show-warning = false;
             };
-            "org/gnome/shell/extensions/display-brightness-ddcutil" = {
-              show-all-slider = false;
-              show-value-label = false;
-              show-display-name = false;
-              show-osd = true;
-              button-location = lib.gvariant.mkInt32 1;
-              hide-system-indicator = false;
-              position-system-indicator = lib.gvariant.mkDouble 2.0;
-              position-system-menu = lib.gvariant.mkDouble 3.0;
-              step-change-keyboard = lib.gvariant.mkDouble 10.0;
-              allow-zero-brightness = true;
-              ddcutil-binary-path = "${pkgs.ddcutil}/bin/ddcutil";
-            };
-            "org/gnome/shell/extensions/blur-my-shell/panel" = {
-              override-background-dynamically = true;
-            };
-            "org/gnome/shell/extensions/unblank" = {
-              time = lib.gvariant.mkInt32 300;
-              power = true;
-            };
-            "org/gnome/desktop/session" = {
-              idle-delay = lib.gvariant.mkUint32 0;
-            };
-            "org/gnome/settings-daemon/plugins/power" = {
-              power-button-action = "interactive";
-              sleep-inactive-ac-type = "nothing";
-              sleep-inactive-battery-timeout = lib.gvariant.mkInt32 1800;
-            };
-            "org/gnome/mutter" = {
-              experimental-features = [ "scale-monitor-framebuffer" "kms-modifiers" "autoclose-xwayland" "variable-refresh-rate" "xwayland-native-scaling" ];
-            };
+
             "org/gnome/desktop/background" = {
               picture-uri = "file://${pkgs.nixos-artwork.wallpapers.nineish.gnomeFilePath}";
               picture-uri-dark = "file://${pkgs.nixos-artwork.wallpapers.nineish-dark-gray.gnomeFilePath}";
@@ -60,91 +17,59 @@
             "org/gnome/desktop/calendar" = {
               show-weekdate = true;
             };
+            "org/gnome/desktop/datetime" = {
+              automatic-timezone = true;
+            };
             "org/gnome/desktop/input-sources" = {
+              sources = [ "('xkb', 'us')" "('xkb', 'gb')" "('xkb', 'us+workman')" ];
               xkb-options = [ "terminate:ctrl_alt_bksp" "lv3:ralt_switch" "compose:rctrl" ];
-            };
-            "org/gnome/nautilus/list-view" = {
-              default-zoom-level = "small";
-              use-tree-view = false;
-              default-column-order = [
-                "name"
-                "size"
-                "type"
-                "owner"
-                "group"
-                "permissions"
-                "mime_type"
-                "where"
-                "date_modified"
-                "date_modified_with_time"
-                "date_accessed"
-                "date_created"
-                "recency"
-                "starred"
-              ];
-              default-visible-columns = [ "name" "size" "date_modified" ];
-            };
-            "org/gnome/settings-daemon/plugins/color" = {
-              night-light-enabled = true;
-              night-light-schedule-automatic = true;
-              night-light-temperature = lib.gvariant.mkUint32 2700;
-            };
-            "org/gnome/terminal/legacy" = {
-              default-show-menubar = false;
-              schema-version = lib.gvariant.mkUint32 3;
-              theme-variant = "default";
-            };
-            "org/gnome/terminal/legacy/keybindings" = {
-              prev-tab = "<Primary><Shift>Home";
-              next-tab = "<Primary><Shift>End";
-            };
-            "org/gnome/terminal/legacy/profiles:" = {
-              default = "5ddfe964-7ee6-4131-b449-26bdd97518f7";
-              list = [ "5ddfe964-7ee6-4131-b449-26bdd97518f7" ];
-            };
-            "org/gnome/terminal/legacy/profiles:/:5ddfe964-7ee6-4131-b449-26bdd97518f7" = {
-              audible-bell = true;
-              background-color = "#000000";
-              backspace-binding = "ascii-delete";
-              bold-color-same-as-fg = true;
-              cursor-blink-mode = "system";
-              cursor-colors-set = false;
-              cursor-shape = "block";
-              delete-binding = "delete-sequence";
-              font = "SauceCodePro Nerd Font 12";
-              foreground-color = "#FFFFFF";
-              highlight-colors-set = false;
-              login-shell = false;
-              palette = [ "#000000" "#aa0000" "#00aa00" "#aa5500" "#0000aa" "#aa00aa" "#00aaaa" "#aaaaaa" "#555555" "#ff5555" "#55ff55" "#ffff55" "#5555ff" "#ff55ff" "#55ffff" "#ffffff" ];
-              scrollback-lines = lib.gvariant.mkInt32 10000;
-              scrollbar-policy = "never";
-              scroll-on-output = false;
-              use-custom-command = false;
-              use-system-font = false;
-              use-theme-colors = false;
-              visible-name = "NixOS";
             };
             "org/gnome/desktop/interface" = {
               clock-format = "24h";
-              gtk-theme = "Adwaita-dark";
-              color-scheme = "prefer-dark";
-              clock-show-weekday = true;
-              show-battery-percentage = true;
+              clock-show-date = true;
               clock-show-seconds = true;
+              clock-show-weekday = true;
+              color-scheme = "prefer-dark";
+              gtk-theme = "Adwaita";
+              show-battery-percentage = true;
+              monospace-font-name = "SauceCodePro Nerd Font 12";
+            };
+            "org/gnome/desktop/lockdown" = {
+              disable-show-password = true;
+            };
+            "org/gnome/desktop/notifications" = {
+              show-in-lock-screen = false;
+            };
+            "org/gnome/desktop/peripherals/touchpad" = {
+              disable-while-typing = false;
             };
             "org/gnome/desktop/privacy" = {
               old-files-age = lib.gvariant.mkInt32 7;
               recent-files-max-age = lib.gvariant.mkInt32 7;
               remove-old-temp-files = true;
               remove-old-trash-files = true;
+
+              remember-app-usage = false;
+              remember-recent-files = false;
             };
-            "org/gnome/settings-daemon/plugins/media-keys" = {
-              custom-keybindings = [ "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/" ];
+            "org/gnome/desktop/screen-time-limits" = {
+              history-enabled = false;
             };
-            "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-              name = "Terminal";
-              command = "gnome-terminal";
-              binding = "<Control><Alt>t";
+            "org/gnome/desktop/search-providers" = {
+              disable-external = true;
+            };
+            "org/gnome/desktop/session" = {
+              idle-delay = lib.gvariant.mkUint32 0; # Don't automatically blank the screen when idle.
+            };
+
+            "org/gnome/gnome-session" = {
+              auto-save-session = true;
+            };
+
+            "org/gnome/nautilus/list-view" = {
+              default-zoom-level = "small";
+              use-tree-view = false;
+              default-visible-columns = [ "name" "size" "date_modified" "deatiled_type" ];
             };
             "org/gnome/nautilus/preferences" = {
               default-folder-viewer = "list-view";
@@ -154,6 +79,83 @@
             };
             "org/gnome/nautilus/icon-view" = {
               default-zoom-level = "small-plus";
+            };
+
+            "org/gnome/settings-daemon/plugins/color" = {
+              night-light-enabled = true;
+              night-light-schedule-automatic = true;
+              night-light-temperature = lib.gvariant.mkUint32 3200;
+            };
+            "org/gnome/settings-daemon/plugins/housekeeping" = {
+              free-percent-notify = lib.gvariant.mkDouble 0.05;
+              free-percent-notify-again = lib.gvariant.mkDouble 0.01;
+              free-size-gb-no-notify = lib.gvariant.mkInt32 30;
+            };
+            "org/gnome/settings-daemon/plugins/media-keys" = {
+              custom-keybindings = [ "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/" ];
+            };
+            "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+              name = "Terminal";
+              command = "ptyxis";
+              binding = "<Control><Alt>t";
+            };
+            "org/gnome/settings-daemon/plugins/power" = {
+              power-button-action = "interactive";
+              sleep-inactive-ac-type = "nothing";
+              sleep-inactive-battery-timeout = lib.gvariant.mkInt32 1800;
+            };
+
+            "org/gnome/shell" = {
+              enabled-extensions = [
+                "AlphabeticalAppGrid@stuarthayhurst" # Force app grid to be in alphabetical order
+                "appindicatorsupport@rgcjonas.gmail.com" # "tray icons"
+                "blur-my-shell@aunetx" # Add fancy blur effect to various UI elements
+                "display-brightness-ddcutil@themightydeity.github.com" # Control physical monitor brightness for external monitors
+                "desktop-cube@schneegans.github.com" # 3D cube for switching workspaces
+                "unblank@sun.wxg@gmail.com" # Prevent screen from blanking immediatly when locked
+              ];
+            };
+            "org/gnome/shell/weather" = {
+              automatic-location = true;
+            };
+            "org/gnome/shell/extensions/display-brightness-ddcutil" = {
+              ddcutil-binary-path = "${pkgs.ddcutil}/bin/ddcutil";
+              button-location = lib.gvariant.mkInt32 1; # system menu
+              position-system-menu = lib.gvariant.mkDouble 2.0;
+              hide-system-indicator = true;
+              show-all-slider = true;
+              only-all-slider = true;
+              show-display-name = false;
+            };
+            "org/gnome/shell/extensions/blur-my-shell/panel" = {
+              override-background-dynamically = true; # Un-blur/darken the panel when a window is near.
+            };
+            "org/gnome/shell/extensions/unblank" = {
+              power = true; # Delay screen blanking only when plugged-in.
+              time = lib.gvariant.mkInt32 300; # Blank after 5 minutes.
+            };
+
+            "org/gnome/mutter" = {
+              experimental-features = [ "scale-monitor-framebuffer" "kms-modifiers" "autoclose-xwayland" "variable-refresh-rate" "xwayland-native-scaling" ];
+            };
+
+            "org/gnome/system/location" = {
+              enabled = false;
+            };
+
+            "org/gtk/gtk4/settings/file-chooser" = {
+              show-hidden = true;
+            };
+
+            "org/gnome/Ptyxis" = {
+              profile-uuids = [ "af255d8b5e5ef23e7d40d82b68ea9158" ];
+              default-profile-uuid = "af255d8b5e5ef23e7d40d82b68ea9158";
+            };
+            "org/gnome/Ptyxis/Profiles/af255d8b5e5ef23e7d40d82b68ea9158" = {
+              label = "NixOS";
+              palette = "xterm";
+              login-shell = true;
+              limit-scrollback = false;
             };
           };
         }
@@ -190,7 +192,6 @@
     loader.timeout = 0;
     plymouth.enable = true;
   };
-  boot.initrd.systemd.enable = true;
 
   # Touchpad/touchscreen support.
   services.libinput.enable = true;
@@ -221,10 +222,9 @@
 
     adwaita-icon-theme
     adwaita-qt
-  ];
 
-  # GNOME terminal - replaces the console.
-  programs.gnome-terminal.enable = true;
+    ptyxis
+  ];
 
   services.gnome = {
     gnome-online-accounts.enable = true;
@@ -258,13 +258,13 @@
 
   # Install fonts
   fonts.packages = [
-    pkgs.unstable.nerd-fonts.sauce-code-pro
+    pkgs.nerd-fonts.sauce-code-pro
   ];
 
-  disabledModules = [ "services/ttys/kmscon.nix" ];
-  imports = [
-    ./kmscon.nix
-  ];
+  #  disabledModules = [ "services/ttys/kmscon.nix" ];
+  #imports = [
+  #./kmscon.nix
+  #];
 
   services.kmscon = {
     enable = true;
@@ -284,7 +284,6 @@
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     GSK_RENDERER = "ngl";
-    #GTK_THEME = "Adwaita:dark";
   };
 
   # Do not wait for network on boot.

@@ -25,8 +25,6 @@ in
       ./config.nix
       ./hardware.nix
 
-      inputs.agenix.nixosModules.default
-
       basicConfig
       bootloader
       desktop
@@ -45,7 +43,6 @@ in
       ssd
       ssh
       users
-      virtualisation
       yubikey
       zsh
     ] ++ (if hasHomeManager then [ nixosModules.homeManager ] else [ ]);

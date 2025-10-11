@@ -2,10 +2,6 @@
 {
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
-  virtualisation.docker.enable = true;
-
-  networking.firewall.allowedTCPPorts = [ 8080 ];
-
   programs.gamescope.enable = true;
   programs.steam = {
     enable = true;
@@ -26,17 +22,15 @@
     font-dpi=192
   '';
   systemd.tmpfiles.rules = [
-    ''C+ /run/gdm/.config/monitors.xml - - - - ${./monitors.xml}''
-  ] ++ lib.lists.forEach accounts (account: "C+ /home/${account.username}/.config/monitors.xml - - - - ${./monitors.xml}");
-  boot.kernelParams = [ "video=HDMI-A-1:panel_orientation=left_side_up" ];
+    ''L+ /run/gdm/.config/monitors.xml - - - - ${./monitors.xml}''
+  ] ++ lib.lists.forEach accounts (account: "L+ /home/${account.username}/.config/monitors.xml - - - - ${./monitors.xml}");
+  boot.kernelParams = [ "video=HDMI-A-2:panel_orientation=left_side_up" ];
 
-  # find / -name '*.desktop' 2> /dev/null
+  # ls /run/current-system/sw/share/applications
   services.xserver.desktopManager.gnome.favoriteAppsOverride = ''
     [org.gnome.shell]
-    favorite-apps=[ 'firefox.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Settings.desktop', 'org.gnome.Calculator.desktop', 'org.freecad.FreeCAD.desktop', 'org.kicad.kicad.desktop', 'gnome-system-monitor.desktop', 'thunderbird.desktop', 'slack.desktop', 'spotify.desktop', 'steam.desktop', 'org.openrgb.OpenRGB.desktop']
+    favorite-apps=[ 'firefox.desktop', 'torbrowser.desktop', 'org.gnome.Ptyxis.desktop', 'anki.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Settings.desktop', 'org.gnome.Calculator.desktop', 'org.freecad.FreeCAD.desktop', 'org.kicad.kicad.desktop', 'org.gnome.SystemMonitor.desktop', 'thunderbird.desktop', 'slack.desktop', 'signal.desktop', 'spotify.desktop', 'steam.desktop' ]
   '';
-
-  nix.settings.extra-substituters = [ "http://172.16.3.51:8501" ];
 
   environment.systemPackages = [
     pkgs.clonehero
