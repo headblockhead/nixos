@@ -35,6 +35,7 @@ in
       fonts
       git
       gpg
+      kmscon
       network
       openrgb
       printer

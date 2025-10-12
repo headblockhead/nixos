@@ -203,27 +203,19 @@
   services.xserver.excludePackages = [ pkgs.xterm ];
 
   environment.systemPackages = with pkgs; [
-    gnomeExtensions.appindicator # Tray icons
-    gnomeExtensions.unblank # Prevent screen from blanking when locked
+    gnomeExtensions.appindicator
+    gnomeExtensions.unblank
     gnomeExtensions.desktop-cube
     gnomeExtensions.alphabetical-app-grid
     gnomeExtensions.blur-my-shell
     gnomeExtensions.brightness-control-using-ddcutil
     ddcutil
 
-    gnome-pomodoro
-    newsflash
-    deja-dup
-    warp
     dconf-editor
-    plattenalbum
-
-    gopass
+    ptyxis
 
     adwaita-icon-theme
     adwaita-qt
-
-    ptyxis
   ];
 
   services.gnome = {
@@ -233,13 +225,17 @@
   };
 
   # Exclude certain default gnome apps.
-  # See https://github.com/NixOS/nixpkgs/blob/127579d6f40593f9b9b461b17769c6c2793a053d/nixos/modules/services/x11/desktop-managers/gnome.nix#L468 for a list of apps.
+  # See https://github.com/NixOS/nixpkgs/blob/nixos-25.05/nixos/modules/services/x11/desktop-managers/gnome.nix#L414 for ideas.
   environment.gnome.excludePackages = (with pkgs; [
-    gnome-tour # Tour
-    gnome-logs # Logs
-    yelp # Help
-    epiphany # Web
-    gnome-console # Console - basic terminal emulator, not very good
+    epiphany
+    gnome-calendar
+    gnome-contacts
+    gnome-music
+    gnome-tour
+    gnome-weather
+    gnome-console
+    snapshot
+    totem
   ]);
 
   # Add udev rules.
@@ -255,28 +251,6 @@
 
   # Symlink fonts into /run/current-system/sw/share/X11/fonts
   fonts.fontDir.enable = true;
-
-  # Install fonts
-  fonts.packages = [
-    pkgs.nerd-fonts.sauce-code-pro
-  ];
-
-  #  disabledModules = [ "services/ttys/kmscon.nix" ];
-  #imports = [
-  #./kmscon.nix
-  #];
-
-  services.kmscon = {
-    enable = true;
-    fonts = [
-      { name = "SauceCodePro Nerd Font"; package = pkgs.unstable.nerd-fonts.sauce-code-pro; }
-    ];
-    extraConfig = ''
-      font-size=12
-      hwaccel
-    '';
-    hwRender = true;
-  };
 
   # High-performance version of D-Bus
   services.dbus.implementation = "broker";

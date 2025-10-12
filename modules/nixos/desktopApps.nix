@@ -5,13 +5,15 @@
     arduino
     audacity
     chiaki
+    deja-dup
     discord
     firefox
     fractal # matrix messenger
     furnace # chiptune tracker
     gimp
-    unstable.godot
+    gnome-pomodoro
     google-chrome
+    gopass
     ifuse # optional, to mount using 'ifuse'
     inkscape
     kicad
@@ -20,6 +22,7 @@
     lmms
     monero-gui
     musescore
+    newsflash
     obs-studio
     obsidian
     onedrive
@@ -31,8 +34,10 @@
     spotify
     thonny
     tor-browser-bundle-bin
+    unstable.godot
     unstable.thunderbird-latest
     vlc
+    warp
     watchmate
     zoom-us
   ];

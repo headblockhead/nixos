@@ -34,6 +34,7 @@ in
       fonts
       git
       gpg
+      kmscon
       network
       printer
       sdr
