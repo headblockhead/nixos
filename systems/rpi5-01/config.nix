@@ -9,7 +9,7 @@
   age.secrets.railreader-darwin-s3-access-key.file = ../../secrets/railreader-darwin-s3-access-key.age;
   age.secrets.railreader-darwin-s3-secret-key.file = ../../secrets/railreader-darwin-s3-secret-key.age;
 
-  networking.firewall.allowedTCPPorts = [ 9002 8501 64022 ];
+  networking.firewall.allowedTCPPorts = [ 9002 8501 64022 3333 ];
 
   services.k3s = {
     clusterInit = true;

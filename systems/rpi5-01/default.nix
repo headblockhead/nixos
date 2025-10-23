@@ -43,6 +43,8 @@ in
       ssh
       users
       zsh
+
+      p2pool
     ] ++ (if hasHomeManager then [ nixosModules.homeManager ] else [ ]);
   };
   inherit system canLogin hasHomeManager;

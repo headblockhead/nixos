@@ -31,7 +31,7 @@
     after = [ "network-online.target" ];
     serviceConfig = {
       Type = "simple";
-      ExecStart = "${pkgs.unstable.p2pool}/bin/p2pool --mini --host 127.0.0.1 --rpc-port 18081 --zmq-port 18084 --wallet 48pEZBjqjNRCbVptEMGRdeYeUgmXaHbz7gLErTneJnN8Uc5r2qHyEPoGmS1NSmQqaK5hUjZUvRG24jBNRKjA51qbDkWM1oX --stratum 0.0.0.0:3333 --p2p 0.0.0.0:37889";
+      ExecStart = "${pkgs.unstable.p2pool}/bin/p2pool --mini --host 127.0.0.1 --rpc-port 18081 --zmq-port 18084 --wallet 48pEZBjqjNRCbVptEMGRdeYeUgmXaHbz7gLErTneJnN8Uc5r2qHyEPoGmS1NSmQqaK5hUjZUvRG24jBNRKjA51qbDkWM1oX --stratum 172.16.0.0:3333 --p2p 127.0.0.1:37889";
       Restart = "always";
       RestartSec = 10;
     };
