@@ -62,18 +62,18 @@
     };
   };
 
-  services.railreader = {
-    enable = true;
-    ingest.darwin = {
-      kafka = {
-        group = "SC-7e52557e-c29e-4915-b236-d81ad2b06b17";
-        usernameFile = config.age.secrets.railreader-darwin-kafka-username.path;
-        passwordFile = config.age.secrets.railreader-darwin-kafka-password.path;
-      };
-      s3 = {
-        accessKeyFile = config.age.secrets.railreader-darwin-s3-access-key.path;
-        secretKeyFile = config.age.secrets.railreader-darwin-s3-secret-key.path;
-      };
-    };
-  };
+  #  services.railreader = {
+  #enable = true;
+  #ingest.darwin = {
+  #kafka = {
+  #group = "SC-7e52557e-c29e-4915-b236-d81ad2b06b17";
+  #usernameFile = config.age.secrets.railreader-darwin-kafka-username.path;
+  #passwordFile = config.age.secrets.railreader-darwin-kafka-password.path;
+  #};
+  #s3 = {
+  #accessKeyFile = config.age.secrets.railreader-darwin-s3-access-key.path;
+  #secretKeyFile = config.age.secrets.railreader-darwin-s3-secret-key.path;
+  #};
+  #};
+  #};
 }

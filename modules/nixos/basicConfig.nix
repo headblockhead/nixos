@@ -45,6 +45,8 @@ in
     enableNg = true;
   };
 
+  security.polkit.enable = true;
+
   # Useful base packages for every system to have.
   environment.systemPackages = with pkgs; [
     git

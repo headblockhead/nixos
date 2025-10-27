@@ -1,14 +1,14 @@
 {
   description = "NixOS configuration for my desktops, laptops, and local network.";
 
-  nixConfig = {
-    extra-substituters = [
-      "https://cache.edwardh.dev"
-    ];
-    extra-trusted-public-keys = [
-      "cache.edwardh.dev-1:+Gafa747BGilG7GAbTC/1i6HX9NUwzMbdFAc+v5VOPk="
-    ];
-  };
+  #  nixConfig = {
+  #extra-substituters = [
+  #"https://cache.edwardh.dev"
+  #];
+  #extra-trusted-public-keys = [
+  #"cache.edwardh.dev-1:+Gafa747BGilG7GAbTC/1i6HX9NUwzMbdFAc+v5VOPk="
+  #];
+  #};
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
@@ -55,7 +55,7 @@
       # Packages in nixpkgs that I want to override.
       nixpkgs-overlay = (
         final: prev:
-          {
+          rec {
             # Make pkgs.unstable.* point to nixpkgs unstable branch.
             unstable = import inputs.nixpkgs-unstable {
               system = final.system;
@@ -68,7 +68,7 @@
               commandLineArgs = [ "--ozone-platform=wayland" "--disable-features=WaylandFractionalScaleV1" ];
             });
             gnome-keyring = prev.gnome-keyring.overrideAttrs (oldAttrs: { mesonFlags = (builtins.filter (flag: flag != "-Dssh-agent=true") oldAttrs.mesonFlags) ++ [ "-Dssh-agent=false" ]; });
-            librespot = prev.librespot.override { withDNS-SD = true; };
+            librespot = unstable.librespot.override { withMDNS = true; withDNS-SD = true; withAvahi = true; };
             go-migrate = prev.go-migrate.overrideAttrs (oldAttrs: { tags = [ "postgres" ]; });
             obinskit = (import inputs.oldnixpkgs {
               system = final.system;

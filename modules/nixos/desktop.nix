@@ -55,9 +55,6 @@
             "org/gnome/desktop/screen-time-limits" = {
               history-enabled = false;
             };
-            "org/gnome/desktop/search-providers" = {
-              disable-external = true;
-            };
             "org/gnome/desktop/session" = {
               idle-delay = lib.gvariant.mkUint32 0; # Don't automatically blank the screen when idle.
             };
@@ -173,6 +170,17 @@
     };
     desktopManager.gnome = {
       enable = true;
+    };
+  };
+
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    nssmdns6 = true;
+    publish = {
+      userServices = true;
+      hinfo = true;
+      workstation = true;
     };
   };
 

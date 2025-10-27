@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, system, ... }:
+{ config, inputs, system, ... }:
 let
   railreader-image = inputs.railreader.outputs.packages.${system}.railreader-docker;
 in
@@ -25,10 +25,10 @@ in
     ];
     tokenFile = config.age.secrets.k3s-token.path;
     gracefulNodeShutdown.enable = true;
-    serverAddr = "https://k3s.edwardh.dev:6443";
+    serverAddr = "https://172.16.3.100:6443";
     role = "server";
     extraFlags = [
-      "--tls-san=k3s.edwardh.dev"
+      "--tls-san=172.16.3.100"
       "--embedded-registry"
     ];
   };
