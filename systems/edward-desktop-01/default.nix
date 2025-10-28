@@ -37,7 +37,6 @@ in
       gpg
       kmscon
       network
-      openrgb
       printer
       sdr
       sound

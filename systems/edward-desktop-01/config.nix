@@ -32,6 +32,12 @@
     favorite-apps=[ 'firefox.desktop', 'torbrowser.desktop', 'org.gnome.Ptyxis.desktop', 'anki.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Settings.desktop', 'org.gnome.Calculator.desktop', 'org.freecad.FreeCAD.desktop', 'org.kicad.kicad.desktop', 'org.gnome.SystemMonitor.desktop', 'thunderbird.desktop', 'slack.desktop', 'signal.desktop', 'spotify.desktop', 'steam.desktop' ]
   '';
 
+  services.postgresql = {
+    enable = true;
+    package = pkgs.postgresql_16;
+    ensureUsers = [{ name = "headb"; }];
+  };
+
   environment.systemPackages = [
     pkgs.clonehero
     pkgs.blender-hip

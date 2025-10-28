@@ -16,7 +16,8 @@ in
   };
 
   networking = {
-    enableIPv6 = true;
+    enableIPv6 = false;
+    domain = "lan";
     interfaces = {
       ${wan_port} = {
         useDHCP = true; # boring
@@ -40,36 +41,56 @@ in
     };
     nat = {
       enable = true;
-      enableIPv6 = true;
-      internalIPs = [ "172.16.0.0/16" ];
-      externalInterface = wan_port;
+      enableIPv6 = false;
       internalInterfaces = [ lan_port iot_port srv_port gst_port ];
+      externalInterface = wan_port;
+    };
+    nftables = {
+      enable = true;
+      flushRuleset = true;
     };
     firewall = {
-      trustedInterfaces = [ lan_port ]; # Allow all from LAN
+      logRefusedConnections = true;
+      logRefusedPackets = true;
+      logReversePathDrops = true;
+      rejectPackets = true;
+      trustedInterfaces = [ lan_port ]; # Allow all input from LAN
       interfaces = {
-        wan = {
+        ${wan_port} = {
           allowedTCPPorts = [ 22 ];
         };
-        iot = {
+        ${iot_port} = {
           allowedTCPPorts = [ 53 1704 ];
           allowedUDPPorts = [ 53 67 5353 ];
         };
-        srv = {
+        ${srv_port} = {
           allowedTCPPorts = [ 53 1705 4317 ];
           allowedUDPPorts = [ 53 67 5353 ];
         };
-        wg0 = {
+        "wg0" = {
           allowedTCPPorts = [ 53 ];
           allowedUDPPorts = [ 53 ];
         };
       };
+      filterForward = true;
+      extraInputRules = ''
+        log level info prefix "input: "
+      '';
+      extraForwardRules = ''
+        log level info prefix "forward: "
+        iifname ${lan_port} accept comment "from lan"
+        iifname { "wg0", "${iot_port}" } oifname ${srv_port} accept comment "from wg0 and iot to srv"
+      '';
+      extraReversePathFilterRules = ''
+        log level info prefix "rpf: "
+      '';
     };
   };
 
   services.avahi = {
     enable = true;
     nssmdns4 = true;
+    nssmdns6 = false;
     domainName = "local";
     reflector = true;
     allowInterfaces = [
@@ -112,7 +133,6 @@ in
   services.dnsmasq = {
     enable = true;
     settings = {
-
       domain-needed = true; # Don't forward DNS requests without dots/domain parts to upstream servers.
       bogus-priv = true; # If a private IP lookup fails, it will be answered with "no such domain", instead of forwarded to upstream.
 
@@ -137,9 +157,9 @@ in
         "/${config.networking.hostName}.gst/172.16.4.1"
       ];
 
-      interface = [ lan_port iot_port srv_port gst_port "wg0" ]; # Listen only on these interfaces.
+      interface = [ lan_port iot_port srv_port gst_port "wg0" ];
       no-dhcp-interface = [ "wg0" ];
-      bind-interfaces = true; # Bind only to the interfaces specified.
+      bind-dynamic = true;
       no-hosts = true; # Don't obtain any hosts from /etc/hosts (this would make 'localhost' equal this machine for all clients!)
 
       expand-hosts = true;
@@ -150,43 +170,43 @@ in
         "gst,172.16.4.0/24"
       ];
       dhcp-range = [
-        "set:lan,172.16.1.2,172.16.1.254,1h"
-        "set:iot,172.16.2.2,172.16.2.254,1h"
-        "set:srv,172.16.3.2,172.16.3.254,1h"
+        "set:lan,172.16.1.2,172.16.1.254,6h"
+        "set:iot,172.16.2.0,static"
+        "set:srv,172.16.3.0,static"
         "set:gst,172.16.4.2,172.16.4.254,1h"
       ];
       # Set custom hostnames based on MAC addresses.
       dhcp-host = [
         # lan
-        "28:70:4e:8b:98:91,johnconnor"
-        "a0:d3:65:bb:f8:ff,edward-desktop-01"
-        "34:02:86:2b:84:c3,edward-laptop-01"
-        "be:d4:81:34:98:3d,edward-iphone"
+        "28:70:4e:8b:98:91,172.16.1.2,johnconnor"
+        "a0:d3:65:bb:f8:ff,172.16.1.10,edward-desktop-01"
+        "34:02:86:2b:84:c3,172.16.1.11,edward-laptop-01"
+        "be:d4:81:34:98:3d,172.16.1.12,edward-iphone"
         # iot
-        "74:83:c2:3c:9f:6e,skynet"
-        "a8:13:74:17:b6:18,hesketh-tv"
-        "4c:b9:ea:5a:4f:03,scuttlebug"
-        "4c:b9:ea:58:81:22,sentinel"
-        "0c:fe:45:1d:e6:66,ps4"
-        "00:0b:81:87:e5:5f,officepi"
-        "48:e7:29:18:6f:b0,charlie-charger"
-        "30:c9:22:19:70:14,octo-cadlite"
-        "48:e1:e9:9f:32:e6,meross-bedroom-lamp"
-        "48:e1:e9:2d:c9:76,meross-printer-lamp"
-        "48:e1:e9:2d:c9:70,meross-printer-power"
-        "ec:64:c9:e9:97:9a,prusa-mk4"
-        "24:78:23:01:57:b1,panasonic-bluray"
+        "74:83:c2:3c:9f:6e,172.16.2.2,skynet"
+        "a8:13:74:17:b6:18,172.16.2.101,hesketh-tv"
+        "4c:b9:ea:5a:4f:03,172.16.2.102,scuttlebug"
+        "4c:b9:ea:58:81:22,172.16.2.103,sentinel"
+        "0c:fe:45:1d:e6:66,172.16.2.104,ps4"
+        "00:0b:81:87:e5:5f,172.16.2.105,officepi"
+        "48:e7:29:18:6f:b0,172.16.2.106,charlie-charger"
+        "30:c9:22:19:70:14,172.16.2.107,octo-cadlite"
+        "48:e1:e9:9f:32:e6,172.16.2.108,meross-bedroom-lamp"
+        "48:e1:e9:2d:c9:76,172.16.2.109,meross-printer-lamp"
+        "48:e1:e9:2d:c9:70,172.16.2.110,meross-printer-power"
+        "ec:64:c9:e9:97:9a,172.16.2.111,prusa-mk4"
+        "24:78:23:01:57:b1,172.16.2.112,panasonic-bluray"
         # srv
-        "2c:cf:67:94:37:82,rpi5-01"
-        "2c:cf:67:94:38:23,rpi5-02"
-        "d8:3a:dd:97:a9:c4,rpi5-03"
-        "dc:a6:32:31:50:3b,rpi4-01"
-        "e4:5f:01:11:a6:8e,rpi4-02"
+        "2c:cf:67:94:37:82,172.16.3.51,rpi5-01"
+        "2c:cf:67:94:38:23,172.16.3.52,rpi5-02"
+        "d8:3a:dd:97:a9:c4,172.16.3.53,rpi5-03"
+        "dc:a6:32:31:50:3b,172.16.3.41,rpi4-01"
+        "e4:5f:01:11:a6:8e,172.16.3.42,rpi4-02"
       ];
       # We are the only DHCP server on the network.
       dhcp-authoritative = true;
-      log-queries = false;
-      log-dhcp = false;
+      log-queries = true;
+      log-dhcp = true;
     };
   };
 
