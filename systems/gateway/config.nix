@@ -57,7 +57,8 @@ in
       trustedInterfaces = [ lan_port ]; # Allow all input from LAN
       interfaces = {
         ${wan_port} = {
-          allowedTCPPorts = [ 22 ];
+          allowedTCPPorts = [ 22 ] ++ [ 5354 ];
+          allowedUDPPorts = [ ] ++ [ 5353 5354 ];
         };
         ${iot_port} = {
           allowedTCPPorts = [ 53 1704 ];
@@ -97,6 +98,8 @@ in
       lan_port
       iot_port
       srv_port
+    ] ++ [
+      wan_port
     ];
     publish = {
       enable = true;
