@@ -252,9 +252,10 @@
   ];
 
   qt = {
+    # TODO: test this
     enable = true;
-    style = "adwaita-dark";
-    platformTheme = "gnome";
+    style = "kvantum";
+    #platformTheme = "gnome";
   };
 
   # Symlink fonts into /run/current-system/sw/share/X11/fonts

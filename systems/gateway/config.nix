@@ -185,6 +185,7 @@ in
         "a0:d3:65:bb:f8:ff,172.16.1.10,edward-desktop-01"
         "34:02:86:2b:84:c3,172.16.1.11,edward-laptop-01"
         "be:d4:81:34:98:3d,172.16.1.12,edward-iphone"
+        "26:08:b6:4d:79:2c,172.16.1.13,edward-mac-mini"
         # iot
         "74:83:c2:3c:9f:6e,172.16.2.2,skynet"
         "a8:13:74:17:b6:18,172.16.2.101,hesketh-tv"
@@ -199,6 +200,7 @@ in
         "48:e1:e9:2d:c9:70,172.16.2.110,meross-printer-power"
         "ec:64:c9:e9:97:9a,172.16.2.111,prusa-mk4"
         "24:78:23:01:57:b1,172.16.2.112,panasonic-bluray"
+        "b8:27:eb:32:39:3b,172.16.2.113,livingroompi"
         # srv
         "2c:cf:67:94:37:82,172.16.3.51,rpi5-01"
         "2c:cf:67:94:38:23,172.16.3.52,rpi5-02"
