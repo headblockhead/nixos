@@ -198,7 +198,8 @@ in
         "48:e1:e9:9f:32:e6,172.16.2.108,meross-bedroom-lamp"
         "48:e1:e9:2d:c9:76,172.16.2.109,meross-printer-lamp"
         "48:e1:e9:2d:c9:70,172.16.2.110,meross-printer-power"
-        "ec:64:c9:e9:97:9a,172.16.2.111,prusa-mk4"
+        # "ec:64:c9:e9:97:9a,172.16.2.111,prusa-mk4" # WiFi
+        "10:9c:70:2b:82:01,172.16.2.111,prusa-mk4" # Ethernet
         "24:78:23:01:57:b1,172.16.2.112,panasonic-bluray"
         "b8:27:eb:32:39:3b,172.16.2.113,livingroompi"
         # srv
