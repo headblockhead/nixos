@@ -224,6 +224,8 @@
 
     adwaita-icon-theme
     adwaita-qt
+
+    nerd-fonts.sauce-code-pro
   ];
 
   services.gnome = {
