@@ -196,7 +196,7 @@ gpg --card-edit
 Complete the first half of the setup form, then quit when reaching 'generating new key pair'.
 
 ```bash
-gopas clone git@github.com:headblockhead/gopass
+gopass clone git@github.com:headblockhead/gopass
 ```
 
 ## Troubleshooting

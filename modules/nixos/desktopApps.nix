@@ -28,7 +28,7 @@
     onedrive
     openscad-unstable
     prusa-slicer
-    rpi-imager
+    #rpi-imager
     signal-desktop-bin
     slack
     spotify
