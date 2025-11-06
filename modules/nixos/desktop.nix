@@ -227,6 +227,7 @@
 
     nerd-fonts.sauce-code-pro
   ];
+  boot.kernelModules = [ "i2c-dev" ]; # For ddcutil
 
   services.gnome = {
     gnome-online-accounts.enable = true;
