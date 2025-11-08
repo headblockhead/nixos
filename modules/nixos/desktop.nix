@@ -93,7 +93,7 @@
             };
             "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
               name = "Terminal";
-              command = "ptyxis";
+              command = "ptyxis -s";
               binding = "<Control><Alt>t";
             };
             "org/gnome/settings-daemon/plugins/power" = {
