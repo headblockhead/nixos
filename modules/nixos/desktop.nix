@@ -134,6 +134,11 @@
 
             "org/gnome/mutter" = {
               experimental-features = [ "scale-monitor-framebuffer" "kms-modifiers" "autoclose-xwayland" "variable-refresh-rate" "xwayland-native-scaling" ];
+              dynamic-workspaces = false;
+              workspaces-only-on-primary = false;
+            };
+            "org/gnome/desktop/wm/preferences" = {
+              num-workspaces = lib.gvariant.mkInt32 4;
             };
 
             "org/gnome/system/location" = {
@@ -255,10 +260,7 @@
   ];
 
   qt = {
-    # TODO: test this
     enable = true;
-    style = "kvantum";
-    #platformTheme = "gnome";
   };
 
   # Symlink fonts into /run/current-system/sw/share/X11/fonts
