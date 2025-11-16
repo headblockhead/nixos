@@ -26,7 +26,7 @@ let
       protocol = "ssh-ng";
       # base64 -w0
       publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUt0dmh4T1JPbGF2WTJqTlpVZ3BEMUJrVGdETmF2eS9UdW9MbkR5R1d4bFY=";
-      supportedFeatures = [ "nixos-test" ];
+      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" ];
       mandatoryFeatures = [ ];
       maxJobs = 4;
       speedFactor = 3;
@@ -39,7 +39,7 @@ let
       protocol = "ssh-ng";
       # base64 -w0
       publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU1SclFyZnFoQTVlcitBVzkvd2NkNldqZXg3OUpuK0lCNllOZFhmelliVFk=";
-      supportedFeatures = [ "nixos-test" ];
+      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" ];
       mandatoryFeatures = [ ];
       maxJobs = 4;
       speedFactor = 3;
@@ -52,7 +52,7 @@ let
       protocol = "ssh-ng";
       # base64 -w0
       publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUovNFFoNnI3YTA2NWJ5WXFJOWdFYmE0NERSWER1VUY2dmJJVWR1ay9FSkY=";
-      supportedFeatures = [ "nixos-test" ];
+      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" ];
       mandatoryFeatures = [ ];
       maxJobs = 4;
       speedFactor = 3;

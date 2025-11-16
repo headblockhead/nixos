@@ -261,6 +261,8 @@
 
   qt = {
     enable = true;
+    style = "adwaita-dark";
+    platformTheme = "gnome";
   };
 
   # Symlink fonts into /run/current-system/sw/share/X11/fonts

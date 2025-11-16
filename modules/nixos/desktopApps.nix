@@ -1,12 +1,14 @@
 { pkgs, config, ... }: {
   services.usbmuxd.enable = true;
   environment.systemPackages = with pkgs; [
+    #rpi-imager
     anki
     arduino
     audacity
     chiaki
     deja-dup
     discord
+    easyeffects
     firefox
     fractal # matrix messenger
     furnace # chiptune tracker
@@ -28,7 +30,6 @@
     onedrive
     openscad-unstable
     prusa-slicer
-    #rpi-imager
     signal-desktop-bin
     slack
     spotify

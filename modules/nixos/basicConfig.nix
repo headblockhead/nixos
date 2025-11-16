@@ -60,6 +60,7 @@ in
     killall
     btop
     dig
+    file
   ];
 
   networking.domain = lib.mkDefault "lan";

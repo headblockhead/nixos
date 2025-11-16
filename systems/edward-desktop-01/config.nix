@@ -1,6 +1,6 @@
 { lib, pkgs, accounts, ... }:
 {
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  #boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   programs.gamescope.enable = true;
   programs.steam = {
@@ -38,6 +38,8 @@
     ensureUsers = [{ name = "headb"; }];
   };
 
+  networking.firewall.enable = lib.mkForce false;
+
   environment.systemPackages = [
     pkgs.clonehero
     pkgs.blender-hip
@@ -48,6 +50,7 @@
     pkgs.go-migrate
     pkgs.qgis
     pkgs.obinskit
+    #pkgs.qxmledit
 
     pkgs.kdePackages.kdenlive
   ];
