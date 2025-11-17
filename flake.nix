@@ -68,7 +68,6 @@
               commandLineArgs = [ "--ozone-platform=wayland" "--disable-features=WaylandFractionalScaleV1" ];
             });
             gnome-keyring = prev.gnome-keyring.overrideAttrs (oldAttrs: { mesonFlags = (builtins.filter (flag: flag != "-Dssh-agent=true") oldAttrs.mesonFlags) ++ [ "-Dssh-agent=false" ]; });
-            librespot = unstable.librespot.override { withMDNS = true; withDNS-SD = true; withAvahi = true; };
             go-migrate = prev.go-migrate.overrideAttrs (oldAttrs: { tags = [ "postgres" ]; });
             obinskit = (import inputs.oldnixpkgs {
               system = final.system;
@@ -83,6 +82,11 @@
 
             kmscon = prev.callPackage ./custom-packages/kmscon/kmscon.nix { };
             libtsm = prev.callPackage ./custom-packages/libtsm/libtsm.nix { };
+            librespot = prev.callPackage ./custom-packages/librespot/default.nix {
+              withMDNS = true;
+              withDNS-SD = true;
+              withAvahi = true;
+            };
 
             # Set pkgs.home-manager to be the flake version.
             home-manager = inputs.home-manager.packages.${final.system}.default;
