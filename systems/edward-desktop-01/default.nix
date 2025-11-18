@@ -45,6 +45,8 @@ in
       users
       yubikey
       zsh
+
+      snapclient
     ] ++ (if hasHomeManager then [ nixosModules.homeManager ] else [ ]);
   };
   inherit system canLogin hasHomeManager;
