@@ -9,10 +9,13 @@
     localNetworkGameTransfers.openFirewall = true;
     package = pkgs.unstable.steam;
   };
-  programs.alvr = {
+
+  services.wivrn = {
     enable = true;
-    package = pkgs.unstable.alvr;
     openFirewall = true;
+    defaultRuntime = true;
+    highPriority = true;
+    autoStart = true;
   };
 
   boot.plymouth.extraConfig = ''
