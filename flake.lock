@@ -311,11 +311,11 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1764444428,
-        "narHash": "sha256-5zJ158SH8fgeITWUhldiLBwMiNtzeji4ilZrBnbHmhU=",
+        "lastModified": 1764542162,
+        "narHash": "sha256-HLD+TI+Rk4x479AZ9kKS/L3IFOap14nn8f9VgLC4kdQ=",
         "owner": "headblockhead",
         "repo": "railreader",
-        "rev": "f1e30e2a30ced0087dad6ef5a459c68706b7073d",
+        "rev": "bdbdefde31a64bd7b726d573241600b14e47b076",
         "type": "github"
       },
       "original": {
