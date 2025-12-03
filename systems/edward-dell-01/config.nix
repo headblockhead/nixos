@@ -16,7 +16,11 @@
     favorite-apps=[ 'firefox.desktop', 'org.gnome.Ptyxis.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Settings.desktop', 'org.gnome.Calculator.desktop', 'org.freecad.FreeCAD.desktop', 'org.kicad.kicad.desktop', 'org.gnome.SystemMonitor.desktop', 'thunderbird.desktop', 'slack.desktop', 'spotify.desktop']
   '';
 
-  virtualisation.docker.enable = true;
+  services.postgresql = {
+    enable = true;
+    package = pkgs.postgresql_16;
+    ensureUsers = [{ name = "headb"; }];
+  };
 
   environment.systemPackages = [
     pkgs.vscode

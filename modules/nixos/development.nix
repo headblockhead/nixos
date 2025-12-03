@@ -37,6 +37,9 @@ in
     pico-sdk
     picotool
     platformio
+    protobuf
+    protoc-gen-go
+    protoc-gen-go-grpc
     pulseview
     python313
     qemu
