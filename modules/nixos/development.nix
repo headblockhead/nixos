@@ -40,6 +40,7 @@ in
     protobuf
     protoc-gen-go
     protoc-gen-go-grpc
+    protoc-gen-swift
     pulseview
     python313
     qemu
