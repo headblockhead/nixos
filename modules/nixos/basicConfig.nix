@@ -39,12 +39,6 @@ in
       })
       config.nix.registry;
 
-  # Use next-gen nixos switch.
-  system.switch = {
-    enable = false;
-    enableNg = true;
-  };
-
   security.polkit.enable = true;
 
   # Useful base packages for every system to have.

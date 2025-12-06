@@ -228,7 +228,7 @@ in
     };
 
     buffer = 800; # milliseconds of buffering on clients before playback.
-    streamBuffer = 10; # milliseconds of buffering for reading from streams.
+    streamBuffer = 200; # milliseconds of buffering for reading from streams.
     codec = "pcm";
     sampleFormat = "44100:32:2";
 

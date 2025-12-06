@@ -34,7 +34,7 @@
     slack
     spotify
     thonny
-    tor-browser-bundle-bin
+    tor-browser
     unstable.godot
     unstable.thunderbird-latest
     vlc
