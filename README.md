@@ -4,10 +4,9 @@
 
 A continuously updated reproducable config for:
 - a desktop workstation
+- a laptop (Lenovo Thinkpad T450s)
 - a mail+calendar+web+DNS server running in AWS ([edwardh](systems/edwardh))
-- a laptop (Lenovo Thinkpad)
-- a router (old DELL Optiplex machine) ([gateway](systems/gateway))
-- a Nix binary cache server running on a Raspberry Pi 5
+- a raspberry pi cluster
 
 Where **everything** about my systems is controlled by NixOS in plenty of detail, making for a perfectly-configured install *every time*, down to [the seconds on the clock](https://github.com/headblockhead/nixos/blob/dddba60346632e95b1840a7c95379396a8193fd1/modules/nixos/desktop.nix#L125)!
 
@@ -36,21 +35,6 @@ Here is an overview of the most important files and folders in my config:
 ![neofetch and web browser](screenshots/edward-desktop-01-01.png)
 ![neovim and mouth dreams](screenshots/edward-desktop-01-02.png)
 ![cube](screenshots/edward-desktop-01-03.png)
-
-## Network Layout
-
-![graph of network layout](./network.webp)
-
-## Want to try it out?
-
-Try out my demo configuration in a virtual machine with [Nix](https://nixos.org)!
-To log in, use the password `demo` for my user.
-
-```
-nix run nixpkgs#nixos-rebuild -- build-vm --flake .#demo
-```
-
-Just want to see it in-action? Check out this breif [demo video](https://youtu.be/7JM02mBS0js).
 
 ## Installation
 
@@ -84,9 +68,8 @@ sudo wpa_cli
 cfdisk /dev/drivename
 ```
 
-Now, delete all partitions on the disk and create the new partitions:
-  - A 525M "EFI System" partition,
-  - a "Linux Swap" partition,
+Now, delete any/all existing partitions on the disk and create two new partitions:
+  - a 1G "EFI System" partition,
   - and a generic "Linux Filesystem" partition to fill the rest of the disk.
 
 First, format the EFI System partition with FAT:
