@@ -1,6 +1,14 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
-  #boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
+  services.k3s = {
+    enable = true;
+    role = "server";
+    images = [
+      config.services.k3s.package.airgap-images
+    ];
+  };
 
   programs.steam = {
     enable = true;

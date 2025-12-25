@@ -204,15 +204,7 @@ Try adding `nomodeset` to the kernel parameters in GRUB.
 Switch to the new nixos configuration.
 
 ```bash
-sudo nixos-rebuild switch --flake .# --accept-flake-config
-```
-
-### home-manager
-
-Switch to the new home-manager configuration for the current user.
-
-```bash
-home-manager switch --flake ".#$USER@`hostname`" 
+sudo nixos-rebuild switch --flake .#
 ```
 
 ### test-deploy
@@ -220,13 +212,12 @@ home-manager switch --flake ".#$USER@`hostname`"
 Deploy the nixos configurations to all machines, without setting the boot-default.
 
 ```bash
-nixos-rebuild test --target-host 172.16.1.1 --use-remote-sudo --flake .#gateway
-nixos-rebuild test --target-host 172.16.3.41 --use-remote-sudo --flake .#rpi4-01 --fast
-nixos-rebuild test --target-host 172.16.3.42 --use-remote-sudo --flake .#rpi4-02 --fast
-nixos-rebuild test --target-host 172.16.3.51 --use-remote-sudo --flake .#rpi5-01 --fast
-nixos-rebuild test --target-host 172.16.3.52 --use-remote-sudo --flake .#rpi5-02 --fast
-nixos-rebuild test --target-host 172.16.3.53 --use-remote-sudo --flake .#rpi5-03 --fast
-nixos-rebuild test --target-host edwardh.dev --use-remote-sudo --flake .#edwardh --fast
+nixos-rebuild test --target-host rpi4-01 --sudo --no-reexec --flake .#rpi4-01
+nixos-rebuild test --target-host rpi4-02 --sudo --no-reexec --flake .#rpi4-02
+# nixos-rebuild test --target-host rpi5-01 --sudo --no-reexec --flake .#rpi5-01
+nixos-rebuild test --target-host rpi5-02 --sudo --no-reexec --flake .#rpi5-02
+nixos-rebuild test --target-host rpi5-03 --sudo --no-reexec --flake .#rpi5-03
+nixos-rebuild test --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh
 ```
 
 ### rollout
@@ -234,25 +225,10 @@ nixos-rebuild test --target-host edwardh.dev --use-remote-sudo --flake .#edwardh
 Deploy the nixos configurations to all machines, setting the boot-default.
 
 ```bash
-nixos-rebuild switch --target-host 172.16.1.1 --use-remote-sudo --flake .#gateway
-nixos-rebuild switch --target-host 172.16.3.41 --use-remote-sudo --flake .#rpi4-01 --fast
-nixos-rebuild switch --target-host 172.16.3.42 --use-remote-sudo --flake .#rpi4-02 --fast
-nixos-rebuild switch --target-host 172.16.3.51 --use-remote-sudo --flake .#rpi5-01 --fast
-nixos-rebuild switch --target-host 172.16.3.52 --use-remote-sudo --flake .#rpi5-02 --fast
-nixos-rebuild switch --target-host 172.16.3.53 --use-remote-sudo --flake .#rpi5-03 --fast
-nixos-rebuild switch --target-host edwardh.dev --use-remote-sudo --flake .#edwardh --fast
-```
-
-### poweroff
-
-TODO: replace with power.ups options.
-Poweroff all lab machines.
-
-```bash
-ssh 172.16.3.53 'sudo systemctl poweroff' 
-ssh 172.16.3.52 'sudo systemctl poweroff' 
-ssh 172.16.3.51 'sudo systemctl poweroff' 
-ssh 172.16.3.42 'sudo systemctl poweroff'
-ssh 172.16.3.41 'sudo systemctl poweroff' 
-ssh 172.16.1.1 'sudo systemctl poweroff'  
+nixos-rebuild switch --target-host rpi4-01 --sudo --no-reexec --flake .#rpi4-01
+nixos-rebuild switch --target-host rpi4-02 --sudo --no-reexec --flake .#rpi4-02
+# nixos-rebuild switch --target-host rpi5-01 --sudo --no-reexec --flake .#rpi5-01
+nixos-rebuild switch --target-host rpi5-02 --sudo --no-reexec --flake .#rpi5-02
+nixos-rebuild switch --target-host rpi5-03 --sudo --no-reexec --flake .#rpi5-03
+nixos-rebuild switch --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh
 ```

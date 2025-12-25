@@ -1,6 +1,6 @@
 $TTL 86400
 @ IN SOA ns.edwardh.dev. admin.edwardh.dev. (
-2025090901 	; Serial, MUST be updated every change
+2025122401 	; Serial, MUST be updated every change
 86400       ; Refresh period
 86400       ; Retry period
 86400       ; Expire time

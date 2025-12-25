@@ -22,7 +22,7 @@
     edwardh-dev.url = "github:headblockhead/edwardh.dev";
   };
 
-  outputs = { nixpkgs, ... }@inputs:
+  outputs = inputs:
     let
       accounts = {
         headb = {
@@ -80,12 +80,12 @@
           });
       };
 
-      nixosModules = nixpkgs.lib.genAttrs'
-        (nixpkgs.lib.attrNames (builtins.readDir ./modules))
-        (fileName: nixpkgs.lib.nameValuePair (nixpkgs.lib.removeSuffix ".nix" fileName) (./modules/${fileName}));
+      nixosModules = inputs.nixpkgs.lib.genAttrs'
+        (inputs.nixpkgs.lib.attrNames (builtins.readDir ./modules))
+        (fileName: inputs.nixpkgs.lib.nameValuePair (inputs.nixpkgs.lib.removeSuffix ".nix" fileName) (./modules/${fileName}));
 
-      nixosConfigurations = nixpkgs.lib.genAttrs
-        (builtins.attrNames (nixpkgs.lib.filterAttrs (path: type: type == "directory") (builtins.readDir ./machines)))
+      nixosConfigurations = inputs.nixpkgs.lib.genAttrs
+        (builtins.attrNames (inputs.nixpkgs.lib.filterAttrs (path: type: type == "directory") (builtins.readDir ./machines)))
         (hostname: import ./machines/${hostname} {
           inherit inputs overlays nixosModules hostname accounts;
         });

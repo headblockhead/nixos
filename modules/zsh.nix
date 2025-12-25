@@ -17,8 +17,8 @@
       enable = true;
       plugins = [ "aws" "git" ];
     };
-    # TODO: re-add theme
     interactiveShellInit = ''
+      source ${../custom.zsh-theme}
       export EDITOR='vim'
       source ${pkgs.zsh-nix-shell}/share/zsh-nix-shell/nix-shell.plugin.zsh
     '';

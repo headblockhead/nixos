@@ -1,32 +1,21 @@
-{ inputs, nixosModules, useCustomNixpkgsNixosModule, accountsForSystem, accountFromUsername, hostname, ... }:
+{ inputs, overlays, nixosModules, hostname, accounts, ... }:
 let
   system = "aarch64-linux";
+  stateVersion = "25.05";
   canLogin = [ "headb" ];
-  hasHomeManager = false;
 in
-{
-  nixosConfiguration = inputs.nixos-raspberrypi.lib.nixosSystem {
-    inherit system;
-
+(
+  inputs.nixos-raspberrypi.lib.nixosSystem {
     specialArgs = {
-      inherit inputs accountFromUsername system;
-      accounts = accountsForSystem canLogin;
-      usernames = canLogin;
-
+      inherit inputs system stateVersion hostname overlays;
+      accounts = inputs.nixpkgs.lib.filterAttrs (name: _: builtins.elem name canLogin) accounts;
       nixos-raspberrypi = inputs.nixos-raspberrypi;
     };
 
     modules = with nixosModules; [
-      useCustomNixpkgsNixosModule
-
-      {
-        networking.hostName = hostname;
-        system.stateVersion = "25.05";
-      }
-
       ./config.nix
       ../rpi4-hardware.nix
-
+    ] ++ [
       inputs.nixos-raspberrypi.nixosModules.raspberry-pi-4.base
 
       loadBalancer
@@ -39,7 +28,6 @@ in
       ssh
       users
       zsh
-    ] ++ (if hasHomeManager then [ nixosModules.homeManager ] else [ ]);
-  };
-  inherit system canLogin hasHomeManager;
-}
+    ];
+  }
+)

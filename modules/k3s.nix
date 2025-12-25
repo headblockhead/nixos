@@ -1,6 +1,6 @@
 { config, ... }:
 {
-  age.secrets.k3s-token.file = ../../secrets/k3s-token.age;
+  age.secrets.k3s-token.file = ../secrets/k3s-token.age;
 
   boot.kernelParams = [ "cgroup_memory=1" "cgroup_enable=memory" ];
 
@@ -17,7 +17,7 @@
   services.k3s = {
     enable = true;
     images = [
-      config.services.k3s.package.airgapImages
+      config.services.k3s.package.airgap-images
     ];
     tokenFile = config.age.secrets.k3s-token.path;
     gracefulNodeShutdown.enable = true;

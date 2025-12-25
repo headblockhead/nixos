@@ -1,30 +1,20 @@
-{ inputs, nixosModules, useCustomNixpkgsNixosModule, accountsForSystem, accountFromUsername, hostname, ... }:
+{ inputs, overlays, nixosModules, hostname, accounts, ... }:
 let
   system = "x86_64-linux";
+  stateVersion = "22.05";
   canLogin = [ "headb" ];
-  hasHomeManager = true;
 in
-{
-  nixosConfiguration = inputs.nixpkgs.lib.nixosSystem {
-    inherit system;
-
+(
+  inputs.nixpkgs.lib.nixosSystem {
     specialArgs = {
-      inherit inputs accountFromUsername system;
-      accounts = accountsForSystem canLogin;
-      usernames = canLogin;
+      inherit inputs system stateVersion hostname overlays;
+      accounts = inputs.nixpkgs.lib.filterAttrs (name: _: builtins.elem name canLogin) accounts;
     };
 
     modules = with nixosModules; [
-      useCustomNixpkgsNixosModule
-
-      {
-        networking.hostName = hostname;
-        system.stateVersion = "22.05";
-      }
-
       ./config.nix
       ./hardware.nix
-
+    ] ++ [
       basicConfig
       bootloader
       desktop
@@ -40,7 +30,6 @@ in
       ssh
       users
       zsh
-    ] ++ (if hasHomeManager then [ nixosModules.homeManager ] else [ ]);
-  };
-  inherit system canLogin hasHomeManager;
-}
+    ];
+  }
+)

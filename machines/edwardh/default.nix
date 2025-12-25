@@ -1,30 +1,19 @@
-{ inputs, nixosModules, useCustomNixpkgsNixosModule, accountsForSystem, accountFromUsername, hostname, ... }:
+{ inputs, overlays, nixosModules, hostname, accounts, ... }:
 let
   system = "aarch64-linux";
+  stateVersion = "22.05";
   canLogin = [ "headb" ];
-  hasHomeManager = false;
 in
-{
-  nixosConfiguration = inputs.nixpkgs.lib.nixosSystem {
-    inherit system;
-
+(
+  inputs.nixpkgs.lib.nixosSystem {
     specialArgs = {
-      inherit inputs accountFromUsername system;
-      accounts = accountsForSystem canLogin;
-      usernames = canLogin;
+      inherit inputs system stateVersion hostname overlays;
+      accounts = inputs.nixpkgs.lib.filterAttrs (name: _: builtins.elem name canLogin) accounts;
     };
 
     modules = with nixosModules; [
-      useCustomNixpkgsNixosModule
-
-      {
-        networking.hostName = hostname;
-        networking.domain = "dev";
-        system.stateVersion = "22.05";
-      }
-
       ./config.nix
-
+    ] ++ [
       "${inputs.nixpkgs}/nixos/modules/virtualisation/amazon-image.nix"
       inputs.agenix.nixosModules.default
 
@@ -35,7 +24,6 @@ in
       ssh
       users
       zsh
-    ] ++ (if hasHomeManager then [ nixosModules.homeManager ] else [ ]);
-  };
-  inherit system canLogin hasHomeManager;
-}
+    ];
+  }
+)

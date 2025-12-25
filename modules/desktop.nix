@@ -221,6 +221,7 @@
     ddcutil
 
     dconf-editor
+    calls
     ptyxis
 
     adwaita-icon-theme
