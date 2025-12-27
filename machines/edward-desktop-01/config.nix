@@ -1,6 +1,65 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 {
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
+  networking.firewall.enable = lib.mkForce false;
+
+  services.asterisk = {
+    enable = true;
+    confFiles = {
+      "extensions.conf" = ''
+        [from-internal]
+        exten => 1001,1,Dial(PJSIP/testphone,20)
+        exten => 1002,1,Dial(PJSIP/secondphone,20)
+
+        ; Dial 100 for "hello, world"
+        exten => 100,1,Answer()
+        same  =>     n,Wait(1)
+        same  =>     n,Playback(hello-world)
+        same  =>     n,Hangup()
+      '';
+      "pjsip.conf" = ''
+        [transport-udp]
+        type=transport
+        protocol=udp
+        bind=0.0.0.0
+
+        ; define macros
+
+        [endpoint_internal](!)
+        type=endpoint
+        context=from-internal
+        disallow=all
+        allow=ulaw
+
+        [auth_userpass](!)
+        type=auth
+        auth_type=userpass
+
+        [aor_dynamic](!)
+        type=aor
+        max_contacts=1
+
+        ; use macros
+
+        [testphone](endpoint_internal)
+        auth=testphone
+        aors=testphone
+        [testphone](auth_userpass)
+        password=test
+        username=testphone
+        [testphone](aor_dynamic)
+
+        [secondphone](endpoint_internal)
+        auth=secondphone
+        aors=secondphone
+        [secondphone](auth_userpass)
+        password=second
+        username=secondphone
+        [secondphone](aor_dynamic)
+      '';
+    };
+  };
 
   services.k3s = {
     enable = true;
