@@ -14,11 +14,13 @@
       gpg.program = "${pkgs.gnupg}/bin/gpg";
       pull.rebase = false;
       tag.gpgsign = true;
-      "crendential \"https://github.com\"" = {
-        helper = "${pkgs.gh}/bin/gh auth git-credential";
-      };
-      "credential \"https://gist.github.com\"" = {
-        helper = "${pkgs.gh}/bin/gh auth git-credential";
+      credential = {
+        "https://github.com" = {
+          helper = "${pkgs.gh}/bin/gh auth git-credential";
+        };
+        "https://gist.github.com" = {
+          helper = "${pkgs.gh}/bin/gh auth git-credential";
+        };
       };
     };
   };
