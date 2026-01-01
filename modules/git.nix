@@ -12,7 +12,7 @@
       init.defaultBranch = "master";
       commit.gpgsign = true;
       gpg.program = "${pkgs.gnupg}/bin/gpg";
-      pull.rebase = false;
+      pull.rebase = true;
       tag.gpgsign = true;
       credential = {
         "https://github.com" = {
