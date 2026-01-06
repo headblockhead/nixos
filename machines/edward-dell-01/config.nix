@@ -10,12 +10,6 @@
     '';
   };
 
-  # find / -name '*.desktop' 2> /dev/null
-  services.xserver.desktopManager.gnome.favoriteAppsOverride = ''
-    [org.gnome.shell]
-    favorite-apps=[ 'firefox.desktop', 'org.gnome.Ptyxis.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Settings.desktop', 'org.gnome.Calculator.desktop', 'org.freecad.FreeCAD.desktop', 'org.kicad.kicad.desktop', 'org.gnome.SystemMonitor.desktop', 'thunderbird.desktop', 'slack.desktop', 'spotify.desktop']
-  '';
-
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_16;
@@ -24,6 +18,7 @@
 
   environment.systemPackages = [
     pkgs.vscode
+    pkgs.dotnetCorePackages.dotnet_8.sdk
     pkgs.gopass
     pkgs.openldap
   ];
