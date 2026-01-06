@@ -18,8 +18,13 @@
 
   environment.systemPackages = [
     pkgs.vscode
-    pkgs.dotnetCorePackages.dotnet_8.sdk
+    pkgs.dotnetCorePackages.dotnet_9.sdk
     pkgs.gopass
     pkgs.openldap
   ];
+
+  environment.sessionVariables = {
+    DOTNET_ROOT = "${pkgs.dotnet-sdk_9}/share/dotnet";
+  };
+
 }
