@@ -23,7 +23,6 @@ in
       fileSystems
       gc
       headless
-      monitoring
       ssh
       users
       zsh
