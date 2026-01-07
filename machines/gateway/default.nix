@@ -21,11 +21,9 @@ in
       bootloader
       distributedBuilds
       fileSystems
-      git
+      gc
       headless
-      homeManager
       monitoring
-      ssd
       ssh
       users
       zsh

@@ -1,7 +1,5 @@
 { pkgs, config, ... }:
 {
-  age.secrets.wg0-gateway-key.file = ../../secrets/wg0-gateway-key.age;
-
   # Allow packet forwarding
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = true;
@@ -92,10 +90,6 @@
           allowedTCPPorts = [ 53 1705 4317 ];
           allowedUDPPorts = [ 53 67 5353 ];
         };
-        "wg0" = {
-          allowedTCPPorts = [ 53 ];
-          allowedUDPPorts = [ 53 ];
-        };
       };
       filterForward = true;
       extraInputRules = ''
@@ -104,7 +98,7 @@
       extraForwardRules = ''
         log level info prefix "forward: "
         iifname brlan accept comment "from lan"
-        iifname { "wg0", "inf-iot" } oifname srv accept comment "from wg0 and iot to srv"
+        iifname "inf-iot" oifname srv accept comment "from iot to srv"
       '';
       extraReversePathFilterRules = ''
         log level info prefix "rpf: "
@@ -182,8 +176,7 @@
         "/${config.networking.hostName}.gst/172.27.4.1"
       ];
 
-      interface = [ "brlan" "inf-iot" "srv" "inf-gst" "wg0" ];
-      no-dhcp-interface = [ "wg0" ];
+      interface = [ "brlan" "inf-iot" "srv" "inf-gst" ];
       bind-dynamic = true;
       no-hosts = true; # Don't obtain any hosts from /etc/hosts (this would make 'localhost' equal this machine for all clients!)
 
@@ -269,26 +262,5 @@
     enable = true;
     unifiPackage = pkgs.unifi;
     mongodbPackage = pkgs.mongodb-7_0;
-  };
-
-  networking.wireguard = {
-    enable = true;
-    interfaces = {
-      wg0 = {
-        ips = [ "172.27.10.1/24" ];
-        listenPort = 51800;
-        privateKeyFile = config.age.secrets.wg0-gateway-key.path;
-        peers = [
-          {
-            name = "edwardh";
-            publicKey = "JMk7o494sDBjq9EAOeeAwPHxbF6TpbpFSHGSk2DnJHU=";
-            endpoint = "18.135.222.143:51800";
-
-            allowedIPs = [ "172.27.10.2/32" ];
-            persistentKeepalive = 25;
-          }
-        ];
-      };
-    };
   };
 }

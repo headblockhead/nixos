@@ -26,7 +26,6 @@ in
       gpg
       network
       sound
-      ssd
       ssh
       users
       zsh

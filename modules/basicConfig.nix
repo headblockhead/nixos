@@ -14,10 +14,13 @@
   # Delete the /tmp directory every boot.
   boot.tmp.cleanOnBoot = true;
 
+  # Enable fstrim.
+  services.fstrim.enable = true;
+
   # Enable nixos-help apps.
   documentation.nixos.enable = true;
 
-  # Set regonal settings.
+  # Set regonal settings}.
   time.timeZone = "Europe/London";
   i18n.defaultLocale = "en_GB.UTF-8";
   console.keyMap = "us";

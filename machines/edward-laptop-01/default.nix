@@ -39,7 +39,6 @@ in
       printer
       sdr
       sound
-      ssd
       ssh
       users
       yubikey
