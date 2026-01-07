@@ -231,33 +231,6 @@
     };
   };
 
-  services.snapserver = {
-    enable = true;
-
-    listenAddress = "0.0.0.0"; # Snapclients can connect on any interface (where firewall allows it).
-    port = 1704;
-
-    http = {
-      enable = true;
-      listenAddress = "172.27.1.1"; # Only LAN devices can control the server. 
-    };
-
-    buffer = 800; # milliseconds of buffering on clients before playback.
-    streamBuffer = 200; # milliseconds of buffering for reading from streams.
-    codec = "pcm";
-    sampleFormat = "44100:32:2";
-
-    sendToMuted = true;
-
-    streams = {
-      "Spotify" = {
-        type = "process";
-        location = "${pkgs.librespot}/bin/librespot";
-        query.params = ''--zeroconf-port=5354 --backend=pipe --bitrate=320 --format=S32 --volume-ctrl=fixed --initial-volume=100 --name=Snapcast --group'';
-      };
-    };
-  };
-
   services.unifi = {
     enable = true;
     unifiPackage = pkgs.unifi;
