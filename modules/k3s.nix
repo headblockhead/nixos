@@ -24,7 +24,7 @@
     serverAddr = "https://172.27.3.100:6443";
     role = "server";
     extraFlags = [
-      "--tls-san=172.16.3.100"
+      "--tls-san=172.27.3.100"
       "--embedded-registry"
     ];
   };

@@ -200,14 +200,14 @@ in
     enable = true;
     interfaces = {
       wg0 = {
-        ips = [ "172.16.10.2/24" ];
+        ips = [ "172.27.10.2/24" ];
         listenPort = 51800;
         privateKeyFile = config.age.secrets.wg0-edwardh-key.path;
         peers = [
           {
             name = "gateway";
             publicKey = "1Gs85rAE+d++lojXtc04P448bXcZNdLZjIx/uWo0pSM=";
-            allowedIPs = [ "172.16.0.0/12" ]; # edwardh can connect to server network
+            allowedIPs = [ "172.27.0.0/12" ]; # edwardh can connect to server network
           }
         ];
       };
@@ -229,7 +229,7 @@ in
     appendConfig = ''
       stream {
         upstream railreader {
-          server 172.16.3.51:64022;
+          server 172.27.3.51:64022;
         }
         server {
           listen 822;
@@ -284,7 +284,7 @@ in
 
         locations."/" = {
           recommendedProxySettings = true;
-          proxyPass = "http://172.16.3.51:8501"; # rpi5-01
+          proxyPass = "http://172.27.3.51:8501"; # rpi5-01
           extraConfig = ''
             add_header Alt-Svc 'h3=":443"; ma=86400';
             proxy_read_timeout 300;
@@ -296,7 +296,7 @@ in
         enableACME = true;
         locations."/" = {
           recommendedProxySettings = true;
-          proxyPass = "http://172.16.3.42:8019"; # rpi4-02
+          proxyPass = "http://172.27.3.42:8019"; # rpi4-02
         };
       };
       "grafana.edwardh.dev" = {
@@ -309,7 +309,7 @@ in
         locations."/" = {
           recommendedProxySettings = true;
           proxyWebsockets = true;
-          proxyPass = "http://172.16.3.1:3000"; # gateway
+          proxyPass = "http://172.27.3.1:3000"; # gateway
           extraConfig = ''
             gzip on;
             gzip_types text/html text/css;
@@ -327,7 +327,7 @@ in
 
         locations."/" = {
           recommendedProxySettings = true;
-          proxyPass = "http://172.16.3.41:8123"; # rpi4-01
+          proxyPass = "http://172.27.3.41:8123"; # rpi4-01
           proxyWebsockets = true;
           extraConfig = ''
             gzip on;
