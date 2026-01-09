@@ -212,9 +212,10 @@ sudo nixos-rebuild switch --flake .#
 Deploy the nixos configurations to all machines, without setting the boot-default.
 
 ```bash
+nixos-rebuild test --target-host gateway --sudo --no-reexec --flake .#gateway
 nixos-rebuild test --target-host rpi4-01 --sudo --no-reexec --flake .#rpi4-01
 nixos-rebuild test --target-host rpi4-02 --sudo --no-reexec --flake .#rpi4-02
-# nixos-rebuild test --target-host rpi5-01 --sudo --no-reexec --flake .#rpi5-01
+nixos-rebuild test --target-host rpi5-01 --sudo --no-reexec --flake .#rpi5-01
 nixos-rebuild test --target-host rpi5-02 --sudo --no-reexec --flake .#rpi5-02
 nixos-rebuild test --target-host rpi5-03 --sudo --no-reexec --flake .#rpi5-03
 nixos-rebuild test --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh
@@ -225,9 +226,10 @@ nixos-rebuild test --target-host edwardh.dev --sudo --no-reexec --flake .#edward
 Deploy the nixos configurations to all machines, setting the boot-default.
 
 ```bash
+nixos-rebuild switch --target-host gateway --sudo --no-reexec --flake .#gateway
 nixos-rebuild switch --target-host rpi4-01 --sudo --no-reexec --flake .#rpi4-01
 nixos-rebuild switch --target-host rpi4-02 --sudo --no-reexec --flake .#rpi4-02
-# nixos-rebuild switch --target-host rpi5-01 --sudo --no-reexec --flake .#rpi5-01
+nixos-rebuild switch --target-host rpi5-01 --sudo --no-reexec --flake .#rpi5-01
 nixos-rebuild switch --target-host rpi5-02 --sudo --no-reexec --flake .#rpi5-02
 nixos-rebuild switch --target-host rpi5-03 --sudo --no-reexec --flake .#rpi5-03
 nixos-rebuild switch --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh

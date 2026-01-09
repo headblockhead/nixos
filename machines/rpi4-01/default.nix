@@ -24,7 +24,6 @@ in
       distributedBuilds
       git
       headless
-      monitoring
       ssh
       users
       zsh

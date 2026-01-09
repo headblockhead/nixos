@@ -27,7 +27,6 @@ in
       distributedBuilds
       gc
       headless
-      monitoring
       ssh
       users
       zsh

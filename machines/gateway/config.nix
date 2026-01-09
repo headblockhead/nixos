@@ -1,5 +1,9 @@
 { pkgs, config, ... }:
 {
+  environment.systemPackages = with pkgs; [
+    ethtool
+  ];
+
   # Allow packet forwarding
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = true;
@@ -64,7 +68,13 @@
     nat = {
       enable = true;
       enableIPv6 = false;
-      internalInterfaces = [ "brlan" "inf-iot" "srv" "inf-gst" ];
+      internalInterfaces = [
+        "inf"
+        "brlan"
+        "inf-iot"
+        "srv"
+        "inf-gst"
+      ];
       externalInterface = "wan";
     };
     nftables = {
@@ -98,7 +108,9 @@
       extraForwardRules = ''
         log level info prefix "forward: "
         iifname brlan accept comment "from lan"
-        iifname "inf-iot" oifname srv accept comment "from iot to srv"
+        oifname brlan ct state established,related accept comment "to lan, established"
+        iifname inf-iot oifname srv accept comment "from iot to srv"
+        iifname srv oifname inf-iot accept comment "from srv to iot"
       '';
       extraReversePathFilterRules = ''
         log level info prefix "rpf: "
@@ -113,6 +125,7 @@
     domainName = "local";
     reflector = true;
     allowInterfaces = [
+      "inf"
       "brlan"
       "inf-iot"
       "srv"
@@ -170,33 +183,43 @@
       server = [ "127.0.0.1#54" ]; # Use local stubby for DNS resolution.
       local = "/lan/iot/srv/gst/";
       address = [
+        "/${config.networking.hostName}.inf/172.27.0.1"
         "/${config.networking.hostName}.lan/172.27.1.1"
         "/${config.networking.hostName}.iot/172.27.2.1"
         "/${config.networking.hostName}.srv/172.27.3.1"
         "/${config.networking.hostName}.gst/172.27.4.1"
       ];
 
-      interface = [ "brlan" "inf-iot" "srv" "inf-gst" ];
+      interface = [
+        "inf"
+        "brlan"
+        "inf-iot"
+        "srv"
+        "inf-gst"
+      ];
       bind-dynamic = true;
       no-hosts = true; # Don't obtain any hosts from /etc/hosts (this would make 'localhost' equal this machine for all clients!)
 
       expand-hosts = true;
       domain = [
+        "inf,172.27.0.1/24"
         "lan,172.27.1.0/24"
         "iot,172.27.2.0/24"
         "srv,172.27.3.0/24"
         "gst,172.27.4.0/24"
       ];
       dhcp-range = [
+        "set:inf,172.27.0.2,172.27.0.254,6h"
         "set:lan,172.27.1.2,172.27.1.254,6h"
-        "set:iot,172.27.2.0,172.27.2.254,1h"
-        "set:srv,172.27.3.0,172.27.2.254,1h"
+        "set:iot,172.27.2.2,172.27.2.254,1h"
+        "set:srv,172.27.3.2,172.27.3.254,1h"
         "set:gst,172.27.4.2,172.27.4.254,1h"
       ];
       # Set custom hostnames based on MAC addresses.
       dhcp-host = [
+        # inf
+        "28:70:4e:8b:98:91,172.27.0.5,u7-pro-01"
         # lan
-        "28:70:4e:8b:98:91,172.27.1.2,johnconnor"
         "a0:d3:65:bb:f8:ff,172.27.1.10,edward-desktop-01"
         "34:02:86:2b:84:c3,172.27.1.11,edward-laptop-01"
         "be:d4:81:34:98:3d,172.27.1.12,edward-iphone"
@@ -213,8 +236,7 @@
         "48:e1:e9:9f:32:e6,172.27.2.108,meross-bedroom-lamp"
         "48:e1:e9:2d:c9:76,172.27.2.109,meross-printer-lamp"
         "48:e1:e9:2d:c9:70,172.27.2.110,meross-printer-power"
-        # "ec:64:c9:e9:97:9a,172.27.2.111,prusa-mk4" # WiFi
-        "10:9c:70:2b:82:01,172.27.2.111,prusa-mk4" # Ethernet
+        "ec:64:c9:e9:97:9a,172.27.2.111,prusa-mk4"
         "24:78:23:01:57:b1,172.27.2.112,panasonic-bluray"
         "b8:27:eb:32:39:3b,172.27.2.113,livingroompi"
         # srv
