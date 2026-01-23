@@ -1,26 +1,21 @@
-{ pkgs, accounts, ... }:
+{ accounts, pkgs, ... }:
 {
-  # Default user shell is zsh.
-  users.defaultUserShell = pkgs.zsh;
-
   systemd.tmpfiles.rules = builtins.attrValues (builtins.mapAttrs (n: v: "f /home/${n}/.zprofile") accounts);
 
-  programs.command-not-found.enable = false;
+  # TODO: allow for choice
+  users.defaultUserShell = pkgs.zsh;
 
   programs.zsh = {
-    # Enable zsh as a shell, add it to the environment.
     enable = true;
+    histSize = 10000;
     autosuggestions.enable = true;
-    enableCompletion = true;
     syntaxHighlighting.enable = true;
     ohMyZsh = {
       enable = true;
       plugins = [ "aws" "git" ];
     };
     interactiveShellInit = ''
-      source ${../custom.zsh-theme}
-      export EDITOR='vim'
-      source ${pkgs.zsh-nix-shell}/share/zsh-nix-shell/nix-shell.plugin.zsh
+      source ${./custom.zsh-theme}
     '';
     shellAliases = {
       q = "exit";
@@ -28,7 +23,4 @@
       ls = "ls --color=tty -A";
     };
   };
-
-  programs.fzf.keybindings = true;
-  programs.fzf.fuzzyCompletion = true;
 }

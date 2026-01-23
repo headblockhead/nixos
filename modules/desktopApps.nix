@@ -41,6 +41,7 @@
     warp
     watchmate
     zoom-us
+    raysession
   ];
   # OBS Virutal camera
   boot.extraModulePackages = with config.boot.kernelPackages; [

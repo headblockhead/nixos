@@ -35,12 +35,13 @@
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvr2FrC9i1bjoVzg+mdytOJ1P0KRtah/HeiMBuKD3DX cardno:23_836_181" # crystal-peak
           ];
           # The first GPG key is used for signing git commits.
+          # Also update these in nixpkgs/maintainers/maintainer-list.nix
           gpgkeys = [
             "8E972E26D6D48C46" # thunder-mountain
             "672FFB8B28B17E09" # depot-37
             "AE25B4F5B6346CCF" # crystal-peak
           ];
-          trusted = true; # Root access (trusted-user, wheel)
+          rootAccess = true;
         };
       };
     in
@@ -53,7 +54,7 @@
           google-chrome = prev.google-chrome.overrideAttrs (oldAttrs: {
             commandLineArgs = [ "--ozone-platform=wayland" "--disable-features=WaylandFractionalScaleV1" ];
           });
-          gnome-keyring = prev.gnome-keyring.overrideAttrs (oldAttrs: { mesonFlags = (builtins.filter (flag: flag != "-Dssh-agent=true") oldAttrs.mesonFlags) ++ [ "-Dssh-agent=false" ]; });
+          # gnome-keyring = prev.gnome-keyring.overrideAttrs (oldAttrs: { mesonFlags = (builtins.filter (flag: flag != "-Dssh-agent=true") oldAttrs.mesonFlags) ++ [ "-Dssh-agent=false" ]; });
           go-migrate = prev.go-migrate.overrideAttrs (oldAttrs: { tags = [ "postgres" ]; });
         });
         replace =
@@ -80,9 +81,26 @@
           });
       };
 
-      nixosModules = inputs.nixpkgs.lib.genAttrs'
-        (inputs.nixpkgs.lib.attrNames (builtins.readDir ./modules))
-        (fileName: inputs.nixpkgs.lib.nameValuePair (inputs.nixpkgs.lib.removeSuffix ".nix" fileName) (./modules/${fileName}));
+      recurseFindNixFiles = directory:
+        inputs.nixpkgs.lib.foldl'
+          (accumulated: element:
+            accumulated // (
+              let elementPath = directory + "/${element.name}"; in
+              if element.type == "directory" then
+                { ${element.name} = recurseFindNixFiles elementPath; } # Recurse into subdirectory
+              else if inputs.nixpkgs.lib.hasSuffix ".nix" element.name then
+                { ${inputs.nixpkgs.lib.removeSuffix ".nix" element.name} = elementPath; } # Base case
+              else
+                { } # Ignore non-Nix files
+            )
+          )
+          { }
+          (inputs.nixpkgs.lib.mapAttrsToList
+            (name: value: { name = name; type = value; })
+            (builtins.readDir directory)
+          );
+
+      nixosModules = recurseFindNixFiles (path: path) ./modules;
 
       nixosConfigurations = inputs.nixpkgs.lib.genAttrs
         (builtins.attrNames (inputs.nixpkgs.lib.filterAttrs (path: type: type == "directory") (builtins.readDir ./machines)))

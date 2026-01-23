@@ -147,6 +147,12 @@
       "briot"
       "brsrv"
     ];
+    publish = {
+      enable = true;
+      addresses = true;
+      domain = true;
+      userServices = true;
+    };
   };
 
   services.unifi = {
@@ -159,23 +165,16 @@
     enable = true;
     settings = pkgs.stubby.passthru.settingsExample // {
       listen_addresses = [ "127.0.0.1@54" ];
-      upstream_recursive_servers = [{
-        address_data = "1.1.1.1";
-        tls_auth_name = "cloudflare-dns.com";
-        tls_pubkey_pinset = [{
-          digest = "sha256";
-          # echo | openssl s_client -connect '1.1.1.1:853' 2>/dev/null | openssl x509 -pubkey -noout | openssl pkey -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64
-          value = "SPfg6FluPIlUc6a5h313BDCxQYNGX+THTy7ig5X3+VA=";
-        }];
-      }
+      upstream_recursive_servers = [
+        {
+          address_data = "1.1.1.1";
+          tls_auth_name = "cloudflare-dns.com";
+        }
         {
           address_data = "1.0.0.1";
           tls_auth_name = "cloudflare-dns.com";
-          tls_pubkey_pinset = [{
-            digest = "sha256";
-            value = "SPfg6FluPIlUc6a5h313BDCxQYNGX+THTy7ig5X3+VA=";
-          }];
-        }];
+        }
+      ];
     };
   };
 

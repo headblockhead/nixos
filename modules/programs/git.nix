@@ -10,10 +10,7 @@
     config = {
       diff.external = "${pkgs.difftastic}/bin/difft --color auto --background dark --display inline";
       init.defaultBranch = "master";
-      commit.gpgsign = true;
-      gpg.program = "${pkgs.gnupg}/bin/gpg";
       pull.rebase = true;
-      tag.gpgsign = true;
       credential = {
         "https://github.com" = {
           helper = "${pkgs.gh}/bin/gh auth git-credential";
