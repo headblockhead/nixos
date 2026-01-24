@@ -19,24 +19,27 @@ in
       boot.loader.timeout0
       boot.plymouth
       common
-      desktopApps
-      development
-      distributedBuilds
+      conf.development
+      conf.graphical-ios
+      conf.graphical-multimedia
+      conf.graphical-productivity
+      conf.graphical-social
+      conf.graphical-web
+      fileSystems
       fonts.favourites
-      kmscon
-      network
-      printer
+      hardware.rtl-sdr
+      networking.networkmanager
+      nix.buildMachines
       programs.fzf
       programs.git
       programs.gnupg
       programs.zsh
-      sdr
       security.rtkit
       services.desktop-managers.gnome
       services.display-managers.gdm
       services.openssh
       services.pipewire
-      users
+      users.users
     ];
   }
 )

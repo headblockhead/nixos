@@ -33,7 +33,12 @@
     gnomeExtensions.desktop-cube
     gnomeExtensions.alphabetical-app-grid
     gnomeExtensions.blur-my-shell
+
     calls
+    gnome-pomodoro
+    newsflash
+    warp
+
     ptyxis
     nerd-fonts.sauce-code-pro
   ];

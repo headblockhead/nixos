@@ -46,6 +46,7 @@
     pciutils
     usbutils
     inetutils
+    lm_sensors
     dig
   ];
 }
