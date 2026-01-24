@@ -1,4 +1,4 @@
-{ inputs, lib, pkgs, accounts, hostname, stateVersion, system, overlays, ... }:
+{ inputs, lib, pkgs, accounts, hostname, stateVersion, system, overlays, allowedUnfreePackages, ... }:
 {
   # Set basic system settings.
   networking.hostName = hostname;
@@ -7,6 +7,7 @@
     hostPlatform = system;
     # Use all overlays.
     overlays = builtins.attrValues overlays;
+    config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) allowedUnfreePackages;
   };
 
   # Delete the /tmp directory every boot.

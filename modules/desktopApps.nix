@@ -7,14 +7,12 @@
     audacity
     chiaki
     deja-dup
-    discord
     easyeffects
     firefox
     fractal # matrix messenger
     furnace # chiptune tracker
     gimp
     gnome-pomodoro
-    google-chrome
     gopass
     ifuse # optional, to mount using 'ifuse'
     inkscape
@@ -26,7 +24,6 @@
     musescore
     newsflash
     obs-studio
-    obsidian
     onedrive
     openscad-unstable
     prusa-slicer
@@ -40,7 +37,6 @@
     vlc
     warp
     watchmate
-    zoom-us
     raysession
   ];
   # OBS Virutal camera

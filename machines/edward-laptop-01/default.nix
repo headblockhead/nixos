@@ -1,4 +1,4 @@
-{ inputs, overlays, nixosModules, hostname, accounts, ... }:
+{ inputs, overlays, nixosModules, hostname, allowedUnfreePackages, accounts, ... }:
 let
   system = "x86_64-linux";
   stateVersion = "25.05";
@@ -7,7 +7,7 @@ in
 (
   inputs.nixpkgs.lib.nixosSystem {
     specialArgs = {
-      inherit inputs system stateVersion hostname overlays;
+      inherit inputs system stateVersion hostname overlays allowedUnfreePackages;
       accounts = inputs.nixpkgs.lib.filterAttrs (name: _: builtins.elem name canLogin) accounts;
     };
 

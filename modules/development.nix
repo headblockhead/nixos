@@ -5,7 +5,7 @@
 
   # Give trusted users access.
   users.users = lib.genAttrs
-    (builtins.attrNames (lib.filterAttrs (n: v: v.trusted) accounts))
+    (builtins.attrNames (lib.filterAttrs (n: v: v.rootAccess) accounts))
     (username: { extraGroups = [ "wireshark" "adbusers" ]; });
 
   environment.systemPackages = with pkgs; [
@@ -18,7 +18,7 @@
     cargo
     ccls
     cmake
-    ec2-ami-tools
+    #ec2-ami-tools
     flyctl
     freecad-wayland
     gcc
@@ -31,7 +31,7 @@
     lua5_4
     minicom
     neofetch
-    ngrok
+    #ngrok
     nixfmt-rfc-style
     nmap
     nodePackages.aws-cdk

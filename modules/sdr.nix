@@ -7,6 +7,6 @@
 
   # Give trusted users access.
   users.users = lib.genAttrs
-    (builtins.attrNames (lib.filterAttrs (n: v: v.trusted) accounts))
+    (builtins.attrNames (lib.filterAttrs (n: v: v.rootAccess) accounts))
     (username: { extraGroups = [ "plugdev" ]; });
 }

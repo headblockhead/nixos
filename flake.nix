@@ -100,12 +100,16 @@
             (builtins.readDir directory)
           );
 
-      nixosModules = recurseFindNixFiles (path: path) ./modules;
+      nixosModules = recurseFindNixFiles ./modules;
 
       nixosConfigurations = inputs.nixpkgs.lib.genAttrs
         (builtins.attrNames (inputs.nixpkgs.lib.filterAttrs (path: type: type == "directory") (builtins.readDir ./machines)))
         (hostname: import ./machines/${hostname} {
           inherit inputs overlays nixosModules hostname accounts;
+          allowedUnfreePackages = [
+            "slack"
+            "spotify"
+          ];
         });
     };
 }
