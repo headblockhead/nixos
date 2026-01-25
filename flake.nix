@@ -13,7 +13,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-2305.url = "github:NixOS/nixpkgs/nixos-23.05";
 
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi";
     disko.url = "github:nix-community/disko";
@@ -24,63 +23,6 @@
 
   outputs = inputs:
     let
-      accounts = {
-        headb = {
-          realname = "Edward Hesketh";
-          email = "inbox@edwardh.dev";
-          profileIcon = ./users/headb.png;
-          sshkeys = [
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBexdKZYlyseEcm1S3xNDqPTGZMfm/NcW1ygY91weDhC cardno:30_797_561" # thunder-mountain
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIvDaJmOSXV24B83sIfZqAUurs+cZ7582L4QDePuc3p7 cardno:17_032_332" # depot-37
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvr2FrC9i1bjoVzg+mdytOJ1P0KRtah/HeiMBuKD3DX cardno:23_836_181" # crystal-peak
-          ];
-          # The first GPG key is used for signing git commits.
-          # Also update these in nixpkgs/maintainers/maintainer-list.nix
-          gpgkeys = [
-            "8E972E26D6D48C46" # thunder-mountain
-            "672FFB8B28B17E09" # depot-37
-            "AE25B4F5B6346CCF" # crystal-peak
-          ];
-          rootAccess = true;
-        };
-      };
-    in
-    rec {
-      overlays = {
-        addUnstable = (final: prev: {
-          unstable = import inputs.nixpkgs-unstable { inherit (prev) system config; };
-        });
-        override = (final: prev: {
-          google-chrome = prev.google-chrome.overrideAttrs (oldAttrs: {
-            commandLineArgs = [ "--ozone-platform=wayland" "--disable-features=WaylandFractionalScaleV1" ];
-          });
-          # gnome-keyring = prev.gnome-keyring.overrideAttrs (oldAttrs: { mesonFlags = (builtins.filter (flag: flag != "-Dssh-agent=true") oldAttrs.mesonFlags) ++ [ "-Dssh-agent=false" ]; });
-          go-migrate = prev.go-migrate.overrideAttrs (oldAttrs: { tags = [ "postgres" ]; });
-        });
-        replace =
-          (final: prev: {
-            obinskit =
-              (
-                import inputs.nixpkgs-2305 {
-                  inherit (prev) system;
-                  config = prev.config // {
-                    permittedInsecurePackages = [
-                      "electron-13.6.9"
-                    ];
-                  };
-                }
-              ).callPackage ./custom-packages/obinskit/obinskit.nix
-                { };
-            kmscon = prev.callPackage ./custom-packages/kmscon/kmscon.nix { };
-            libtsm = prev.callPackage ./custom-packages/libtsm/libtsm.nix { };
-            librespot = prev.callPackage ./custom-packages/librespot/default.nix {
-              withMDNS = true;
-              withDNS-SD = true;
-              withAvahi = true;
-            };
-          });
-      };
-
       recurseFindNixFiles = directory:
         inputs.nixpkgs.lib.foldl'
           (accumulated: element:
@@ -89,7 +31,7 @@
               if element.type == "directory" then
                 { ${element.name} = recurseFindNixFiles elementPath; } # Recurse into subdirectory
               else if inputs.nixpkgs.lib.hasSuffix ".nix" element.name then
-                { ${inputs.nixpkgs.lib.removeSuffix ".nix" element.name} = elementPath; } # Base case
+                { ${inputs.nixpkgs.lib.removeSuffix ".nix" element.name} = elementPath; }
               else
                 { } # Ignore non-Nix files
             )
@@ -99,17 +41,32 @@
             (name: value: { name = name; type = value; })
             (builtins.readDir directory)
           );
+    in
+    rec {
+      overlays = {
+        override = (final: prev: {
+          go-migrate = prev.go-migrate.overrideAttrs (oldAttrs: { tags = [ "postgres" ]; });
+        });
+        replace = (final: prev: {
+          kmscon = prev.callPackage ./custom-packages/kmscon/kmscon.nix { };
+          libtsm = prev.callPackage ./custom-packages/libtsm/libtsm.nix { };
+          librespot = prev.callPackage ./custom-packages/librespot/default.nix {
+            withMDNS = true;
+            withDNS-SD = true;
+            withAvahi = true;
+          };
+        });
+      };
 
       nixosModules = recurseFindNixFiles ./modules;
 
       nixosConfigurations = inputs.nixpkgs.lib.genAttrs
         (builtins.attrNames (inputs.nixpkgs.lib.filterAttrs (path: type: type == "directory") (builtins.readDir ./machines)))
         (hostname: import ./machines/${hostname} {
-          inherit inputs overlays nixosModules hostname accounts;
-          allowedUnfreePackages = [
-            "slack"
-            "spotify"
-          ];
+          inherit inputs overlays nixosModules hostname;
+          accounts = inputs.nixpkgs.lib.genAttrs
+            (builtins.attrNames (inputs.nixpkgs.lib.filterAttrs (path: type: type == "regular" && inputs.nixpkgs.lib.hasSuffix ".nix" path) (builtins.readDir ./accounts)))
+            (username: import ./accounts/${username}.nix { });
         });
     };
 }

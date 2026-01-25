@@ -166,7 +166,6 @@
     enable = true;
     remotePlay.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
-    package = pkgs.unstable.steam;
   };
 
   services.postgresql = {
@@ -184,7 +183,6 @@
     pkgs.handbrake
     pkgs.anki
     pkgs.qgis
-    pkgs.obinskit
     #pkgs.qxmledit
 
     pkgs.kdePackages.kdenlive

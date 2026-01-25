@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, lib, config, ... }:
 {
   environment.systemPackages = with pkgs; [
     # Useful development utils
@@ -16,7 +16,7 @@
     nixfmt-rfc-style
 
     # Go
-    unstable.go_1_25
+    go
     gopls
     templ
     go-migrate
@@ -55,5 +55,5 @@
     minicom
     wireshark
   ];
-  services.gnome.core-developer-tools.enable = config.services.desktopManager.gnome;
+  services.gnome.core-developer-tools.enable = lib.mkDefault config.services.desktopManager.gnome.enable;
 }
