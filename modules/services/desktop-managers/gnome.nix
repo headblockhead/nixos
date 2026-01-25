@@ -9,7 +9,6 @@
   };
   services.gnome = {
     gcr-ssh-agent.enable = false;
-    core-developer-tools.enable = true;
   };
   services.udev.packages = with pkgs; [
     gnome-settings-daemon
@@ -98,7 +97,7 @@
         "org/gnome/settings-daemon/plugins/media-keys" = { custom-keybindings = [ "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/" ]; };
         "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
           name = "Terminal";
-          command = "${pkgs.ptyxis} -s";
+          command = "ptyxis -s";
           binding = "<Control><Alt>t";
         };
 

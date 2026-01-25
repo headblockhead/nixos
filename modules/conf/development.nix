@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   environment.systemPackages = with pkgs; [
     # Useful development utils
@@ -55,4 +55,5 @@
     minicom
     wireshark
   ];
+  services.gnome.core-developer-tools.enable = config.services.desktopManager.gnome;
 }
