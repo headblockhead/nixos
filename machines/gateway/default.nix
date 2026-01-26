@@ -8,7 +8,13 @@ inputs.nixpkgs.lib.nixosSystem {
     ({ lib, ... }: {
       system.stateVersion = "25.11";
       networking.hostName = hostname;
-      nixpkgs.overlays = builtins.attrValues overlays;
+      nixpkgs = {
+        overlays = builtins.attrValues overlays;
+        config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+          "unifi-controller" # unfree
+          "mongodb" # sspl
+        ];
+      };
     })
 
     ./config.nix
