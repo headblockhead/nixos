@@ -13,5 +13,6 @@
     inetutils
     lm_sensors
     dig
+    ethtool
   ];
 }

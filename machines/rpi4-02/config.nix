@@ -1,4 +1,3 @@
-{ ... }:
 {
   networking.firewall.allowedTCPPorts = [ 9002 8019 ];
 

@@ -1,32 +1,32 @@
 { inputs, overlays, nixosModules, hostname, accounts, ... }:
-let
-  system = "aarch64-linux";
-  stateVersion = "25.05";
-  canLogin = [ "headb" ];
-in
-(
-  inputs.nixos-raspberrypi.lib.nixosSystem {
-    specialArgs = {
-      inherit inputs system stateVersion hostname overlays;
-      accounts = inputs.nixpkgs.lib.filterAttrs (name: _: builtins.elem name canLogin) accounts;
-      nixos-raspberrypi = inputs.nixos-raspberrypi;
-    };
+inputs.nixos-raspberrypi.lib.nixosSystem {
+  specialArgs = {
+    inherit inputs;
+    nixos-raspberrypi = inputs.nixos-raspberrypi;
+    accounts = inputs.nixpkgs.lib.filterAttrs (username: account: builtins.elem username [ "headb" ]) accounts;
+  };
+  modules = with nixosModules; [
+    ({ lib, ... }: {
+      system.stateVersion = "25.05";
+      networking.hostName = hostname;
+      nixpkgs.overlays = builtins.attrValues overlays;
+    })
 
-    modules = with nixosModules; [
-      ./config.nix
-      ../rpi4-hardware.nix
-    ] ++ [
-      inputs.nixos-raspberrypi.nixosModules.raspberry-pi-4.base
+    ./config.nix
+    ../rpi4-hardware.nix
 
-      loadBalancer
+    inputs.nixos-raspberrypi.nixosModules.raspberry-pi-4.base
 
-      basicConfig
-      distributedBuilds
-      git
-      headless
-      ssh
-      users
-      zsh
-    ];
-  }
-)
+    conf.en-gb
+    conf.headless
+    conf.utility
+    homelab.load-balancer
+    nix.gc
+    nix.registry
+    nix.settings
+    programs.fzf
+    programs.zsh
+    services.openssh
+    users.users
+  ];
+}

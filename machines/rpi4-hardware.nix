@@ -8,16 +8,11 @@
     };
   };
 
-  fileSystems."/" =
-    {
-      device = "/dev/disk/by-label/NIXOS_SD";
-      fsType = "ext4";
-    };
+  fileSystems."/".label = "NIXOS_SD";
+  fileSystems."/boot/firmware" = {
+    label = "FIRMWARE";
+    options = [ "fmask=0137" "dmask=0027" ];
+  };
 
-  fileSystems."/boot/firmware" =
-    {
-      options = [ "fmask=0137" "dmask=0027" ];
-      device = "/dev/disk/by-label/FIRMWARE";
-      fsType = "vfat";
-    };
+  nixpkgs.hostPlatform = "aarch64-linux";
 }

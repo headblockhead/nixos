@@ -1,29 +1,31 @@
 { inputs, overlays, nixosModules, hostname, accounts, ... }:
-let
-  system = "aarch64-linux";
-  stateVersion = "22.05";
-  canLogin = [ "headb" ];
-in
-(
-  inputs.nixpkgs.lib.nixosSystem {
-    specialArgs = {
-      inherit inputs system stateVersion hostname overlays;
-      accounts = inputs.nixpkgs.lib.filterAttrs (name: _: builtins.elem name canLogin) accounts;
-    };
+inputs.nixpkgs.lib.nixosSystem {
+  specialArgs = {
+    inherit inputs;
+    accounts = inputs.nixpkgs.lib.filterAttrs (username: account: builtins.elem username [ "headb" ]) accounts;
+  };
+  modules = with nixosModules; [
+    ({ lib, ... }: {
+      system.stateVersion = "22.05";
+      networking.hostName = hostname;
+      nixpkgs.overlays = builtins.attrValues overlays;
+    })
 
-    modules = with nixosModules; [
-      ./config.nix
-    ] ++ [
-      "${inputs.nixpkgs}/nixos/modules/virtualisation/amazon-image.nix"
-      inputs.agenix.nixosModules.default
+    ./config.nix
+    ./hardware.nix
 
-      basicConfig
-      git
-      headless
-      monitoring
-      ssh
-      users
-      zsh
-    ];
-  }
-)
+    "${inputs.nixpkgs}/nixos/modules/virtualisation/amazon-image.nix"
+    inputs.agenix.nixosModules.default
+
+    conf.en-gb
+    conf.utility
+    fileSystems
+    nix.gc
+    nix.registry
+    nix.settings
+    programs.fzf
+    programs.zsh
+    services.openssh
+    users.users
+  ];
+}

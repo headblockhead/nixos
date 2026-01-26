@@ -17,9 +17,9 @@
   };
 
   environment.systemPackages = [
-    pkgs.vscode
     pkgs.dotnetCorePackages.dotnet_9.sdk
     pkgs.dotnet-sdk_9
+    pkgs.vscode
     pkgs.gopass
     pkgs.openldap
   ];

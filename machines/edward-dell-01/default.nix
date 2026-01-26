@@ -1,34 +1,42 @@
 { inputs, overlays, nixosModules, hostname, accounts, ... }:
-let
-  system = "x86_64-linux";
-  stateVersion = "22.05";
-  canLogin = [ "headb" ];
-in
-(
-  inputs.nixpkgs.lib.nixosSystem {
-    specialArgs = {
-      inherit inputs system stateVersion hostname overlays;
-      accounts = inputs.nixpkgs.lib.filterAttrs (name: _: builtins.elem name canLogin) accounts;
-    };
+inputs.nixpkgs.lib.nixosSystem {
+  specialArgs = {
+    inherit inputs;
+    accounts = inputs.nixpkgs.lib.filterAttrs (username: account: builtins.elem username [ "headb" ]) accounts;
+  };
+  modules = with nixosModules; [
+    ({ lib, ... }: {
+      system.stateVersion = "22.05";
+      networking.hostName = hostname;
+      nixpkgs.overlays = builtins.attrValues overlays;
+    })
 
-    modules = with nixosModules; [
-      ./config.nix
-      ./hardware.nix
-    ] ++ [
-      basicConfig
-      bootloader
-      desktop
-      desktopApps
-      development
-      fileSystems
-      fonts
-      git
-      gpg
-      network
-      sound
-      ssh
-      users
-      zsh
-    ];
-  }
-)
+    ./config.nix
+    ./hardware.nix
+
+    boot.loader.systemd-boot
+    boot.loader.timeout0
+    boot.plymouth
+    conf.development
+    conf.en-gb
+    conf.graphical-productivity
+    conf.graphical-web
+    conf.utility
+    fileSystems
+    fonts.favourites
+    networking.networkmanager
+    nix.gc
+    nix.registry
+    nix.settings
+    programs.fzf
+    programs.git
+    programs.gnupg
+    programs.zsh
+    security.rtkit
+    services.desktop-managers.gnome
+    services.display-managers.gdm
+    services.openssh
+    services.pipewire
+    users.users
+  ];
+}

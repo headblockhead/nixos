@@ -9,7 +9,6 @@ inputs.nixpkgs.lib.nixosSystem {
       system.stateVersion = "22.05";
       networking.hostName = hostname;
       nixpkgs = {
-        hostPlatform = "x86_64-linux";
         overlays = builtins.attrValues overlays;
         config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
           "slack"

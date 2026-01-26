@@ -1,9 +1,5 @@
 { pkgs, config, ... }:
 {
-  environment.systemPackages = with pkgs; [
-    ethtool
-  ];
-
   # Allow packet forwarding
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = true;
