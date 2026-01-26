@@ -21,26 +21,25 @@
     edwardh-dev.url = "github:headblockhead/edwardh.dev";
   };
 
-  outputs = inputs:
+  outputs = { nixpkgs, ... }@inputs:
     let
-      recurseFindNixFiles = directory:
-        inputs.nixpkgs.lib.foldl'
-          (accumulated: element:
-            accumulated // (
-              let elementPath = directory + "/${element.name}"; in
-              if element.type == "directory" then
-                { ${element.name} = recurseFindNixFiles elementPath; } # Recurse into subdirectory
-              else if inputs.nixpkgs.lib.hasSuffix ".nix" element.name then
-                { ${inputs.nixpkgs.lib.removeSuffix ".nix" element.name} = elementPath; }
-              else
-                { } # Ignore non-Nix files
-            )
+      recurseFindNixFiles = yield: directory: nixpkgs.lib.foldl'
+        (accumulated: element:
+          accumulated // (
+            let elementPath = directory + "/${element.name}"; in
+            if element.type == "directory" then
+              { ${element.name} = recurseFindNixFiles yield elementPath; } # Recurse into subdirectory
+            else if nixpkgs.lib.hasSuffix ".nix" element.name then
+              { ${nixpkgs.lib.removeSuffix ".nix" element.name} = yield elementPath; }
+            else
+              { } # Ignore non-Nix files
           )
-          { }
-          (inputs.nixpkgs.lib.mapAttrsToList
-            (name: value: { name = name; type = value; })
-            (builtins.readDir directory)
-          );
+        )
+        { }
+        (nixpkgs.lib.mapAttrsToList
+          (name: value: { name = name; type = value; })
+          (builtins.readDir directory)
+        );
     in
     rec {
       overlays = {
@@ -58,15 +57,13 @@
         });
       };
 
-      nixosModules = recurseFindNixFiles ./modules;
+      nixosModules = recurseFindNixFiles (file: file) ./modules;
 
-      nixosConfigurations = inputs.nixpkgs.lib.genAttrs
-        (builtins.attrNames (inputs.nixpkgs.lib.filterAttrs (path: type: type == "directory") (builtins.readDir ./machines)))
+      nixosConfigurations = nixpkgs.lib.genAttrs
+        (builtins.attrNames (nixpkgs.lib.filterAttrs (path: type: type == "directory") (builtins.readDir ./machines)))
         (hostname: import ./machines/${hostname} {
           inherit inputs overlays nixosModules hostname;
-          accounts = inputs.nixpkgs.lib.genAttrs
-            (builtins.attrNames (inputs.nixpkgs.lib.filterAttrs (path: type: type == "regular" && inputs.nixpkgs.lib.hasSuffix ".nix" path) (builtins.readDir ./accounts)))
-            (username: import ./accounts/${username}.nix { });
+          accounts = recurseFindNixFiles (file: import file) ./accounts;
         });
     };
 }

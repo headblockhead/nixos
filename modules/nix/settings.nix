@@ -1,7 +1,7 @@
 { lib, accounts, ... }:
 {
   nix.settings = {
-    trusted-users = builtins.attrNames (lib.filterAttrs (n: v: v.rootAccess) accounts);
+    trusted-users = builtins.attrNames (lib.filterAttrs (n: v: v.superuser) accounts);
     experimental-features = "nix-command flakes";
     auto-optimise-store = true;
     #substituters = [ "https://cache.edwardh.dev" ];

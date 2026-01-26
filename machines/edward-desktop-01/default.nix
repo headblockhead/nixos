@@ -39,7 +39,6 @@ inputs.nixpkgs.lib.nixosSystem {
     conf.utility
     fileSystems
     fonts.favourites
-    hardware.rtl-sdr
     networking.networkmanager
     nix.buildMachines
     nix.gc

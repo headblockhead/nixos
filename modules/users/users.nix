@@ -4,7 +4,7 @@
     (n: v: {
       description = v.realname;
       isNormalUser = true;
-      extraGroups = (if v.rootAccess then [ "wheel" "dialout" "networkmanager" ] else [ ]);
+      extraGroups = (if v.superuser then [ "wheel" ] else [ ]);
     })
     accounts;
 }
