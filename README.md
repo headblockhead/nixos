@@ -234,3 +234,17 @@ nixos-rebuild switch --target-host rpi5-02 --sudo --no-reexec --flake .#rpi5-02
 nixos-rebuild switch --target-host rpi5-03 --sudo --no-reexec --flake .#rpi5-03
 nixos-rebuild switch --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh
 ```
+
+### build
+
+Build the nixos configurations for all machines, without deploying.
+
+```bash
+nixos-rebuild build --flake .#gateway
+nixos-rebuild build --flake .#rpi4-01
+nixos-rebuild build --flake .#rpi4-02
+nixos-rebuild build --flake .#rpi5-01
+nixos-rebuild build --flake .#rpi5-02
+nixos-rebuild build --flake .#rpi5-03
+nixos-rebuild build --flake .#edwardh
+```

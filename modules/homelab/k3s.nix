@@ -1,6 +1,6 @@
 { config, ... }:
 {
-  age.secrets.k3s-token.file = ../secrets/k3s-token.age;
+  age.secrets.k3s-token.file = ../../secrets/k3s-token.age;
 
   boot.kernelParams = [ "cgroup_memory=1" "cgroup_enable=memory" ];
 
