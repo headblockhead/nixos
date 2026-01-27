@@ -7,7 +7,7 @@
   boot.kernelModules = [ "kvm-intel" ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-label/nixos";
+    device = "/dev/mapper/encrypted";
     fsType = "ext4";
   };
 
@@ -26,10 +26,12 @@
     # Required to open the EFI partition and Yubikey
     kernelModules = [ "vfat" "nls_cp437" "nls_iso8859-1" "usbhid" ];
     luks = {
+      reusePassphrases = false;
       yubikeySupport = true;
       devices."encrypted" = {
-        device = "/dev/sda3";
-        bypassWorkqueues = true; # Fixes mysterious significant performance issues when running on an SSD.
+        device = "/dev/disk/by-label/nixos";
+        #        bypassWorkqueues = true; # Fixes mysterious significant performance issues when running on an SSD. (NVME only!)
+        allowDiscards = true; # good enough security
         yubikey = {
           slot = 2;
           twoFactor = true;
