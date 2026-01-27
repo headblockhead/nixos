@@ -15,9 +15,9 @@
           option tcp-check
           balance roundrobin
           default-server inter 10s downinter 5s
-          server rpi5-01 172.27.3.51:6443 check
-          server rpi5-02 172.27.3.52:6443 check
-          server rpi5-03 172.27.3.53:6443 check
+          server rpi5-01 172.27.30.51:6443 check
+          server rpi5-02 172.27.30.52:6443 check
+          server rpi5-03 172.27.30.53:6443 check
     '';
   };
   services.keepalived = {
@@ -32,7 +32,7 @@
       interface = "end0";
       # state and priority should be set by the host-specific configuration
       virtualRouterId = 51;
-      virtualIps = [{ addr = "172.27.3.100/24"; }];
+      virtualIps = [{ addr = "172.27.30.100/24"; }];
       trackScripts = [ "check_haproxy" ];
     };
   };
