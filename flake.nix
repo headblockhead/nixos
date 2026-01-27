@@ -47,8 +47,6 @@
           go-migrate = prev.go-migrate.overrideAttrs (oldAttrs: { tags = [ "postgres" ]; });
         });
         replace = (final: prev: {
-          kmscon = prev.callPackage ./custom-packages/kmscon/kmscon.nix { };
-          libtsm = prev.callPackage ./custom-packages/libtsm/libtsm.nix { };
           librespot = prev.callPackage ./custom-packages/librespot/default.nix {
             withMDNS = true;
             withDNS-SD = true;

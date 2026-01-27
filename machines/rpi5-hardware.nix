@@ -1,5 +1,5 @@
 {
-  boot.loader.raspberryPi.bootloader = "kernel";
+  boot.loader.raspberry-pi.bootloader = "kernel";
   hardware.raspberry-pi.config.all.base-dt-params = {
     pciex1 = { enable = true; value = "on"; };
     pciex1_gen = { enable = true; value = 3; };

@@ -1,56 +1,39 @@
 # nixos
 
-![NixOS](https://img.shields.io/badge/NIXOS-5277C3.svg?logo=NixOS&logoColor=white) [![xc compatible](https://xcfile.dev/badge.svg)](https://xcfile.dev) 
+[![NixOS](https://img.shields.io/badge/NIXOS-5277C3.svg?logo=NixOS&logoColor=white)](https://nixos.org) [![xc compatible](https://xcfile.dev/badge.svg)](https://xcfile.dev) 
 
-A continuously updated reproducable config for:
-- a desktop workstation
-- a laptop (Lenovo Thinkpad T450s)
-- a mail+calendar+web+DNS server running in AWS ([edwardh](systems/edwardh))
+A continuously updated set of reproducible NixOS configurations for:
+- a desktop and laptop
+- a home network gateway/router
 - a raspberry pi cluster
+- a server running in AWS
 
-Where **everything** about my systems is controlled by NixOS in plenty of detail, making for a perfectly-configured install *every time*, down to [the seconds on the clock](https://github.com/headblockhead/nixos/blob/dddba60346632e95b1840a7c95379396a8193fd1/modules/nixos/desktop.nix#L125)!
+## Structure
 
-## Table of Contents
-
-  * [Tour](#tour)
-  * [Desktop Screenshots](#desktop-screenshots)
-  * [Network Layout](#network-layout)
-  * [Want to try it out?](#want-to-try-it-out)
-  * [Installation](#installation)
-  * [Troubleshooting](#troubleshooting)
-  * [Tasks](#tasks)
-
-## Tour
-
-Here is an overview of the most important files and folders in my config:
-
-  * [modules/nixos](modules/nixos) is the **most most important** folder, as it contains the core of my configuration (desktop environment/theming, ssh config, git config, zsh config, etc.) as parts that can be included and reused across systems.
-  * [systems](systems) contains the individual configurations for each of my systems, importing some of the modules, and adding some per-device extras.
-  * [flake.nix](flake.nix) defines the ssh keys used for login across all of my systems, along with the versions of nixpkgs to use, and the files to use for each machine's config.
-  * [custom-packages](custom-packages) contains modified versions of existing programs used by me.
-  * [neovim](neovim) contains lua-based neovim configuration, [modified from @a-h's config](https://github.com/a-h/dotfiles/tree/3037eb252c0aab44d420c52b61fb98f17c6923a0/.config/nvim/lua).
-
-## Desktop Screenshots
-
-![neofetch and web browser](screenshots/edward-desktop-01-01.png)
-![neovim and mouth dreams](screenshots/edward-desktop-01-02.png)
-![cube](screenshots/edward-desktop-01-03.png)
+  * [accounts](accounts) contains definitions for details about users of these machines. 
+  * [custom-packages](custom-packages) contains modified versions of existing nixpkgs packages.
+  * [machines](machines) contains custom configuration for each machine.
+  * [modules](modules) contains reusable configuration snippets that can be imported by multiple machines.
+  * [secrets](secrets) contains age encrypted secrets used by some of my machines.
 
 ## Installation
 
-### Boot from NixOS installation media
+### Medium
 
-> [!TIP]
-> Using the minimal installation media is recommended, as it is smaller and faster to download. However, you cannot use network manager (`nmtui`) to setup wireless networking with the minimal image.
+Obtain the latest minimal ISO image for your architecture, either from [nixos.org/download](https://nixos.org/download/) or by compiling it yourself.
 
-### Set up internet
+You should be automatically logged in as the nixos user, from which you can use `sudo -i` to get a root shell, and begin the install.
+
+### Wireless networking with wpa_supplicant
 
 > [!NOTE]
 > If you already have a wired connection, you can skip this step.
 
+To connect to a standard wireless network, you can use wpa_supplicant as follows:
+
 ```bash
-sudo systemctl start wpa_supplicant
-sudo wpa_cli
+systemctl start wpa_supplicant
+wpa_cli
 > add_network
 > set_network 0 ssid "your_ssid_here"
 > set_network 0 psk "your_password_here"
@@ -62,101 +45,102 @@ sudo wpa_cli
 ### Partition and format
 
 > [!CAUTION]
-> This deletes your data, check drive names carefully.
+> Check drive names carefully before committing changes to partition tables or initialising filesystems to make sure you aren't going to delete anything important!
+
+To create partitions on the disk, I find `cfdisk` is a useful TUI tool.
 
 ```bash
-cfdisk /dev/drivename
+cfdisk /dev/example
 ```
 
-Now, delete any/all existing partitions on the disk and create two new partitions:
-  - a 1G "EFI System" partition,
+For an nvme drive, this would be something like `/dev/nvme0n1` (meaning nvme controller 0, namespace 1) here.
+
+I'd recommend to delete all other partitions on the disk and create:
+
+  - a 2G "EFI System" partition,
   - and a generic "Linux Filesystem" partition to fill the rest of the disk.
 
-First, format the EFI System partition with FAT:
+The instructions for formatting below apply to this partition scheme.
+
+> [!TIP]
+> If you are doing something different and you want to use my [modules/fileSystems.nix](modules/fileSystems.nix) file unedited, it is important you use the partition labels `boot` and `nixos` so the system can find them on boot.
+
+Format the new 'EFI System' partition with FAT 32, and label it `boot`:
 
 ```bash
-mkfs.fat -F 32 -n boot /dev/drivename1
+mkfs.fat -F 32 -n boot /dev/example1
+```
+For an nvme drive, this would be something like `/dev/nvme0n1p1` (meaning nvme controller 0, namespace 1, partition 1) here.
+
+Format the main 'Linux Filesystem' partition with ext4, and label it `nixos`:
+
+```bash
+mkfs.ext4 -L nixos /dev/example2
+```
+And again, for an nvme drive, this would be something like `/dev/nvme0n1p2`.
+
+### Mount the new partitions
+
+Mount the main `nixos` partition to `/mnt`:
+
+```bash
+mount /dev/example2 /mnt
 ```
 
-Then, format the swap partition, giving it the label of 'swap':
+Create a directory for the `boot` partition inside of the `nixos` partition, and then mount it there:
 
 ```bash
-mkswap -L swap /dev/drivename2
+mkdir /mnt/boot
+mount /dev/example1 /mnt/boot
 ```
 
-And finally, format the main Linux Filesystem partition with ext4, giving it the label of 'nixos':
+### Install
+
+Generate some example hardware configuration to reference.
 
 ```bash
-mkfs.ext4 -L nixos /dev/drivename3
+nixos-generate-config --show-hardware-config > hardware-auto.nix
 ```
 
-These drive labels are used by the system config in [fileSystems.nix](modules/nixos/fileSystems.nix) to avoid hardcoding drive UUIDs.
-
-### Mount to edit.
-
-To edit the contents of the disk, it needs to be mounted into a folder.
-First, mount the main Linux Filesystem:
+Clone a copy of this repo.
 
 ```bash
-mount /dev/whatever3 /mnt # Mount root filesystem
-```
-
-Then, mount the boot filesystem:
-
-```bash
-mkdir -p /mnt/boot
-mount /dev/whatever1 /mnt/boot # Mount boot partition
-```
-
-Finally, enable the swap:
-
-```bash
-swapon /dev/whatever2 # Use the swap partition
-```
-
-
-### First system install.
-
-Generate example configuration as referance.
-```bash
-nixos-generate-config --root ./
-```
-
-> [!NOTE]
-> Copy unique parts of the autogenerated `hardware-configuration.nix` to the `hardware.nix` of the system to ensure compatibilty with hardware.
-
-Download this repo. This is stored in a tmpfs, so it will be lost on reboot.
-```bash
-nix-shell -p git
 git clone https://github.com/headblockhead/nixos.git
 ```
 
-> [!WARNING]
-> Changes made to this copy of the nixos are not saved, so copy changes to the /mnt folder or other means of persistance to avoid pain later.
+Compare the hardware-auto.nix file to the hardware.nix of the machine you intend to install, and update accordingly (imports, kernel modules, CPU microcode, etc.)
 
-Build and install. Set a root password, it can be anything as we will disable direct root in a minute.
+Run the install command.
+At the end, you will be asked to set a root password; you can make this anything as we will disable direct root access shortly.
+
 ```bash
-cd nixos
-nixos-install --root /mnt --flake .#HOSTNAME
-reboot
+nixos-install --flake .#machine-name
 ```
 
-### Set password and lock root
+Finally, reboot.
 
-Use a TTY shell to login as root, then set the user password.
+```bash
+systemctl reboot
+```
+
+### Login
+
+Use a TTY shell to login as root, then set a password for at least one superuser.
 
 ```bash
 passwd headb
 ```
 
-Finally, delete the password for the root user and lock the root account.
+Logout of root, login as said superuser, then delete the password for the root user and lock access to the root account.
 
 ```bash
 sudo passwd -dl root
 sudo usermod -L root
 ```
 
-### Post-installation
+### Extras
+
+Useful little bits for polishing the system.
 
 #### GNOME theme for Firefox
 
@@ -166,14 +150,6 @@ source: [firefox-gnome-theme](https://github.com/rafaelmardojai/firefox-gnome-th
 curl -s -o- https://raw.githubusercontent.com/rafaelmardojai/firefox-gnome-theme/master/scripts/install-by-curl.sh | bash
 ```
 
-#### GPG
-
-```bash
-gpg --card-edit
-> fetch
-> quit
-```
-
 #### Gopass
 
 Complete the first half of the setup form, then quit when reaching 'generating new key pair'.
@@ -181,21 +157,6 @@ Complete the first half of the setup form, then quit when reaching 'generating n
 ```bash
 gopass clone git@github.com:headblockhead/gopass
 ```
-
-## Troubleshooting
-
-### Missing boot option
-
-Try [re-installing the bootloader from installation media](https://nixos.wiki/wiki/Bootloader#Re-installing_the_bootloader).
-Or move EFI files to generic locations for old BIOSes:
-```bash
-mv /boot/EFI/NixOS-boot /boot/EFI/boot
-mv /boot/EFI/boot/grubx64.efi /boot/EFI/boot/bootx64.efi
-```
-
-### No display output after GRUB
-
-Try adding `nomodeset` to the kernel parameters in GRUB.
 
 ## Tasks
 
