@@ -8,7 +8,14 @@ inputs.nixpkgs.lib.nixosSystem {
     ({ lib, ... }: {
       system.stateVersion = "25.05";
       networking.hostName = hostname;
-      nixpkgs.overlays = builtins.attrValues overlays;
+      nixpkgs = {
+        overlays = builtins.attrValues overlays;
+        config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+          "slack"
+          "spotify"
+          "vscode"
+        ];
+      };
     })
 
     ./config.nix
