@@ -8,7 +8,12 @@ inputs.nixpkgs.lib.nixosSystem {
     ({ lib, ... }: {
       system.stateVersion = "22.05";
       networking.hostName = hostname;
-      nixpkgs.overlays = builtins.attrValues overlays;
+      nixpkgs = {
+        overlays = builtins.attrValues overlays;
+        config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+          "vscode"
+        ];
+      };
     })
 
     ./config.nix
