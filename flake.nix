@@ -57,11 +57,8 @@
 
       nixosModules = recurseFindNixFiles (file: file) ./modules;
 
-      nixosConfigurations = nixpkgs.lib.genAttrs
-        (builtins.attrNames (nixpkgs.lib.filterAttrs (path: type: type == "directory") (builtins.readDir ./machines)))
-        (hostname: import ./machines/${hostname} {
-          inherit inputs overlays nixosModules hostname;
-          accounts = recurseFindNixFiles (file: import file) ./accounts;
-        });
+      nixosConfigurations = nixpkgs.lib.genAttrs (builtins.attrNames (nixpkgs.lib.filterAttrs (path: type: type == "directory") (builtins.readDir ./machines))) (hostname: import ./machines/${hostname} { inherit inputs overlays nixosModules hostname; accounts = recurseFindNixFiles (file: import file) ./accounts; });
+
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt;
     };
 }

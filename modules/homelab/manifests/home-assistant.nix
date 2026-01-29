@@ -30,6 +30,8 @@
           };
         };
         spec = {
+          hostNetwork = true;
+          terminationGracePeriodSeconds = 30;
           containers = [
             {
               name = "home-assistant";
@@ -90,7 +92,7 @@
       namespace = "home-assistant";
     };
     spec = {
-      accessModes = [ "ReadWriteMany" ]; # technially incorrect
+      accessModes = [ "ReadWriteOnce" ];
       storageClassName = "longhorn";
       resources = {
         requests = {

@@ -41,8 +41,6 @@
     extraFlags = [
       "--tls-san=172.27.30.100"
       "--embedded-registry"
-      "--kube-apiserver-arg=default-not-ready-toleration-seconds=30"
-      "--kube-apiserver-arg=default-unreachable-toleration-seconds=30"
     ];
     manifests = {
       home-assistant.content = import ./manifests/home-assistant.nix;
