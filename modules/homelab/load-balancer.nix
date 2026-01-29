@@ -1,12 +1,15 @@
 { pkgs, ... }:
 {
-  networking.firewall.allowedTCPPorts = [ 6443 ];
+  networking.firewall.allowedTCPPorts = [
+    6443
+    8123
+  ];
   services.haproxy = {
     enable = true;
     config = ''
       frontend k3s_frontend
           mode tcp
-          bind :6443
+          bind *:6443
           default_backend k3s_backend
     
       backend k3s_backend
@@ -20,7 +23,7 @@
 
       frontend homeassistant_frontend
           mode tcp
-          bind :8123
+          bind *:8123
           default_backend homeassistant_backend
 
       backend homeassistant_backend

@@ -90,7 +90,7 @@
       namespace = "home-assistant";
     };
     spec = {
-      accessModes = [ "ReadWriteOnce" ];
+      accessModes = [ "ReadWriteMany" ]; # technially incorrect
       storageClassName = "longhorn";
       resources = {
         requests = {
