@@ -21,6 +21,11 @@
     name = "${config.networking.hostName}-initiatorhost";
   };
 
+  # To reset:
+  # umount $(df -HT | grep '/var/lib/kubelet/pods' | awk '{print $7}')
+  # rm -rf /etc/rancher/{k3s,node};
+  # rm -rf /var/lib/{rancher/k3s,kubelet,longhorn,etcd,cni}
+
   services.k3s = {
     enable = true;
     images = [
