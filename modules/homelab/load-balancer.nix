@@ -4,13 +4,12 @@
   services.haproxy = {
     enable = true;
     config = ''
-      frontend k3s-frontend
-          bind *:6443
+      frontend k3s_frontend
           mode tcp
-          option tcplog
-          default_backend k3s-backend
+          bind :6443
+          default_backend k3s_backend
     
-      backend k3s-backend
+      backend k3s_backend
           mode tcp
           option tcp-check
           balance roundrobin
@@ -18,6 +17,20 @@
           server rpi5-01 172.27.30.51:6443 check
           server rpi5-02 172.27.30.52:6443 check
           server rpi5-03 172.27.30.53:6443 check
+
+      frontend homeassistant_frontend
+          mode tcp
+          bind :8123
+          default_backend homeassistant_backend
+
+      backend homeassistant_backend
+          mode tcp
+          option tcp-check
+          balance roundrobin
+          default-server inter 10s downinter 5s
+          server rpi5-01 172.27.30.51:8123 check
+          server rpi5-02 172.27.30.52:8123 check
+          server rpi5-03 172.27.30.53:8123 check
     '';
   };
   services.keepalived = {

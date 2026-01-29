@@ -183,6 +183,7 @@
     pkgs.handbrake
     pkgs.anki
     pkgs.qgis
+
     #pkgs.qxmledit
 
     pkgs.kdePackages.kdenlive

@@ -30,6 +30,7 @@ inputs.nixpkgs.lib.nixosSystem {
     boot.plymouth
     conf.development
     conf.en-gb
+    conf.gopass
     conf.graphical-ios
     conf.graphical-multimedia
     conf.graphical-productivity
@@ -39,7 +40,6 @@ inputs.nixpkgs.lib.nixosSystem {
     fileSystems
     fonts.favourites
     networking.networkmanager
-    nix.buildMachines
     nix.gc
     nix.registry
     nix.settings
