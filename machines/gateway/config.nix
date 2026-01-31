@@ -101,7 +101,7 @@
       trustedInterfaces = [ "brlan" ]; # Allow all input from LAN
       interfaces = {
         ethernet5 = {
-          allowedTCPPorts = [ 22 ];
+          allowedTCPPorts = [ ];
           allowedUDPPorts = [ ];
         };
         brinf = {
@@ -109,11 +109,11 @@
           allowedUDPPorts = [ 53 67 ];
         };
         briot = {
-          allowedTCPPorts = [ 53 1704 ];
+          allowedTCPPorts = [ 53 ];
           allowedUDPPorts = [ 53 67 5353 ];
         };
         brsrv = {
-          allowedTCPPorts = [ 53 1705 4317 ];
+          allowedTCPPorts = [ 53 ];
           allowedUDPPorts = [ 53 67 5353 ];
         };
         brgst = {
@@ -123,7 +123,7 @@
       };
       filterForward = true;
       extraInputRules = ''
-        ip saddr 172.27.20.18 tcp dport { 53, 1704 } drop comment "block meross-bedroom-lamp DNS/Snapcast"
+        ip saddr 172.27.20.18 tcp dport 53 drop comment "block meross-bedroom-lamp DNS"
         ip saddr 172.27.20.18 udp dport { 53, 5353 } drop comment "block meross-bedroom-lamp DNS/MDNS"
       '';
       extraForwardRules = ''

@@ -30,7 +30,6 @@
     spec = {
       selector.matchLabels.app = "home-assistant";
       replicas = 1;
-      strategy.type = "Recreate";
       template = {
         metadata.labels.app = "home-assistant";
         spec = {
@@ -42,10 +41,7 @@
             env = [{ name = "TZ"; value = "Europe/London"; }];
             volumeMounts = [{ name = "config-volume"; mountPath = "/config"; }];
           }];
-          volumes = [{
-            name = "config-volume";
-            persistentVolumeClaim.claimName = "home-assistant-pvc";
-          }];
+          volumes = [{ name = "config-volume"; persistentVolumeClaim.claimName = "home-assistant-pvc"; }];
         };
       };
     };
