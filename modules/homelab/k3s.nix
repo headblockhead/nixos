@@ -9,6 +9,8 @@
     2379 # k3s etcd
     2380 # k3s etcd 
     10250 # k3s kubelet
+
+    8123 # home assistant
   ];
   networking.firewall.allowedUDPPorts = [
     8472 # k3s flannel
@@ -20,11 +22,24 @@
     enable = true;
     name = "${config.networking.hostName}-initiatorhost";
   };
+  systemd.services.iscsid.serviceConfig = {
+    PrivateMounts = "yes";
+    BindPaths = "/run/current-system/sw/bin:/bin";
+  };
+
+  # Hass 
+  services.avahi.enable = true;
 
   # To reset:
   # umount $(df -HT | grep '/var/lib/kubelet/pods' | awk '{print $7}')
   # rm -rf /etc/rancher/{k3s,node};
   # rm -rf /var/lib/{rancher/k3s,kubelet,longhorn,etcd,cni}
+
+  # To restart a deployment:
+  # kubectl rollout restart deployment/home-assistant --namespace home-assistant
+
+  # To delete a deployment:
+  # kubectl delete pods,pvc,services --all --interactive --namespace home-assistant
 
   services.k3s = {
     enable = true;
@@ -49,6 +64,7 @@
     ];
     manifests = {
       home-assistant.content = import ./manifests/home-assistant.nix;
+
       kyverno.source = pkgs.fetchurl {
         url = "https://github.com/kyverno/kyverno/releases/download/v1.16.3/install.yaml";
         sha256 = "sha256-zSwMqYsK8+HcFKXFQ22bp49ekGrzQVTwz3HpQtzMwLc=";
