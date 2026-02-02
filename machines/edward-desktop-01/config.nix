@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, lib, ... }:
 {
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
@@ -79,86 +79,6 @@
         username=desktop-voip
         [desktop-voip](aor_dynamic)
       '';
-    };
-  };
-
-  services.k3s = {
-    enable = true;
-    role = "server";
-    images = [
-      config.services.k3s.package.airgap-images
-    ];
-    manifests = {
-      hello-world.content = [
-        {
-          apiVersion = "v1";
-          kind = "Namespace";
-          metadata = {
-            name = "hello-world";
-          };
-        }
-        {
-          apiVersion = "apps/v1";
-          kind = "Deployment";
-          metadata = {
-            name = "hello-world-deployment";
-            namespace = "hello-world";
-          };
-          spec = {
-            selector = {
-              matchLabels = {
-                app = "hello-world";
-              };
-            };
-            replicas = 1;
-            template = {
-              metadata = {
-                labels = {
-                  app = "hello-world";
-                };
-              };
-              spec = {
-                containers = [
-                  {
-                    name = "hello-world";
-                    image = "hashicorp/http-echo";
-                    args = [
-                      "-text=Hello, World!"
-                      "-listen=:5000"
-                    ];
-                    ports = [
-                      {
-                        containerPort = 5000;
-                      }
-                    ];
-                  }
-                ];
-              };
-            };
-          };
-        }
-        {
-          apiVersion = "v1";
-          kind = "Service";
-          metadata = {
-            name = "hello-world-service";
-            namespace = "hello-world";
-          };
-          spec = {
-            selector = {
-              app = "hello-world";
-            };
-            ports = [
-              {
-                protocol = "TCP";
-                targetPort = 5000;
-                port = 5000;
-              }
-            ];
-            type = "LoadBalancer";
-          };
-        }
-      ];
     };
   };
 
