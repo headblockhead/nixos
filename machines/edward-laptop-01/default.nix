@@ -14,6 +14,7 @@ inputs.nixpkgs.lib.nixosSystem {
           "slack"
           "spotify"
           "vscode"
+          "x32-edit"
         ];
       };
     })
@@ -32,7 +33,6 @@ inputs.nixpkgs.lib.nixosSystem {
     conf.graphical-social
     conf.graphical-web
     conf.utility
-    fileSystems
     fonts.favourites
     networking.networkmanager
     nix.gc

@@ -29,7 +29,7 @@
       reusePassphrases = false;
       yubikeySupport = true;
       devices."encrypted" = {
-        device = "/dev/disk/by-label/nixos";
+        device = "/dev/sda3";
         #        bypassWorkqueues = true; # Fixes mysterious significant performance issues when running on an SSD. (NVME only!)
         allowDiscards = true; # good enough security
         yubikey = {
