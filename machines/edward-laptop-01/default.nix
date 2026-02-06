@@ -34,6 +34,7 @@ inputs.nixpkgs.lib.nixosSystem {
     conf.graphical-web
     conf.utility
     fonts.favourites
+    fileSystems
     networking.networkmanager
     nix.gc
     nix.registry

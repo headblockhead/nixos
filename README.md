@@ -24,23 +24,12 @@ Obtain the latest minimal ISO image for your architecture, either from [nixos.or
 
 You should be automatically logged in as the nixos user, from which you can use `sudo -i` to get a root shell, and begin the install.
 
-### Wireless networking with wpa_supplicant
+### Wireless networking
 
 > [!NOTE]
 > If you already have a wired connection, you can skip this step.
 
-To connect to a standard wireless network, you can use wpa_supplicant as follows:
-
-```bash
-systemctl start wpa_supplicant
-wpa_cli
-> add_network
-> set_network 0 ssid "your_ssid_here"
-> set_network 0 psk "your_password_here"
-> enable_network 0
-> save_config
-> quit
-```
+Use `nmtui` for a TUI, or `wpa_cli` for a command-line style setup.
 
 ### Partition and format
 
@@ -59,11 +48,6 @@ I'd recommend to delete all other partitions on the disk and create:
 
   - a 2G "EFI System" partition,
   - and a generic "Linux Filesystem" partition to fill the rest of the disk.
-
-The instructions for formatting below apply to this partition scheme.
-
-> [!TIP]
-> If you are doing something different and you want to use my [modules/fileSystems.nix](modules/fileSystems.nix) file unedited, it is important you use the partition labels `boot` and `nixos` so the system can find them on boot.
 
 Format the new 'EFI System' partition with FAT 32, and label it `boot`:
 
@@ -111,13 +95,13 @@ git clone https://github.com/headblockhead/nixos.git
 Compare the hardware-auto.nix file to the hardware.nix of the machine you intend to install, and update accordingly (imports, kernel modules, CPU microcode, etc.)
 
 Run the install command.
-At the end, you will be asked to set a root password; you can make this anything as we will disable direct root access shortly.
+At the end, you will be asked to set a root password; you can make this anything as we will disable direct root access shortly after installing.
 
 ```bash
 nixos-install --flake .#machine-name
 ```
 
-Finally, reboot.
+Finally, reboot and remove your installation medium.
 
 ```bash
 systemctl reboot
@@ -125,30 +109,20 @@ systemctl reboot
 
 ### Login
 
-Use a TTY shell to login as root, then set a password for at least one superuser.
+Use a TTY to login as root, then set a password for at least one superuser.
 
 ```bash
 passwd headb
 ```
 
-Logout of root, login as said superuser, then delete the password for the root user and lock access to the root account.
+Logout of root, login as said superuser (either graphically or in a TTY), then delete the password for the root user and lock access to the root account.
 
 ```bash
 sudo passwd -dl root
 sudo usermod -L root
 ```
 
-### Extras
-
-Useful little bits for polishing the system.
-
-#### GNOME theme for Firefox
-
-source: [firefox-gnome-theme](https://github.com/rafaelmardojai/firefox-gnome-theme)
-
-```bash
-curl -s -o- https://raw.githubusercontent.com/rafaelmardojai/firefox-gnome-theme/master/scripts/install-by-curl.sh | bash
-```
+### Final setup
 
 #### Gopass
 
@@ -156,6 +130,14 @@ Complete the first half of the setup form, then quit when reaching 'generating n
 
 ```bash
 gopass clone git@github.com:headblockhead/gopass
+```
+
+#### GNOME theme for Firefox
+
+source: [firefox-gnome-theme](https://github.com/rafaelmardojai/firefox-gnome-theme)
+
+```bash
+curl -s -o- https://raw.githubusercontent.com/rafaelmardojai/firefox-gnome-theme/master/scripts/install-by-curl.sh | bash
 ```
 
 ## Tasks
