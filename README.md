@@ -94,6 +94,8 @@ git clone https://github.com/headblockhead/nixos.git
 
 Compare the hardware-auto.nix file to the hardware.nix of the machine you intend to install, and update accordingly (imports, kernel modules, CPU microcode, etc.)
 
+Make sure to also update the `system.stateVersion` to allign with the latest nixpkgs version you are using before installing.
+
 Run the install command.
 At the end, you will be asked to set a root password; you can make this anything as we will disable direct root access shortly after installing.
 
