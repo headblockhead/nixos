@@ -6,7 +6,7 @@ inputs.nixpkgs.lib.nixosSystem {
   };
   modules = with nixosModules; [
     ({ lib, ... }: {
-      system.stateVersion = "25.05";
+      system.stateVersion = "25.11";
       networking.hostName = hostname;
       nixpkgs = {
         overlays = builtins.attrValues overlays;
@@ -27,14 +27,15 @@ inputs.nixpkgs.lib.nixosSystem {
     boot.plymouth
     conf.development
     conf.en-gb
+    conf.gopass
     conf.graphical-ios
     conf.graphical-multimedia
     conf.graphical-productivity
     conf.graphical-social
     conf.graphical-web
     conf.utility
-    fonts.favourites
     fileSystems
+    fonts.favourites
     networking.networkmanager
     nix.gc
     nix.registry
