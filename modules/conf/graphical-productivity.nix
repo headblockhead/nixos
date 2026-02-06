@@ -4,11 +4,15 @@
     gimp
     inkscape
     kicad
-    openscad-unstable
     prusa-slicer
     libreoffice
     anki
     thunderbird
+    # CAD
+    openscad-unstable
     freecad-wayland
+    # LaTeX tools
+    texstudio
+    texliveFull
   ];
 }
