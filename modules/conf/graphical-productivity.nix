@@ -6,6 +6,8 @@
     kicad
     prusa-slicer
     libreoffice
+    hunspell
+    hunspellDicts.en-gb-large
     anki
     thunderbird
     # CAD
