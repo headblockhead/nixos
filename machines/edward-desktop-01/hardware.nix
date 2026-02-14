@@ -4,6 +4,12 @@
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  swapDevices = [{
+    device = "/var/lib/swap";
+    size = 48 * 1024;
+    options = [ "discard" ];
+  }];
+
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "uas" "sd_mod" ];
   boot.kernelModules = [ "kvm-amd" ];
 
