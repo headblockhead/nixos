@@ -2,6 +2,8 @@
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "uas" "sd_mod" ];
   boot.kernelModules = [ "kvm-amd" ];
 
@@ -22,7 +24,7 @@
   services.kmscon.extraConfig = lib.mkAfter ''
     font-dpi=192
   '';
-  boot.kernelParams = [ "video=HDMI-A-2:panel_orientation=left_side_up" ];
+  boot.kernelParams = [ "video=HDMI-A-2:panel_orientation=left_side_up" "amdgpu.dcdebugmask=0x10" ];
   systemd.tmpfiles.rules = [
     ''L+ /run/gdm/.config/monitors.xml - - - - ${./monitors.xml}''
   ] ++ builtins.attrValues (builtins.mapAttrs (n: v: "L+ /home/${n}/.config/monitors.xml - - - - ${./monitors.xml}") accounts);

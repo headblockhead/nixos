@@ -244,7 +244,7 @@
         # lan
         "a0:d3:65:bb:f8:ff,172.27.10.10,edward-desktop-01"
         "34:02:86:2b:84:c3,172.27.10.11,edward-laptop-01"
-        "be:d4:81:34:98:3d,172.27.10.12,edward-iphone"
+        "a2:24:22:64:89:D2,172.27.10.12,edward-iphone"
         "26:08:b6:4d:79:2c,172.27.10.13,edward-mac-mini"
         # iot
         "a8:13:74:17:b6:18,172.27.20.11,hesketh-tv"
