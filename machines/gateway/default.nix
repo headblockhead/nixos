@@ -25,6 +25,7 @@ inputs.nixpkgs.lib.nixosSystem {
     boot.loader.systemd-boot
     conf.en-gb
     conf.headless
+    conf.passwordless
     conf.utility
     fileSystems
     nix.gc

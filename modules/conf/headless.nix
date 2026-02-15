@@ -1,4 +1,4 @@
-{ lib, accounts, ... }:
+{ lib, ... }:
 {
   systemd.services."serial-getty@ttyS0".enable = lib.mkDefault false;
   systemd.services."serial-getty@hvc0".enable = false;
@@ -11,6 +11,4 @@
     "nomodeset"
   ];
   systemd.enableEmergencyMode = false;
-  security.sudo.wheelNeedsPassword = false;
-  users.users = (builtins.mapAttrs (n: v: { hashedPassword = "!"; }) accounts) // { root.hashedPassword = "!"; };
 }

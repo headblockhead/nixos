@@ -19,6 +19,7 @@ inputs.nixos-raspberrypi.lib.nixosSystem {
 
     conf.en-gb
     conf.headless
+    conf.passwordless
     conf.utility
     homelab.load-balancer
     nix.gc
