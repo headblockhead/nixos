@@ -39,6 +39,7 @@ inputs.nixpkgs.lib.nixosSystem {
     conf.utility
     fileSystems
     fonts.favourites
+    hardware.enableRedistributableFirmware
     networking.networkmanager
     nix.gc
     nix.registry
@@ -50,6 +51,7 @@ inputs.nixpkgs.lib.nixosSystem {
     security.rtkit
     services.desktop-managers.gnome
     services.display-managers.gdm
+    services.fwupd
     services.openssh
     services.pipewire
     users.users

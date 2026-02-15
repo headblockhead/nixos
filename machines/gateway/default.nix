@@ -28,6 +28,7 @@ inputs.nixpkgs.lib.nixosSystem {
     conf.passwordless
     conf.utility
     fileSystems
+    hardware.enableRedistributableFirmware
     nix.gc
     nix.registry
     nix.settings

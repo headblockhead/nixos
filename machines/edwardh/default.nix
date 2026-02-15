@@ -20,7 +20,6 @@ inputs.nixpkgs.lib.nixosSystem {
     conf.en-gb
     conf.utility
     conf.passwordless
-    fileSystems
     nix.gc
     nix.registry
     nix.settings
