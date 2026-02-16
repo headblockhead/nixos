@@ -4,5 +4,6 @@
     signal-desktop-bin
     slack
     fractal
+    tuba
   ];
 }

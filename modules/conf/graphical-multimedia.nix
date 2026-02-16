@@ -5,10 +5,18 @@
     v4l2loopback
   ];
   environment.systemPackages = with pkgs; [
+    # Audio
     spotify
-    obs-studio
-    raysession
     audacity
     easyeffects
+    # Video
+    # AV
+    obs-studio
+    # Images
+    identity
+    switcheroo
+    curtail
+    gimp
+    inkscape
   ];
 }
