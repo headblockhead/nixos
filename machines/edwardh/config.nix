@@ -36,12 +36,6 @@ in
       443 # HTTPS
 
       53 # DNS
-      51800 # wg0
-    ];
-  };
-  networking.firewall.interfaces.wg0 = {
-    allowedTCPPorts = [
-      9002 # node exporter
     ];
   };
 
@@ -76,7 +70,6 @@ in
     group = "radicale";
     mode = "400";
   };
-  age.secrets.wg0-edwardh-key.file = ../../secrets/wg0-edwardh-key.age;
 
   # Manually set DNS nameservers, to avoid trying to use our own non-recursive BIND service.
   environment.etc."resolv.conf".text = ''
@@ -193,24 +186,6 @@ in
         # ${./db.edwardh.dev}
         # The above comment is included so that the bind service will be restarted when the db.edwardh.dev file changes, by including the nix-store path of the file in bind's config.
       '';
-    };
-  };
-
-  networking.wireguard = {
-    enable = true;
-    interfaces = {
-      wg0 = {
-        ips = [ "172.27.10.2/24" ];
-        listenPort = 51800;
-        privateKeyFile = config.age.secrets.wg0-edwardh-key.path;
-        peers = [
-          {
-            name = "gateway";
-            publicKey = "1Gs85rAE+d++lojXtc04P448bXcZNdLZjIx/uWo0pSM=";
-            allowedIPs = [ "172.27.0.0/12" ]; # edwardh can connect to server network
-          }
-        ];
-      };
     };
   };
 

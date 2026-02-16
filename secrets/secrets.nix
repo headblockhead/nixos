@@ -12,5 +12,4 @@ in
   "k3s-token.age".publicKeys = [ rpi5-01 rpi5-02 rpi5-03 ];
   "mail-hashed-password.age".publicKeys = [ edwardh ];
   "radicale-htpasswd.age".publicKeys = [ edwardh ];
-  "wg0-edwardh-key.age".publicKeys = [ edwardh ];
 }
