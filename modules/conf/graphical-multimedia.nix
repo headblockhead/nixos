@@ -9,6 +9,7 @@
     spotify
     audacity
     easyeffects
+    qpwgraph
     # Video
     # AV
     obs-studio
