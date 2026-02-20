@@ -18,6 +18,7 @@ inputs.nixpkgs.lib.nixosSystem {
           "vscode"
           "steam"
           "steam-unwrapped"
+          "rider"
         ];
       };
     })

@@ -22,6 +22,7 @@
     pkgs.vscode
     pkgs.gopass
     pkgs.openldap
+    pkgs.jetbrains.rider
   ];
 
   environment.sessionVariables = {

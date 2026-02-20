@@ -26,5 +26,6 @@
     pkgs.vscode-fhs
     pkgs.prismlauncher
     pkgs.clonehero
+    pkgs.jetbrains.rider
   ];
 }

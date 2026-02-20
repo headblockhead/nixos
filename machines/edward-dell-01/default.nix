@@ -12,6 +12,7 @@ inputs.nixpkgs.lib.nixosSystem {
         overlays = builtins.attrValues overlays;
         config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
           "vscode"
+          "rider"
         ];
       };
     })
