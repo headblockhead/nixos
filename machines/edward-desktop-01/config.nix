@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-  networking.firewall.allowedTCPPorts = [ 64023 ];
+  networking.firewall.allowedTCPPorts = [ 64023 50051 ];
 
   programs.steam = {
     enable = true;
