@@ -16,11 +16,10 @@
     settings.max_wal_size = "30GB";
   };
 
-  #virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.host.enable = true;
   users.users.headb.extraGroups = [ "vboxusers" ];
 
   environment.systemPackages = [
-    pkgs.virtualbox
     pkgs.blender-hip
     pkgs.kdePackages.kdenlive
     pkgs.vscode-fhs

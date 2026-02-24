@@ -16,6 +16,9 @@
     ensureUsers = [{ name = "headb"; }];
   };
 
+  virtualisation.virtualbox.host.enable = true;
+  users.users.headb.extraGroups = [ "vboxusers" ];
+
   environment.systemPackages = [
     pkgs.dotnetCorePackages.dotnet_9.sdk
     pkgs.dotnet-sdk_9
