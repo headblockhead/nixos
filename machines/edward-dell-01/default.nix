@@ -13,6 +13,7 @@ inputs.nixpkgs.lib.nixosSystem {
         config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
           "vscode"
           "rider"
+          "Oracle_VirtualBox_Extension_Pack"
         ];
       };
     })
