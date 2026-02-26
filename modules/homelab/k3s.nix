@@ -53,13 +53,13 @@
         finalImageName = "ghcr.io/home-assistant/aarch64-homeassistant";
         finalImageTag = "2026.2.3";
       })
-      # nix run nixpkgs#nix-prefetch-docker -- --image-name openthread/border-router --image-tag "latest" --arch arm64
+      # nix run nixpkgs#nix-prefetch-docker -- --image-name ghcr.io/matter-js/python-matter-server --image-tag "stable" --arch arm64
       (pkgs.dockerTools.pullImage {
-        imageName = "openthread/border-router";
-        imageDigest = "sha256:b180c7ffd30695d7c1cdc15da494fa2bc977fc3ef72aa33012c51360a595dd8e";
-        hash = "sha256-+2lWBZFppr99mmRvnkYIE4NsoGpv2m7JzbvovBO6YUs=";
-        finalImageName = "openthread/border-router";
-        finalImageTag = "latest";
+        imageName = "ghcr.io/matter-js/python-matter-server";
+        imageDigest = "sha256:6827e352011e2d8c2bde771e446fcf72acc49150ef66bad978816bac1762aad3";
+        hash = "sha256-DIGvlhN9hH7h1lsmn188PnE35YJwrW898+L+f63ykxk=";
+        finalImageName = "ghcr.io/matter-js/python-matter-server";
+        finalImageTag = "stable";
       })
     ];
     nodeName = config.networking.hostName;
@@ -72,7 +72,7 @@
     ];
     manifests = {
       home-assistant.content = import ./manifests/home-assistant.nix;
-      openthread.content = import ./manifests/openthread.nix;
+      matter.content = import ./manifests/matter.nix;
 
       kyverno.source = pkgs.fetchurl {
         url = "https://github.com/kyverno/kyverno/releases/download/v1.16.3/install.yaml";
