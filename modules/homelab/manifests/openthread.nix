@@ -36,6 +36,7 @@
         spec = {
           hostNetwork = true;
           dnsPolicy = "ClusterFirstWithHostNet";
+          nodeSelector.environment = "zbt-2"; # kubectl label node <node-name> environment=zbt-2
           restartPolicy = "Always";
           containers = [{
             name = "openthread";
