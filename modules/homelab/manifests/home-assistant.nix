@@ -37,7 +37,7 @@
           dnsPolicy = "ClusterFirstWithHostNet";
           containers = [{
             name = "home-assistant";
-            image = "ghcr.io/home-assistant/aarch64-homeassistant:2026.1.3";
+            image = "ghcr.io/home-assistant/aarch64-homeassistant:2026.2.3"; # Also update services.k3s.images!
             env = [{ name = "TZ"; value = "Europe/London"; }];
             volumeMounts = [{ name = "config-volume"; mountPath = "/config"; }];
           }];

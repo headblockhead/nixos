@@ -17,6 +17,7 @@
   };
 
   virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.host.enableExtensionPack = true;
   users.users.headb.extraGroups = [ "vboxusers" ];
 
   environment.systemPackages = [

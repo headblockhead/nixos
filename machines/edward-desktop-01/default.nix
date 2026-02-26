@@ -19,6 +19,7 @@ inputs.nixpkgs.lib.nixosSystem {
           "steam"
           "steam-unwrapped"
           "rider"
+          "Oracle_VirtualBox_Extension_Pack"
         ];
       };
     })

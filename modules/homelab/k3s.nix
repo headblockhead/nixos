@@ -45,13 +45,21 @@
     enable = true;
     images = [
       config.services.k3s.package.airgap-images
-      # nix run nixpkgs#nix-prefetch-docker -- --image-name ghcr.io/home-assistant/aarch64-homeassistant --image-tag "2026.1.3" --arch arm64
+      # nix run nixpkgs#nix-prefetch-docker -- --image-name ghcr.io/home-assistant/aarch64-homeassistant --image-tag "2026.2.3" --arch arm64
       (pkgs.dockerTools.pullImage {
         imageName = "ghcr.io/home-assistant/aarch64-homeassistant";
-        imageDigest = "sha256:a0fcf2b00cfcfe71e108bb8d3276c05ab3ebf2950edc820185b2645fcb259acd";
-        hash = "sha256-bFVs7Tuk29IiW5aGYf4TxH2VGMAT+bCzP0O2MlQ8hv0=";
+        imageDigest = "sha256:4219b77148517d696158bfec11e83a354b3e48d9fc6da4aef595cb0e1b85eb83";
+        hash = "sha256-3MfeQTiZiuifBRSh2m+XWCLOob+55z6eVM/ToisLWww=";
         finalImageName = "ghcr.io/home-assistant/aarch64-homeassistant";
-        finalImageTag = "2026.1.3";
+        finalImageTag = "2026.2.3";
+      })
+      # nix run nixpkgs#nix-prefetch-docker -- --image-name openthread/border-router --image-tag "latest" --arch arm64
+      (pkgs.dockerTools.pullImage {
+        imageName = "openthread/border-router";
+        imageDigest = "sha256:b180c7ffd30695d7c1cdc15da494fa2bc977fc3ef72aa33012c51360a595dd8e";
+        hash = "sha256-+2lWBZFppr99mmRvnkYIE4NsoGpv2m7JzbvovBO6YUs=";
+        finalImageName = "openthread/border-router";
+        finalImageTag = "latest";
       })
     ];
     nodeName = config.networking.hostName;
@@ -64,6 +72,7 @@
     ];
     manifests = {
       home-assistant.content = import ./manifests/home-assistant.nix;
+      openthread.content = import ./manifests/openthread.nix;
 
       kyverno.source = pkgs.fetchurl {
         url = "https://github.com/kyverno/kyverno/releases/download/v1.16.3/install.yaml";
