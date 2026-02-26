@@ -25,7 +25,9 @@ inputs.nixos-raspberrypi.lib.nixosSystem {
     conf.passwordless
     conf.utility
     homelab.k3s
+    nix.buildMachines
     nix.gc
+    nix.optimise
     nix.registry
     nix.settings
     programs.fzf

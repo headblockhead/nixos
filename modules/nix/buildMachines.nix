@@ -2,7 +2,7 @@
 let
   # Computer specific keys:
   edward-desktop-01-key = ''ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOs2G2Yt7+A53v5tymBcbAlWnT9tLZYNSW+XGqZU6ITh'';
-  edward-laptop-01-key = ''ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDGOkGgaa7J85LK4Vfe3+NvxxQObZspyRd50OkUQz/Ox'';
+  #edward-laptop-01-key = ''ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDGOkGgaa7J85LK4Vfe3+NvxxQObZspyRd50OkUQz/Ox'';
 
   buildMachines = [
     {
@@ -69,7 +69,7 @@ in
     extraGroups = [ "libvirt" "nixbld" ];
     openssh.authorizedKeys.keys = [
       edward-desktop-01-key
-      edward-laptop-01-key
+      #edward-laptop-01-key
     ];
   };
   nix.distributedBuilds = true;

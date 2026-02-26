@@ -43,7 +43,9 @@ inputs.nixpkgs.lib.nixosSystem {
     fonts.favourites
     hardware.enableRedistributableFirmware
     networking.networkmanager
+    nix.buildMachines
     nix.gc
+    nix.optimise
     nix.registry
     nix.settings
     programs.fzf
