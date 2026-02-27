@@ -3,7 +3,7 @@
   # Allow packet forwarding
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = true;
-    "net.ipv6.conf.all.forwarding" = false; # when ISP will support it, this can be enabled.
+    "net.ipv6.conf.all.forwarding" = true;
   };
 
   # Assign custom interface names based on MAC addresses.
@@ -29,7 +29,7 @@
   };
 
   networking = {
-    enableIPv6 = false; # ISP does not support it yet.
+    enableIPv6 = true;
     domain = "edwardh.dev";
     search = [ "edwardh.dev" ];
     vlans = {
@@ -82,7 +82,7 @@
     };
     nat = {
       enable = true;
-      enableIPv6 = false;
+      enableIPv6 = true;
       # Interfaces that can access the internet.
       internalInterfaces = [
         "brinf"
@@ -141,7 +141,7 @@
   services.avahi = {
     enable = true;
     nssmdns4 = true;
-    nssmdns6 = false;
+    nssmdns6 = true;
     domainName = "local";
     reflector = true;
     allowInterfaces = [
