@@ -11,6 +11,7 @@
     10250 # k3s kubelet
 
     8123 # home assistant
+    5580 # matter server
   ];
   networking.firewall.allowedUDPPorts = [
     8472 # k3s flannel

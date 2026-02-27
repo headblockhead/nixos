@@ -3,8 +3,7 @@
   networking.firewall.allowedTCPPorts = [
     6443
     8123
-    8981
-    8980
+    5580
   ];
   services.haproxy = {
     enable = true;
