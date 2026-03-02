@@ -29,9 +29,6 @@
   };
 
   networking = {
-    enableIPv6 = true;
-    domain = "edwardh.dev";
-    search = [ "edwardh.dev" ];
     vlans = {
       inf-lan = { id = 10; interface = "ethernet4"; };
       inf-iot = { id = 20; interface = "ethernet4"; };
@@ -66,18 +63,30 @@
       };
       brinf = {
         ipv4.addresses = [{ address = "172.27.1.1"; prefixLength = 24; }];
+        ipv6.addresses = [{ address = "fdae:a100:5f6a:1::1"; prefixLength = 64; }];
       };
       brlan = {
         ipv4.addresses = [{ address = "172.27.10.1"; prefixLength = 24; }];
+        ipv6.addresses = [{ address = "fdae:a100:5f6a:10::1"; prefixLength = 64; }];
       };
       briot = {
         ipv4.addresses = [{ address = "172.27.20.1"; prefixLength = 24; }];
+        ipv6 = {
+          addresses = [{ address = "fdae:a100:5f6a:20::1"; prefixLength = 64; }];
+          routes = [{
+            address = "fd1e:f609:77f2::";
+            prefixLength = 48;
+            via = "fd1b:672b:d95a:f4ff:9b38:272c:3bfc:16d7";
+          }];
+        };
       };
       brsrv = {
         ipv4.addresses = [{ address = "172.27.30.1"; prefixLength = 24; }];
+        ipv6.addresses = [{ address = "fdae:a100:5f6a:30::1"; prefixLength = 64; }];
       };
       brgst = {
         ipv4.addresses = [{ address = "172.27.40.1"; prefixLength = 24; }];
+        ipv6.addresses = [{ address = "fdae:a100:5f6a:40::1"; prefixLength = 64; }];
       };
     };
     nat = {
@@ -166,7 +175,10 @@
   services.stubby = {
     enable = true;
     settings = pkgs.stubby.passthru.settingsExample // {
-      listen_addresses = [ "127.0.0.1@54" ];
+      listen_addresses = [
+        "127.0.0.1@54"
+        "[::1]@54"
+      ];
       upstream_recursive_servers = [
         {
           address_data = "1.1.1.1";
@@ -174,6 +186,14 @@
         }
         {
           address_data = "1.0.0.1";
+          tls_auth_name = "cloudflare-dns.com";
+        }
+        {
+          address_data = "2606:4700:4700::1111";
+          tls_auth_name = "cloudflare-dns.com";
+        }
+        {
+          address_data = "2606:4700:4700::1001";
           tls_auth_name = "cloudflare-dns.com";
         }
       ];
@@ -199,14 +219,23 @@
       no-poll = true; # Don't poll /etc/resolv.conf for changes.
       no-hosts = true; # Don't read /etc/hosts
 
-      server = [ "127.0.0.1#54" ]; # Use the stubby (dns over TLS) service for DNS resolution.
+      server = [
+        "127.0.0.1#54"
+        "[::1]#54"
+      ];
+      # Use our local stubby (dns over TLS) service for DNS resolution.
 
       address = [
         "/${config.networking.hostName}.inf/172.27.1.1"
+        "/${config.networking.hostName}.inf/fdae:a100:5f6a:1::1"
         "/${config.networking.hostName}.lan/172.27.10.1"
+        "/${config.networking.hostName}.lan/fdae:a100:5f6a:10::1"
         "/${config.networking.hostName}.iot/172.27.20.1"
+        "/${config.networking.hostName}.iot/fdae:a100:5f6a:20::1"
         "/${config.networking.hostName}.srv/172.27.30.1"
+        "/${config.networking.hostName}.srv/fdae:a100:5f6a:30::1"
         "/${config.networking.hostName}.gst/172.27.40.1"
+        "/${config.networking.hostName}.gst/fdae:a100:5f6a:40::1"
       ];
       # List of interfaces to accept requests from.
       interface = [
@@ -224,18 +253,20 @@
         "srv,172.27.30.0/24,local"
         "gst,172.27.40.0/24,local"
       ];
-      # Add clients with unknown leases.
-      # DHCP requests on unknown leases from unknown hosts are not ignored.
-      # This allows new hosts to get a lease without a tedious timeout under all circumstances.
-      # It also allows dnsmasq to rebuild its lease database without each client needing to reacquire a lease, if the database is lost.
+      enable-ra = true; # Advertise DNS servers via RA for SLAAC clients.
       dhcp-authoritative = true;
       # Define DHCP ranges for each network.
       dhcp-range = [
         "set:inf,172.27.1.2,172.27.1.254,6h"
+        "set:inf,fdae:a100:5f6a:1::2,fdae:a100:5f6a:1:ffff:ffff:ffff:ffff,6h"
         "set:lan,172.27.10.2,172.27.10.254,6h"
+        "set:lan,fdae:a100:5f6a:10::2,fdae:a100:5f6a:10:ffff:ffff:ffff:ffff,6h"
         "set:iot,172.27.20.2,172.27.20.254,1h"
+        "set:iot,fdae:a100:5f6a:20::2,fdae:a100:5f6a:20:ffff:ffff:ffff:ffff,1h"
         "set:srv,172.27.30.2,172.27.30.254,1h"
+        "set:srv,fdae:a100:5f6a:30::2,fdae:a100:5f6a:30:ffff:ffff:ffff:ffff,1h"
         "set:gst,172.27.40.2,172.27.40.254,1h"
+        "set:gst,fdae:a100:5f6a:40::2,fdae:a100:5f6a:40:ffff:ffff:ffff:ffff,1h"
       ];
       # Set custom hostnames based on MAC addresses.
       dhcp-host = [
