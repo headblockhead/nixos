@@ -12,6 +12,9 @@ inputs.nixpkgs.lib.nixosSystem {
         overlays = builtins.attrValues overlays;
         config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
           "vscode"
+          "code"
+          "code-with-extensions"
+
           "rider"
           "Oracle_VirtualBox_Extension_Pack"
         ];

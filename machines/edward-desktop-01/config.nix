@@ -20,10 +20,14 @@
   virtualisation.virtualbox.host.enableExtensionPack = true;
   users.users.headb.extraGroups = [ "vboxusers" ];
 
+  programs.vscode = {
+    enable = true;
+    package = pkgs.vscode.fhsWithPackages (ps: with ps; [ dotnetCorePackages.dotnet_10.sdk dotnet-sdk_10 ]);
+  };
+
   environment.systemPackages = [
     pkgs.blender-hip
     pkgs.kdePackages.kdenlive
-    pkgs.vscode-fhs
     pkgs.prismlauncher
     pkgs.clonehero
     pkgs.jetbrains.rider

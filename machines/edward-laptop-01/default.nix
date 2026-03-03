@@ -13,7 +13,6 @@ inputs.nixpkgs.lib.nixosSystem {
         config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
           "slack"
           "spotify"
-          "vscode"
           "x32-edit"
         ];
       };

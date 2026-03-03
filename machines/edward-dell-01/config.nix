@@ -17,19 +17,23 @@
   };
 
   virtualisation.virtualbox.host.enable = true;
-  virtualisation.virtualbox.host.enableExtensionPack = true;
+  #virtualisation.virtualbox.host.enableExtensionPack = true;
   users.users.headb.extraGroups = [ "vboxusers" ];
 
+  programs.vscode = {
+    enable = true;
+    package = pkgs.vscode.fhsWithPackages (ps: with ps; [ dotnetCorePackages.dotnet_10.sdk dotnet-sdk_10 ]);
+  };
+
   environment.systemPackages = [
-    pkgs.dotnetCorePackages.dotnet_9.sdk
-    pkgs.dotnet-sdk_9
-    pkgs.vscode
+    pkgs.dotnetCorePackages.dotnet_10.sdk
+    pkgs.dotnet-sdk_10
     pkgs.gopass
     pkgs.openldap
     pkgs.jetbrains.rider
   ];
 
   environment.sessionVariables = {
-    DOTNET_ROOT = "${pkgs.dotnet-sdk_9}/share/dotnet";
+    DOTNET_ROOT = "${pkgs.dotnet-sdk_10}/share/dotnet";
   };
 }

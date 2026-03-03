@@ -11,15 +11,17 @@ inputs.nixpkgs.lib.nixosSystem {
       nixpkgs = {
         overlays = builtins.attrValues overlays;
         config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+          "vscode"
+          "code"
+          "code-with-extensions"
+
+          "rider"
+          "Oracle_VirtualBox_Extension_Pack"
           "slack"
           "spotify"
           "clonehero"
-          "code"
-          "vscode"
           "steam"
           "steam-unwrapped"
-          "rider"
-          "Oracle_VirtualBox_Extension_Pack"
         ];
       };
     })
