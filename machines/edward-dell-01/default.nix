@@ -14,6 +14,10 @@ inputs.nixpkgs.lib.nixosSystem {
           "vscode"
           "code"
           "code-with-extensions"
+          "vscode-extension-ms-dotnettools-csharp"
+          "vscode-extension-ms-dotnettools-csdevkit"
+          "vscode-extension-ms-dotnettools-vscodeintellicode-csharp"
+          "vscode-extension-ms-dotnettools-vscode-dotnet-runtime"
 
           "rider"
           "Oracle_VirtualBox_Extension_Pack"
