@@ -28,9 +28,13 @@
       labels.app = "matter";
     };
     spec = {
+      securityContext = {
+        appArmorProfile = {
+          type = "Unconfined";
+        };
+      };
       selector.matchLabels.app = "matter";
       replicas = 1;
-      # "security-opt apparmor=unconfined"
       template = {
         metadata.labels.app = "matter";
         spec = {

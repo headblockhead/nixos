@@ -107,6 +107,11 @@
       flushRuleset = true;
     };
     firewall = {
+      logRefusedPackets = true;
+      logReversePathDrops = true;
+      logRefusedConnections = true;
+      logRefusedUnicastsOnly = true;
+
       trustedInterfaces = [ "brlan" ]; # Allow all input from LAN
       interfaces = {
         ethernet5 = {
@@ -177,7 +182,6 @@
     settings = pkgs.stubby.passthru.settingsExample // {
       listen_addresses = [
         "127.0.0.1@54"
-        "[::1]@54"
       ];
       upstream_recursive_servers = [
         {
@@ -186,14 +190,6 @@
         }
         {
           address_data = "1.0.0.1";
-          tls_auth_name = "cloudflare-dns.com";
-        }
-        {
-          address_data = "2606:4700:4700::1111";
-          tls_auth_name = "cloudflare-dns.com";
-        }
-        {
-          address_data = "2606:4700:4700::1001";
           tls_auth_name = "cloudflare-dns.com";
         }
       ];
@@ -221,7 +217,7 @@
 
       server = [
         "127.0.0.1#54"
-        "[::1]#54"
+        "::1#54"
       ];
       # Use our local stubby (dns over TLS) service for DNS resolution.
 
