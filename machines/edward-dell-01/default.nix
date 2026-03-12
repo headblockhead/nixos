@@ -16,7 +16,6 @@ inputs.nixpkgs.lib.nixosSystem {
           "code-with-extensions"
           "vscode-extension-ms-dotnettools-csharp"
           "vscode-extension-ms-dotnettools-csdevkit"
-          "vscode-extension-ms-dotnettools-vscodeintellicode-csharp"
           "vscode-extension-ms-dotnettools-vscode-dotnet-runtime"
 
           "rider"
@@ -33,6 +32,7 @@ inputs.nixpkgs.lib.nixosSystem {
     boot.plymouth
     conf.development
     conf.en-gb
+    conf.graphical-ios
     conf.graphical-productivity
     conf.graphical-web
     conf.utility

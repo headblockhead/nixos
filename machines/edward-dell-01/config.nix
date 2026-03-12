@@ -25,8 +25,7 @@
     extensions = with pkgs.vscode-extensions; [
       ms-dotnettools.csharp
       ms-dotnettools.csdevkit
-      ms-dotnettools.vscodeintellicode-csharp
-      ms-dotnettools.vscode-dotnet-runtime
+      #ms-dotnettools.vscode-dotnet-runtime
     ];
     package = pkgs.vscode.fhsWithPackages (ps: with ps; [ dotnetCorePackages.dotnet_10.sdk dotnet-sdk_10 ]);
   };
