@@ -60,6 +60,7 @@ inputs.nixpkgs.lib.nixosSystem {
     services.fwupd
     services.openssh
     services.pipewire
+    services.printing
     users.users
   ];
 }

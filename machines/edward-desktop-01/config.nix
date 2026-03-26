@@ -18,7 +18,8 @@
 
   virtualisation.virtualbox.host.enable = true;
   virtualisation.virtualbox.host.enableExtensionPack = true;
-  users.users.headb.extraGroups = [ "vboxusers" ];
+  hardware.rtl-sdr.enable = true;
+  users.users.headb.extraGroups = [ "vboxusers" "plugdev" ];
 
   programs.vscode = {
     enable = true;
@@ -26,6 +27,7 @@
   };
 
   environment.systemPackages = [
+    pkgs.cubicsdr
     pkgs.blender-hip
     pkgs.kdePackages.kdenlive
     pkgs.prismlauncher
