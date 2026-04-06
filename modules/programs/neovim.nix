@@ -12,7 +12,7 @@
         vim.opt.signcolumn = 'number'
         vim.opt.termguicolors = false
         vim.opt.mouse = ""
-        vim.opt.completeopt = { "menu", "preview", "fuzzy", "noinsert" }
+        vim.opt.completeopt = { "menu", "popup", "fuzzy", "noinsert" }
         vim.api.nvim_command('set clipboard+=unnamedplus')
 
         require('nvim-treesitter.configs').setup({
