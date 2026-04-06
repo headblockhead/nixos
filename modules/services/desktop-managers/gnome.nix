@@ -145,7 +145,7 @@
         };
         "org/gnome/Ptyxis/Profiles/af255d8b5e5ef23e7d40d82b68ea9158" = {
           label = "NixOS";
-          palette = "xterm";
+          palette = "gnome";
           login-shell = true;
           limit-scrollback = false;
         };

@@ -3,6 +3,7 @@
   programs.neovim = {
     enable = true;
     defaultEditor = true;
+    vimAlias = true;
     configure = {
       customLuaRC = ''
         vim.opt.tabstop = 2
