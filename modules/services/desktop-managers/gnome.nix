@@ -142,6 +142,7 @@
         "org/gnome/Ptyxis" = {
           profile-uuids = [ "af255d8b5e5ef23e7d40d82b68ea9158" ];
           default-profile-uuid = "af255d8b5e5ef23e7d40d82b68ea9158";
+          interface-style = "system";
         };
         "org/gnome/Ptyxis/Profiles/af255d8b5e5ef23e7d40d82b68ea9158" = {
           label = "NixOS";

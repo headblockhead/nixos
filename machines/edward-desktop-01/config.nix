@@ -28,7 +28,7 @@
 
   environment.systemPackages = [
     pkgs.cubicsdr
-    pkgs.blender-hip
+    pkgs.blender
     pkgs.kdePackages.kdenlive
     pkgs.prismlauncher
     pkgs.clonehero

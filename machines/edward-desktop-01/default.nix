@@ -10,19 +10,22 @@ inputs.nixpkgs.lib.nixosSystem {
       networking.hostName = hostname;
       nixpkgs = {
         overlays = builtins.attrValues overlays;
-        config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-          "vscode"
-          "code"
-          "code-with-extensions"
+        config = {
+          allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+            "vscode"
+            "code"
+            "code-with-extensions"
 
-          "rider"
-          "Oracle_VirtualBox_Extension_Pack"
-          "slack"
-          "spotify"
-          "clonehero"
-          "steam"
-          "steam-unwrapped"
-        ];
+            "rider"
+            "virtualbox-extpack"
+            "slack"
+            "spotify"
+            "clonehero"
+            "steam"
+            "steam-unwrapped"
+          ];
+          rocmSupport = true;
+        };
       };
     })
 
