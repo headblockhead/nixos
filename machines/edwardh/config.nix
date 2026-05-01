@@ -13,9 +13,9 @@ in
 {
   imports = [
     (builtins.fetchTarball {
-      # nixos-25.11 as of 2025-12-22
-      url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver/-/archive/8d35f004eeb47cfcfa5c4e1c8765f5c1bf64b9a0/nixos-mailserver-8d35f004eeb47cfcfa5c4e1c8765f5c1bf64b9a0.tar.gz";
-      sha256 = "13c16pck85m0qrqs32mxp8ma4jrxq39gzjyvjghcadmm7ppqfpvp";
+      # master as of 2026-04-08
+      url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver/-/archive/c45a1e4385e81b937b353ee4ce97f5cfd60ceff2/nixos-mailserver-c45a1e4385e81b937b353ee4ce97f5cfd60ceff2.tar.gz";
+      sha256 = "1ichglc8dc2an11avxk3lc6fqf455xsbbflva1dj8n7jcb72h82d";
     })
   ];
 
@@ -87,9 +87,7 @@ in
     sendingFqdn = "edwardh.dev";
     domains = [ "edwardh.dev" ];
 
-    backup.enable = true; # Backup to /var/rsnapshot
-
-    loginAccounts = {
+    accounts = {
       "inbox@edwardh.dev" = {
         # mkpasswd -sm bcrypt
         hashedPasswordFile = config.age.secrets.mail-hashed-password.path;
@@ -132,7 +130,7 @@ in
         (m: { name = m; value = { auto = "subscribe"; }; })
         mailboxList);
 
-    certificateScheme = "acme-nginx";
+    x509.useACMEHost = "mail.edwardh.dev";
   };
 
   services.roundcube = {
@@ -158,13 +156,6 @@ in
     };
   };
 
-  # Store zones in /etc so they can be signed without errors due to trying to write to the store.
-  systemd.tmpfiles.rules = [
-    "d /etc/bind/zones 755 named root -"
-    "L+ /etc/bind/zones/db.edwardh.dev - - - - ${./db.edwardh.dev}"
-    "z /etc/bind/zones/db.edwardh.dev 744 named root -"
-  ];
-
   services.bind = {
     enable = true;
     ipv4Only = true;
@@ -175,17 +166,8 @@ in
     '';
     zones."edwardh.dev" = {
       master = true;
-      file = "/etc/bind/zones/db.edwardh.dev";
+      file = ./db.edwardh.dev;
       allowQuery = [ "any" ];
-      # To get DS record:
-      # dig dnskey edwardh.dev @18.135.222.143 | dnssec-dsfromkey -f - edwardh.dev
-      extraConfig = ''
-        dnssec-policy default;
-        inline-signing yes;
-
-        # ${./db.edwardh.dev}
-        # The above comment is included so that the bind service will be restarted when the db.edwardh.dev file changes, by including the nix-store path of the file in bind's config.
-      '';
     };
   };
 

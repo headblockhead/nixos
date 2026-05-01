@@ -13,7 +13,7 @@
     nmap
 
     # Nix
-    nixfmt-rfc-style
+    nixfmt
 
     # Go
     go

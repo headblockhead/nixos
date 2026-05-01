@@ -19,5 +19,7 @@
     curtail
     gimp
     inkscape
+    # Scores
+    musescore
   ];
 }

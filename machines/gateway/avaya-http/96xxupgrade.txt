@@ -1,0 +1,2 @@
+UPGRADECODE 0
+GET 96xxsettings.txt
