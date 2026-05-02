@@ -100,11 +100,12 @@
       flushRuleset = true;
     };
     firewall = {
-      logRefusedPackets = true;
-      logReversePathDrops = true;
-      logRefusedConnections = true;
-      logRefusedUnicastsOnly = true;
-      rejectPackets = true;
+      # Debugging options:
+      # logRefusedPackets = true;
+      # logReversePathDrops = true;
+      # logRefusedConnections = true;
+      # logRefusedUnicastsOnly = true;
+      # rejectPackets = true;
 
       trustedInterfaces = [ "brlan" ]; # Allow all input from LAN
       interfaces = {
@@ -304,8 +305,8 @@
     confFiles = {
       "extensions.conf" = ''
         [from-internal]
-        exten => 1010,1,Dial(PJSIP/1010,20)
-        exten => 2024,1,Dial(PJSIP/2024,20)
+        exten => 1010,1,Dial(PJSIP/1010,20) ; edward-desktop-01
+        exten => 2024,1,Dial(PJSIP/2024,20) ; edward-bedroom-phone
 
         ; Dial 1000 for "hello, world"
         exten => 1000,1,Answer()
@@ -357,7 +358,7 @@
   services.nginx = {
     enable = true;
     virtualHosts = {
-      "avaya-config.iot" = {
+      "avaya-setup.iot" = {
         listen = [
           { addr = "172.27.20.1"; port = 8072; }
         ];
