@@ -30,7 +30,7 @@
   services.kmscon.extraConfig = lib.mkAfter ''
     font-dpi=192
   '';
-  boot.kernelParams = [ "video=HDMI-A-2:panel_orientation=left_side_up" "amdgpu.dcdebugmask=0x10" ];
+  boot.kernelParams = [ "video=HDMI-A-2:panel_orientation=left_side_up" "amdgpu.ppfeaturemask=0xf7fff" ];
   systemd.tmpfiles.rules = [
     ''L+ /run/gdm/.config/monitors.xml - - - - ${./monitors.xml}''
   ] ++ builtins.attrValues (builtins.mapAttrs (n: v: "L+ /home/${n}/.config/monitors.xml - - - - ${./monitors.xml}") accounts);
