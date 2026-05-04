@@ -53,7 +53,7 @@
     # Hardware
     pulseview
     minicom
-    wireshark
+    #wireshark
   ];
   services.gnome.core-developer-tools.enable = lib.mkDefault config.services.desktopManager.gnome.enable;
   users.users = builtins.mapAttrs (n: v: { extraGroups = (if v.superuser then [ "dialout" ] else [ ]); }) accounts;
