@@ -16,7 +16,7 @@
         vim.opt.completeopt = { "menu", "popup", "fuzzy", "noinsert" }
         vim.api.nvim_command("set clipboard+=unnamedplus")
 
-        require("nvim-treesitter.configs").setup({
+        require("nvim-treesitter.config").setup({
           highlight = { enable = true },
           indent = { enable = true },
         })
