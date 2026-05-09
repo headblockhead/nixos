@@ -30,19 +30,34 @@
 
   networking = {
     vlans = {
-      inf-lan = { id = 10; interface = "ethernet4"; };
-      inf-iot = { id = 20; interface = "ethernet4"; };
-      inf-gst = { id = 40; interface = "ethernet4"; };
+      inf-lan = {
+        id = 10;
+        interface = "ethernet4";
+      };
+      inf-iot = {
+        id = 20;
+        interface = "ethernet4";
+      };
+      inf-gst = {
+        id = 40;
+        interface = "ethernet4";
+      };
     };
     bridges = {
       brinf = {
         interfaces = [ "ethernet4" ];
       };
       brlan = {
-        interfaces = [ "ethernet1" "inf-lan" ];
+        interfaces = [
+          "ethernet1"
+          "inf-lan"
+        ];
       };
       briot = {
-        interfaces = [ "ethernet2" "inf-iot" ];
+        interfaces = [
+          "ethernet2"
+          "inf-iot"
+        ];
       };
       brsrv = {
         interfaces = [ "ethernet3" ];
@@ -62,24 +77,74 @@
         useDHCP = true; # boring
       };
       brinf = {
-        ipv4.addresses = [{ address = "172.27.1.1"; prefixLength = 24; }];
-        ipv6.addresses = [{ address = "fdae:a100:5f6a:1::1"; prefixLength = 64; }];
+        ipv4.addresses = [
+          {
+            address = "172.27.1.1";
+            prefixLength = 24;
+          }
+        ];
+        ipv6.addresses = [
+          {
+            address = "fdae:a100:5f6a:1::1";
+            prefixLength = 64;
+          }
+        ];
       };
       brlan = {
-        ipv4.addresses = [{ address = "172.27.10.1"; prefixLength = 24; }];
-        ipv6.addresses = [{ address = "fdae:a100:5f6a:10::1"; prefixLength = 64; }];
+        ipv4.addresses = [
+          {
+            address = "172.27.10.1";
+            prefixLength = 24;
+          }
+        ];
+        ipv6.addresses = [
+          {
+            address = "fdae:a100:5f6a:10::1";
+            prefixLength = 64;
+          }
+        ];
       };
       briot = {
-        ipv4.addresses = [{ address = "172.27.20.1"; prefixLength = 24; }];
-        ipv6.addresses = [{ address = "fdae:a100:5f6a:20::1"; prefixLength = 64; }];
+        ipv4.addresses = [
+          {
+            address = "172.27.20.1";
+            prefixLength = 24;
+          }
+        ];
+        ipv6.addresses = [
+          {
+            address = "fdae:a100:5f6a:20::1";
+            prefixLength = 64;
+          }
+        ];
       };
       brsrv = {
-        ipv4.addresses = [{ address = "172.27.30.1"; prefixLength = 24; }];
-        ipv6.addresses = [{ address = "fdae:a100:5f6a:30::1"; prefixLength = 64; }];
+        ipv4.addresses = [
+          {
+            address = "172.27.30.1";
+            prefixLength = 24;
+          }
+        ];
+        ipv6.addresses = [
+          {
+            address = "fdae:a100:5f6a:30::1";
+            prefixLength = 64;
+          }
+        ];
       };
       brgst = {
-        ipv4.addresses = [{ address = "172.27.40.1"; prefixLength = 24; }];
-        ipv6.addresses = [{ address = "fdae:a100:5f6a:40::1"; prefixLength = 64; }];
+        ipv4.addresses = [
+          {
+            address = "172.27.40.1";
+            prefixLength = 24;
+          }
+        ];
+        ipv6.addresses = [
+          {
+            address = "fdae:a100:5f6a:40::1";
+            prefixLength = 64;
+          }
+        ];
       };
     };
     nat = {
@@ -114,20 +179,42 @@
           allowedUDPPorts = [ ];
         };
         brinf = {
-          allowedTCPPorts = [ 53 8080 ];
-          allowedUDPPorts = [ 53 67 5514 ];
+          allowedTCPPorts = [
+            53
+            8080
+          ];
+          allowedUDPPorts = [
+            53
+            67
+            5514
+          ];
         };
         briot = {
-          allowedTCPPorts = [ 53 8072 5060 ];
-          allowedUDPPorts = [ 53 67 5353 ];
+          allowedTCPPorts = [
+            53
+            8072
+            5060
+          ];
+          allowedUDPPorts = [
+            53
+            67
+            5353
+          ];
         };
         brsrv = {
           allowedTCPPorts = [ 53 ];
-          allowedUDPPorts = [ 53 67 5353 ];
+          allowedUDPPorts = [
+            53
+            67
+            5353
+          ];
         };
         brgst = {
           allowedTCPPorts = [ 53 ];
-          allowedUDPPorts = [ 53 67 ];
+          allowedUDPPorts = [
+            53
+            67
+          ];
         };
       };
       filterForward = true;
@@ -326,7 +413,7 @@
         type=endpoint
         context=from-internal
         disallow=all
-        allow=alaw,g722
+        allow=g722,alaw
 
         [auth_userpass](!)
         type=auth
@@ -360,7 +447,10 @@
     virtualHosts = {
       "avaya-setup.iot" = {
         listen = [
-          { addr = "172.27.20.1"; port = 8072; }
+          {
+            addr = "172.27.20.1";
+            port = 8072;
+          }
         ];
         locations."/" = {
           root = ./avaya-http;
