@@ -180,40 +180,46 @@
         };
         brinf = {
           allowedTCPPorts = [
-            53
-            8080
+            53 # DNS
+            8080 # UniFi inform
           ];
           allowedUDPPorts = [
-            53
-            67
-            5514
+            53 # DNS
+            67 # DHCP
+            5514 # UniFi syslog
           ];
         };
         briot = {
           allowedTCPPorts = [
-            53
-            8072
-            5060
+            53 # DNS
+            8072 # avaya-setup.iot
+            5060 # SIP
           ];
           allowedUDPPorts = [
-            53
-            67
-            5353
+            53 # DNS
+            67 # DHCP
+            5353 # mDNS
           ];
         };
         brsrv = {
-          allowedTCPPorts = [ 53 ];
+          allowedTCPPorts = [
+            53 # DNS
+            8081 # otbr REST
+            5580 # matter-server
+          ];
           allowedUDPPorts = [
-            53
-            67
-            5353
+            53 # DNS
+            67 # DHCP
+            5353 # mDNS
           ];
         };
         brgst = {
-          allowedTCPPorts = [ 53 ];
+          allowedTCPPorts = [
+            53 # DNS
+          ];
           allowedUDPPorts = [
-            53
-            67
+            53 # DNS
+            67 # DHCP
           ];
         };
       };
@@ -253,11 +259,11 @@
     };
   };
 
-  services.unifi = {
-    enable = true;
-    unifiPackage = pkgs.unifi;
-    mongodbPackage = pkgs.mongodb-7_0;
-  };
+  #  services.unifi = {
+  #enable = true;
+  #unifiPackage = pkgs.unifi;
+  #mongodbPackage = pkgs.mongodb-7_0;
+  #};
 
   services.stubby = {
     enable = true;
@@ -457,5 +463,31 @@
         };
       };
     };
+  };
+
+  services.openthread-border-router = {
+    enable = true;
+    backboneInterfaces = [
+      "brinf"
+      "briot"
+      "brsrv"
+    ];
+    interfaceName = "otbr";
+    # logLevel = "debug";
+    radio = {
+      device = "/dev/serial/by-id/usb-Nabu_Casa_ZBT-2_E072A1FB7F20-if00";
+      baudRate = 460800;
+      flowControl = true;
+    };
+    rest = {
+      listenAddress = "172.27.30.1";
+      listenPort = 8081;
+    };
+  };
+
+  services.matter-server = {
+    enable = true;
+    port = 5580;
+    # logLevel = "debug";
   };
 }
