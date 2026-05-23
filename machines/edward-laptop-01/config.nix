@@ -11,4 +11,8 @@
     pkgs.ardour
     pkgs.x32edit
   ];
+
+  networking.hosts = {
+    "crosscountrywifi.co.uk" = [ "192.168.200.1" ];
+  };
 }
