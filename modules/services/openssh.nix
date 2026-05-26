@@ -9,9 +9,7 @@
       X11Forwarding = false;
     };
   };
-  users.users = builtins.mapAttrs
-    (n: v: {
-      openssh.authorizedKeys.keys = v.sshkeys;
-    })
-    accounts;
+  users.users = builtins.mapAttrs (n: v: {
+    openssh.authorizedKeys.keys = v.sshkeys;
+  }) accounts;
 }

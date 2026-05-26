@@ -13,7 +13,7 @@
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_16;
-    ensureUsers = [{ name = "headb"; }];
+    ensureUsers = [ { name = "headb"; } ];
   };
 
   virtualisation.virtualbox.host.enable = true;
@@ -27,7 +27,12 @@
       ms-dotnettools.csdevkit
       #ms-dotnettools.vscode-dotnet-runtime
     ];
-    package = pkgs.vscode.fhsWithPackages (ps: with ps; [ dotnetCorePackages.dotnet_10.sdk dotnet-sdk_10 ]);
+    package = pkgs.vscode.fhsWithPackages (
+      ps: with ps; [
+        dotnetCorePackages.dotnet_10.sdk
+        dotnet-sdk_10
+      ]
+    );
   };
 
   environment.systemPackages = [

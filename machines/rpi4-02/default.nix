@@ -1,16 +1,28 @@
-{ inputs, overlays, nixosModules, hostname, accounts, ... }:
+{
+  inputs,
+  overlays,
+  nixosModules,
+  hostname,
+  accounts,
+  ...
+}:
 inputs.nixos-raspberrypi.lib.nixosSystem {
   specialArgs = {
     inherit inputs;
     nixos-raspberrypi = inputs.nixos-raspberrypi;
-    accounts = inputs.nixpkgs.lib.filterAttrs (username: account: builtins.elem username [ "headb" ]) accounts;
+    accounts = inputs.nixpkgs.lib.filterAttrs (
+      username: account: builtins.elem username [ "headb" ]
+    ) accounts;
   };
   modules = with nixosModules; [
-    ({ lib, ... }: {
-      system.stateVersion = "25.05";
-      networking.hostName = hostname;
-      nixpkgs.overlays = builtins.attrValues overlays;
-    })
+    (
+      { lib, ... }:
+      {
+        system.stateVersion = "25.05";
+        networking.hostName = hostname;
+        nixpkgs.overlays = builtins.attrValues overlays;
+      }
+    )
 
     ./config.nix
     ../rpi4-hardware.nix

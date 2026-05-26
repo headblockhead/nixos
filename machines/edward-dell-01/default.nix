@@ -1,28 +1,42 @@
-{ inputs, overlays, nixosModules, hostname, accounts, ... }:
+{
+  inputs,
+  overlays,
+  nixosModules,
+  hostname,
+  accounts,
+  ...
+}:
 inputs.nixpkgs.lib.nixosSystem {
   specialArgs = {
     inherit inputs;
-    accounts = inputs.nixpkgs.lib.filterAttrs (username: account: builtins.elem username [ "headb" ]) accounts;
+    accounts = inputs.nixpkgs.lib.filterAttrs (
+      username: account: builtins.elem username [ "headb" ]
+    ) accounts;
   };
   modules = with nixosModules; [
-    ({ lib, ... }: {
-      system.stateVersion = "22.05";
-      networking.hostName = hostname;
-      nixpkgs = {
-        overlays = builtins.attrValues overlays;
-        config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-          "vscode"
-          "code"
-          "code-with-extensions"
-          "vscode-extension-ms-dotnettools-csharp"
-          "vscode-extension-ms-dotnettools-csdevkit"
-          "vscode-extension-ms-dotnettools-vscode-dotnet-runtime"
+    (
+      { lib, ... }:
+      {
+        system.stateVersion = "22.05";
+        networking.hostName = hostname;
+        nixpkgs = {
+          overlays = builtins.attrValues overlays;
+          config.allowUnfreePredicate =
+            pkg:
+            builtins.elem (lib.getName pkg) [
+              "vscode"
+              "code"
+              "code-with-extensions"
+              "vscode-extension-ms-dotnettools-csharp"
+              "vscode-extension-ms-dotnettools-csdevkit"
+              "vscode-extension-ms-dotnettools-vscode-dotnet-runtime"
 
-          "rider"
-          "Oracle_VirtualBox_Extension_Pack"
-        ];
-      };
-    })
+              "rider"
+              "Oracle_VirtualBox_Extension_Pack"
+            ];
+        };
+      }
+    )
 
     ./config.nix
     ./hardware.nix

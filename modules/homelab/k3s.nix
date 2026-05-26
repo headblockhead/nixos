@@ -2,12 +2,16 @@
 {
   age.secrets.k3s-token.file = ../../secrets/k3s-token.age;
 
-  boot.kernelParams = [ "cgroup_memory=1" "cgroup_enable=memory" "cgroup_enable=cpuset" ];
+  boot.kernelParams = [
+    "cgroup_memory=1"
+    "cgroup_enable=memory"
+    "cgroup_enable=cpuset"
+  ];
 
   networking.firewall.allowedTCPPorts = [
     6443 # k3s
     2379 # k3s etcd
-    2380 # k3s etcd 
+    2380 # k3s etcd
     10250 # k3s kubelet
 
     8123 # home assistant
@@ -28,7 +32,7 @@
     BindPaths = "/run/current-system/sw/bin:/bin";
   };
 
-  # Hass 
+  # Hass
   services.avahi.enable = true;
 
   # To reset:

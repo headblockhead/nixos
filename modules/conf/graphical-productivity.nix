@@ -15,14 +15,14 @@
     texstudio
     texliveFull
     hieroglyphic
-citations
+    citations
 
-collision
+    collision
 
     gnome-graphs
-gnome-decoder
-   dialect
- 
+    gnome-decoder
+    dialect
+
     forge-sparks
 
     wike

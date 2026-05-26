@@ -12,7 +12,7 @@
           mode tcp
           bind *:6443
           default_backend k3s_backend
-    
+
       backend k3s_backend
           mode tcp
           option tcp-check
@@ -63,7 +63,7 @@
       interface = "end0";
       # state and priority should be set by the host-specific configuration
       virtualRouterId = 51;
-      virtualIps = [{ addr = "172.27.30.100/24"; }];
+      virtualIps = [ { addr = "172.27.30.100/24"; } ];
       trackScripts = [ "check_haproxy" ];
     };
   };

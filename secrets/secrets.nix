@@ -9,7 +9,11 @@ in
   # then nixos-rebuild boot, reboot, wait for failure
   # sudo cat /var/lib/rancher/k3s/server/token
   # update with that
-  "k3s-token.age".publicKeys = [ rpi5-01 rpi5-02 rpi5-03 ];
+  "k3s-token.age".publicKeys = [
+    rpi5-01
+    rpi5-02
+    rpi5-03
+  ];
   "mail-hashed-password.age".publicKeys = [ edwardh ];
   "radicale-htpasswd.age".publicKeys = [ edwardh ];
 }

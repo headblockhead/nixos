@@ -41,7 +41,11 @@
                   {
                     "(name)" = "*";
                     envFrom = [
-                      { configMapRef = { name = "longhorn-nixos-path"; }; }
+                      {
+                        configMapRef = {
+                          name = "longhorn-nixos-path";
+                        };
+                      }
                     ];
                   }
                 ];
@@ -49,7 +53,11 @@
                   {
                     "(name)" = "*";
                     envFrom = [
-                      { configMapRef = { name = "longhorn-nixos-path"; }; }
+                      {
+                        configMapRef = {
+                          name = "longhorn-nixos-path";
+                        };
+                      }
                     ];
                   }
                 ];

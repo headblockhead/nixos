@@ -2,13 +2,13 @@
 let
   mailboxMappings = import ./mailbox-mappings.nix;
   mailboxList = builtins.map (m: m.mailbox) mailboxMappings;
-  autoScript = builtins.concatStringsSep "\n" (builtins.map
-    (m: ''
+  autoScript = builtins.concatStringsSep "\n" (
+    builtins.map (m: ''
       if address :is ["to, "cc"] "${m.address}" {
         fileinto "${m.mailbox}";
         stop;
-      }'')
-    mailboxMappings);
+      }'') mailboxMappings
+  );
 in
 {
   # TODO: make this a flake input, see https://nixos-mailserver.readthedocs.io/en/latest/flakes.html
@@ -95,8 +95,10 @@ in
         # mkpasswd -sm bcrypt
         hashedPasswordFile = config.age.secrets.mail-hashed-password.path;
         aliases = [ "@edwardh.dev" ];
-        sieveScript =
-          builtins.concatStringsSep "\n" [ (builtins.readFile ./mail.sieve) autoScript ];
+        sieveScript = builtins.concatStringsSep "\n" [
+          (builtins.readFile ./mail.sieve)
+          autoScript
+        ];
       };
     };
 
@@ -125,14 +127,27 @@ in
       };
 
       # non-auto-sorted mailboxes
-      "Shipping and Recipts" = { auto = "subscribe"; };
-      "School" = { auto = "subscribe"; };
-      "Performances" = { auto = "subscribe"; };
-      "Music" = { auto = "subscribe"; };
-    } // builtins.listToAttrs
-      (builtins.map
-        (m: { name = m; value = { auto = "subscribe"; }; })
-        mailboxList);
+      "Shipping and Recipts" = {
+        auto = "subscribe";
+      };
+      "School" = {
+        auto = "subscribe";
+      };
+      "Performances" = {
+        auto = "subscribe";
+      };
+      "Music" = {
+        auto = "subscribe";
+      };
+    }
+    // builtins.listToAttrs (
+      builtins.map (m: {
+        name = m;
+        value = {
+          auto = "subscribe";
+        };
+      }) mailboxList
+    );
 
     x509.useACMEHost = "mail.edwardh.dev";
   };

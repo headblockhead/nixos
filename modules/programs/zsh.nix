@@ -1,6 +1,8 @@
 { accounts, pkgs, ... }:
 {
-  systemd.tmpfiles.rules = builtins.attrValues (builtins.mapAttrs (n: v: "f /home/${n}/.zprofile") accounts);
+  systemd.tmpfiles.rules = builtins.attrValues (
+    builtins.mapAttrs (n: v: "f /home/${n}/.zprofile") accounts
+  );
 
   # TODO: allow for choice
   users.defaultUserShell = pkgs.zsh;
@@ -12,7 +14,10 @@
     syntaxHighlighting.enable = true;
     ohMyZsh = {
       enable = true;
-      plugins = [ "aws" "git" ];
+      plugins = [
+        "aws"
+        "git"
+      ];
     };
     interactiveShellInit = ''
       source ${./custom.zsh-theme}

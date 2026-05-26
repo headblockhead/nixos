@@ -1,14 +1,29 @@
-{ config, lib, modulesPath, ... }:
+{
+  config,
+  lib,
+  modulesPath,
+  ...
+}:
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  swapDevices = [{
-    device = "/var/lib/swap";
-    size = 24 * 1024;
-    options = [ "discard" ];
-  }];
+  swapDevices = [
+    {
+      device = "/var/lib/swap";
+      size = 24 * 1024;
+      options = [ "discard" ];
+    }
+  ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "ahci"
+    "nvme"
+    "usbhid"
+    "usb_storage"
+    "sd_mod"
+    "rtsx_pci_sdmmc"
+  ];
   boot.kernelModules = [ "kvm-intel" ];
 
   security.tpm2.enable = lib.mkForce false;

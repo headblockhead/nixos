@@ -49,8 +49,12 @@
           picture-uri = "file://${pkgs.nixos-artwork.wallpapers.nineish.gnomeFilePath}";
           picture-uri-dark = "file://${pkgs.nixos-artwork.wallpapers.nineish-dark-gray.gnomeFilePath}";
         };
-        "org/gnome/desktop/calendar" = { show-weekdate = true; };
-        "org/gnome/desktop/datetime" = { automatic-timezone = true; };
+        "org/gnome/desktop/calendar" = {
+          show-weekdate = true;
+        };
+        "org/gnome/desktop/datetime" = {
+          automatic-timezone = true;
+        };
         "org/gnome/desktop/interface" = {
           clock-format = "24h";
           clock-show-date = true;
@@ -61,9 +65,15 @@
           show-battery-percentage = true;
           monospace-font-name = "SauceCodePro Nerd Font 12";
         };
-        "org/gnome/desktop/lockdown" = { disable-show-password = true; };
-        "org/gnome/desktop/notifications" = { show-in-lock-screen = false; };
-        "org/gnome/desktop/peripherals/touchpad" = { disable-while-typing = false; };
+        "org/gnome/desktop/lockdown" = {
+          disable-show-password = true;
+        };
+        "org/gnome/desktop/notifications" = {
+          show-in-lock-screen = false;
+        };
+        "org/gnome/desktop/peripherals/touchpad" = {
+          disable-while-typing = false;
+        };
         "org/gnome/desktop/privacy" = {
           old-files-age = lib.gvariant.mkInt32 7;
           recent-files-max-age = lib.gvariant.mkInt32 7;
@@ -73,16 +83,29 @@
           remember-app-usage = false;
           remember-recent-files = false;
         };
-        "org/gnome/desktop/screen-time-limits" = { history-enabled = false; };
-        "org/gnome/desktop/wm/preferences" = { num-workspaces = lib.gvariant.mkInt32 4; };
+        "org/gnome/desktop/screen-time-limits" = {
+          history-enabled = false;
+        };
+        "org/gnome/desktop/wm/preferences" = {
+          num-workspaces = lib.gvariant.mkInt32 4;
+        };
 
         "org/gnome/nautilus/list-view" = {
           default-zoom-level = "small";
           use-tree-view = false;
-          default-visible-columns = [ "name" "size" "date_modified" "deatiled_type" ];
+          default-visible-columns = [
+            "name"
+            "size"
+            "date_modified"
+            "deatiled_type"
+          ];
         };
-        "org/gnome/nautilus/preferences" = { default-folder-viewer = "list-view"; };
-        "org/gnome/nautilus/icon-view" = { default-zoom-level = "small-plus"; };
+        "org/gnome/nautilus/preferences" = {
+          default-folder-viewer = "list-view";
+        };
+        "org/gnome/nautilus/icon-view" = {
+          default-zoom-level = "small-plus";
+        };
 
         "org/gnome/settings-daemon/plugins/color" = {
           night-light-enabled = true;
@@ -94,7 +117,11 @@
           free-percent-notify-again = lib.gvariant.mkDouble 0.01;
           free-size-gb-no-notify = lib.gvariant.mkInt32 30;
         };
-        "org/gnome/settings-daemon/plugins/media-keys" = { custom-keybindings = [ "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/" ]; };
+        "org/gnome/settings-daemon/plugins/media-keys" = {
+          custom-keybindings = [
+            "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+          ];
+        };
         "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
           name = "Terminal";
           command = "ptyxis -s";
@@ -111,7 +138,9 @@
             "unblank@sun.wxg@gmail.com" # Prevent screen from blanking immediatly when locked
           ];
         };
-        "org/gnome/shell/weather" = { automatic-location = true; };
+        "org/gnome/shell/weather" = {
+          automatic-location = true;
+        };
         "org/gnome/shell/extensions/display-brightness-ddcutil" = {
           ddcutil-binary-path = "${pkgs.ddcutil}/bin/ddcutil";
           button-location = lib.gvariant.mkInt32 1; # system menu
@@ -130,14 +159,24 @@
         };
 
         "org/gnome/mutter" = {
-          experimental-features = [ "scale-monitor-framebuffer" "kms-modifiers" "autoclose-xwayland" "variable-refresh-rate" "xwayland-native-scaling" ];
+          experimental-features = [
+            "scale-monitor-framebuffer"
+            "kms-modifiers"
+            "autoclose-xwayland"
+            "variable-refresh-rate"
+            "xwayland-native-scaling"
+          ];
           dynamic-workspaces = false;
           workspaces-only-on-primary = false;
         };
 
-        "org/gnome/system/location" = { enabled = false; };
+        "org/gnome/system/location" = {
+          enabled = false;
+        };
 
-        "org/gtk/gtk4/settings/file-chooser" = { show-hidden = true; };
+        "org/gtk/gtk4/settings/file-chooser" = {
+          show-hidden = true;
+        };
 
         "org/gnome/Ptyxis" = {
           profile-uuids = [ "af255d8b5e5ef23e7d40d82b68ea9158" ];
@@ -151,7 +190,9 @@
           limit-scrollback = false;
         };
 
-        "ca/desrt/dconf-editor" = { show-warning = false; };
+        "ca/desrt/dconf-editor" = {
+          show-warning = false;
+        };
       };
     }
   ];

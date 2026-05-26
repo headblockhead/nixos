@@ -40,12 +40,24 @@
         spec = {
           hostNetwork = true;
           dnsPolicy = "ClusterFirstWithHostNet";
-          containers = [{
-            name = "matter";
-            image = "ghcr.io/matter-js/python-matter-server:stable"; # Also update services.k3s.images!
-            volumeMounts = [{ name = "data-volume"; mountPath = "/data"; }];
-          }];
-          volumes = [{ name = "data-volume"; persistentVolumeClaim.claimName = "matter-pvc"; }];
+          containers = [
+            {
+              name = "matter";
+              image = "ghcr.io/matter-js/python-matter-server:stable"; # Also update services.k3s.images!
+              volumeMounts = [
+                {
+                  name = "data-volume";
+                  mountPath = "/data";
+                }
+              ];
+            }
+          ];
+          volumes = [
+            {
+              name = "data-volume";
+              persistentVolumeClaim.claimName = "matter-pvc";
+            }
+          ];
         };
       };
     };
