@@ -1,10 +1,15 @@
-{ config, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 let
   mailboxMappings = import ./mailbox-mappings.nix;
   mailboxList = builtins.map (m: m.mailbox) mailboxMappings;
   autoScript = builtins.concatStringsSep "\n" (
     builtins.map (m: ''
-      if address :is ["to, "cc"] "${m.address}" {
+      if address :is ["to", "cc"] "${m.address}" {
         fileinto "${m.mailbox}";
         stop;
       }'') mailboxMappings
@@ -29,7 +34,6 @@ in
 
       53 # DNS
       22 # SSH
-      822 # railreader
     ];
     allowedUDPPorts = [
       # QUIC
@@ -181,12 +185,44 @@ in
     extraOptions = ''
       recursion no;
       allow-transfer { none; };
-      version "not currently available";
     '';
     zones."edwardh.dev" = {
       master = true;
-      file = ./db.edwardh.dev;
       allowQuery = [ "any" ];
+      file = pkgs.writeText "edwardh.dev.zone" ''
+        $TTL 86400
+
+        edwardh.dev. IN SOA ns.edwardh.dev. admin.edwardh.dev. (
+          2025122401 	; Serial, MUST be updated every change
+          86400       ; Refresh period
+          86400       ; Retry period
+          86400       ; Expire time
+          86400       ; Negative Cache TTL
+        )
+
+        edwardh.dev. IN NS ns.edwardh.dev.
+        ns IN A 18.135.222.143
+
+        ; Webserver
+        edwardh.dev. 600 IN A 18.135.222.143
+        www 600 IN CNAME edwardh.dev.
+
+        ; CalDAV and CardDAV
+        calendar 600 IN A 18.135.222.143
+        contacts 600 IN A 18.135.222.143
+
+        ; Mailserver
+        mail 10800 IN A 18.135.222.143
+        edwardh.dev. 600 IN MX 10 mail.edwardh.dev.
+
+        ; Mailserver SPF, DKIM, and DMARC
+        edwardh.dev. 10800 IN TXT "v=spf1 a:mail.edwardh.dev -all"
+        mail._domainkey 10800 IN TXT "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCqdWWB1LMiqpeNve6nTiYSQDtMcTw8KzNESEomkTvsWstjjRA2IQC7oGeW8yMqeCFniKx+TJ1QyH8UTktUvm/XPv0mSSzR4mjYGpY6sSiRB7z57CGtpcV4Tsi5Oz7NNOGt/vm3fZbi7xLQHfIpFrjdBtIbYFfc1LrQOWzceTt+VQIDAQAB"
+        _dmarc 10800 IN TXT "v=DMARC1; p=quarantine"
+
+        ; AT Protocol
+        _atproto 600 IN TXT "did=did:plc:hmxed7odvvlp2xvoc7n52fqn"
+      '';
     };
   };
 
@@ -200,17 +236,6 @@ in
         default                    off;
         text/html                  epoch;
         text/css                   1h;
-      }
-    '';
-    appendConfig = ''
-      stream {
-        upstream railreader {
-          server 172.27.3.51:64022;
-        }
-        server {
-          listen 822;
-          proxy_pass railreader;
-        }
       }
     '';
     virtualHosts = {
@@ -249,69 +274,6 @@ in
           '';
         };
         serverAliases = [ "contacts.edwardh.dev" ];
-      };
-      # Local services
-      "cache.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
-        quic = true;
-        http3 = true;
-        http3_hq = true;
-
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyPass = "http://172.27.3.51:8501"; # rpi5-01
-          extraConfig = ''
-            add_header Alt-Svc 'h3=":443"; ma=86400';
-            proxy_read_timeout 300;
-          '';
-        };
-      };
-      "lcd.edwardh.dev" = {
-        addSSL = true;
-        enableACME = true;
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyPass = "http://172.27.3.42:8019"; # rpi4-02
-        };
-      };
-      "grafana.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
-        quic = true;
-        http3 = true;
-        http3_hq = true;
-
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyWebsockets = true;
-          proxyPass = "http://172.27.3.1:3000"; # gateway
-          extraConfig = ''
-            gzip on;
-            gzip_types text/html text/css;
-            etag on;
-            add_header Alt-Svc 'h3=":443"; ma=86400';
-          '';
-        };
-      };
-      "hass.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
-        quic = true;
-        http3 = true;
-        http3_hq = true;
-
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyPass = "http://172.27.3.41:8123"; # rpi4-01
-          proxyWebsockets = true;
-          extraConfig = ''
-            gzip on;
-            gzip_types text/html text/css;
-            etag on;
-            add_header Alt-Svc 'h3=":443"; ma=86400';
-          '';
-        };
       };
     };
   };

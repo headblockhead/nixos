@@ -38,7 +38,7 @@
           containers = [
             {
               name = "home-assistant";
-              image = "ghcr.io/home-assistant/aarch64-homeassistant:2026.2.3"; # Also update services.k3s.images!
+              image = "ghcr.io/home-assistant/aarch64-homeassistant:2026.5.4"; # Also update services.k3s.images!
               env = [
                 {
                   name = "TZ";

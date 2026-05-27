@@ -55,7 +55,7 @@
   {
     address = "github@edwardh.dev";
     mailbox = "Organizations.GitHub";
-  } # also sorted via sender
+  }
   {
     address = "google@edwardh.dev";
     mailbox = "Organizations.Google";
@@ -133,7 +133,7 @@
     mailbox = "Organizations.NHS";
   }
   {
-    address = "northern@edwardh.dev";
+    address = "northerntrains@edwardh.dev";
     mailbox = "Organizations.Northern Trains";
   }
   {
@@ -151,11 +151,11 @@
   {
     address = "pcbway@edwardh.dev";
     mailbox = "Organizations.PCBWay";
-  } # also sorted via sender
+  }
   {
     address = "pcbx@edwardh.dev";
     mailbox = "Organizations.PCBX";
-  } # also sorted via sender
+  }
   {
     address = "playdate@edwardh.dev";
     mailbox = "Organizations.Playdate";

@@ -50,13 +50,13 @@
     enable = true;
     images = [
       config.services.k3s.package.airgap-images
-      # nix run nixpkgs#nix-prefetch-docker -- --image-name ghcr.io/home-assistant/aarch64-homeassistant --image-tag "2026.2.3" --arch arm64
+      # nix run nixpkgs#nix-prefetch-docker -- --image-name ghcr.io/home-assistant/aarch64-homeassistant --image-tag "2026.5.4" --arch arm64
       (pkgs.dockerTools.pullImage {
         imageName = "ghcr.io/home-assistant/aarch64-homeassistant";
-        imageDigest = "sha256:4219b77148517d696158bfec11e83a354b3e48d9fc6da4aef595cb0e1b85eb83";
-        hash = "sha256-3MfeQTiZiuifBRSh2m+XWCLOob+55z6eVM/ToisLWww=";
+        imageDigest = "sha256:3494515af57b2a404cb084770f9dac1ab8695d15edacaddfdb979a91f44a600e";
+        hash = "sha256-vLYUakRvBWuGqVJGVzZEl6Ka0NLjY/AMjdW2DEDnG1Q=";
         finalImageName = "ghcr.io/home-assistant/aarch64-homeassistant";
-        finalImageTag = "2026.2.3";
+        finalImageTag = "2026.5.4";
       })
       # nix run nixpkgs#nix-prefetch-docker -- --image-name ghcr.io/matter-js/python-matter-server --image-tag "stable" --arch arm64
       (pkgs.dockerTools.pullImage {
