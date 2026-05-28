@@ -525,6 +525,12 @@
     };
   };
 
+  services.unifi = {
+    enable = true;
+    unifiPackage = pkgs.unifi;
+    mongodbPackage = pkgs.mongodb-7_0;
+  };
+
   services.avahi = {
     enable = true;
     nssmdns4 = true;
