@@ -221,18 +221,12 @@
         };
       };
       filterForward = true;
-      extraInputRules = ''
-        ip saddr 172.27.20.18 tcp dport 53 drop comment "block meross-bedroom-lamp DNS"
-        ip saddr 172.27.20.18 udp dport { 53, 5353 } drop comment "block meross-bedroom-lamp DNS/MDNS"
-      '';
       extraForwardRules = ''
         iifname brlan accept comment "from lan"
         oifname brlan ct state established,related accept comment "returning to lan"
 
         iifname briot oifname brsrv accept comment "from iot to srv"
         iifname brsrv oifname briot accept comment "from srv to iot"
-
-        ip saddr 172.27.20.18 oifname ethernet5 drop comment "block meross-bedroom-lamp internet"
       '';
     };
   };
@@ -447,21 +441,6 @@
                 ip-address = "172.27.20.17";
               }
               {
-                hostname = "meross-bedroom-lamp";
-                hw-address = "48:e1:e9:9f:32:e6";
-                ip-address = "172.27.20.18";
-              }
-              {
-                hostname = "meross-printer-lamp";
-                hw-address = "48:e1:e9:2d:c9:76";
-                ip-address = "172.27.20.19";
-              }
-              {
-                hostname = "meross-printer-power";
-                hw-address = "48:e1:e9:2d:c9:70";
-                ip-address = "172.27.20.20";
-              }
-              {
                 hostname = "prusa-mk4";
                 hw-address = "ec:64:c9:e9:97:9a";
                 ip-address = "172.27.20.21";
@@ -569,6 +548,7 @@
     enable = true;
     backboneInterfaces = [
       "brinf"
+      "brlan"
       "briot"
       "brsrv"
     ];

@@ -144,9 +144,9 @@ curl -s -o- https://raw.githubusercontent.com/rafaelmardojai/firefox-gnome-theme
 
 ## Tasks
 
-### nixos
+### switch
 
-Switch to the new nixos configuration.
+Switch to the new nixos configuration for the current machine.
 
 ```bash
 sudo nixos-rebuild switch --flake .#
@@ -154,7 +154,7 @@ sudo nixos-rebuild switch --flake .#
 
 ### test-deploy
 
-Deploy the nixos configurations to all machines, without setting the boot-default.
+Deploy the nixos configurations to servers, without setting the boot-default.
 
 ```bash
 nixos-rebuild test --target-host gateway.lan --sudo --no-reexec --flake .#gateway
@@ -168,7 +168,7 @@ nixos-rebuild test --target-host edwardh.dev --sudo --no-reexec --flake .#edward
 
 ### rollout
 
-Deploy the nixos configurations to all machines, setting the boot-default.
+Deploy the nixos configurations to servers, setting the boot-default.
 
 ```bash
 nixos-rebuild switch --target-host gateway.lan --sudo --no-reexec --flake .#gateway
@@ -185,6 +185,7 @@ nixos-rebuild switch --target-host edwardh.dev --sudo --no-reexec --flake .#edwa
 Build the nixos configurations for all machines, without deploying.
 
 ```bash
+nixos-rebuild build --flake .#
 nixos-rebuild build --flake .#gateway
 nixos-rebuild build --flake .#rpi4-01
 nixos-rebuild build --flake .#rpi4-02
@@ -192,4 +193,17 @@ nixos-rebuild build --flake .#rpi5-01
 nixos-rebuild build --flake .#rpi5-02
 nixos-rebuild build --flake .#rpi5-03
 nixos-rebuild build --flake .#edwardh
+```
+
+### clean
+
+```bash
+sudo nix-collect-garbage -d
+ssh gateway.lan sudo nix-collect-garbage -d
+ssh rpi4-01.lan sudo nix-collect-garbage -d
+ssh rpi4-02.lan sudo nix-collect-garbage -d
+ssh rpi5-01.lan sudo nix-collect-garbage -d
+ssh rpi5-02.lan sudo nix-collect-garbage -d
+ssh rpi5-03.lan sudo nix-collect-garbage -d
+ssh edwardh.dev sudo nix-collect-garbage -d
 ```
