@@ -197,8 +197,9 @@ nixos-rebuild build --flake .#edwardh
 
 ### clean
 
+Clean up servers.
+
 ```bash
-sudo nix-collect-garbage -d
 ssh gateway.lan sudo nix-collect-garbage -d
 ssh rpi4-01.lan sudo nix-collect-garbage -d
 ssh rpi4-02.lan sudo nix-collect-garbage -d
