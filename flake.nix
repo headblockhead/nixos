@@ -1,17 +1,8 @@
 {
   description = "NixOS configuration for my desktops, laptops, and local network.";
 
-  #  nixConfig = {
-  #extra-substituters = [
-  #"https://cache.edwardh.dev"
-  #];
-  #extra-trusted-public-keys = [
-  #"cache.edwardh.dev-1:+Gafa747BGilG7GAbTC/1i6HX9NUwzMbdFAc+v5VOPk="
-  #];
-  #};
-
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi";
     disko.url = "github:nix-community/disko";
@@ -89,6 +80,6 @@
             }
           );
 
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt;
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
     };
 }
