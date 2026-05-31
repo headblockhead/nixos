@@ -24,7 +24,8 @@
         -- see https://github.com/neovim/nvim-lspconfig/tree/master/lsp
         vim.lsp.config("gopls", { cmd = {"${pkgs.gopls}/bin/gopls"} })
         vim.lsp.config("nil_ls", { cmd = {"${pkgs.nil}/bin/nil"} })
-        vim.lsp.enable({"gopls", "nil_ls"})
+        vim.lsp.config("ccls", { cmd = {"${pkgs.ccls}/bin/ccls"} })
+        vim.lsp.enable({"gopls", "nil_ls", "ccls"})
 
         vim.api.nvim_create_autocmd("LspAttach", { callback = function(ev)
           local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
