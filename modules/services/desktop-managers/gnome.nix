@@ -31,7 +31,6 @@
     gnomeExtensions.unblank
     gnomeExtensions.desktop-cube
     gnomeExtensions.alphabetical-app-grid
-    gnomeExtensions.blur-my-shell
 
     calls
     gnome-pomodoro
@@ -132,7 +131,6 @@
           enabled-extensions = [
             "AlphabeticalAppGrid@stuarthayhurst" # Force app grid to be in alphabetical order
             "appindicatorsupport@rgcjonas.gmail.com" # "tray icons"
-            "blur-my-shell@aunetx" # Add fancy blur effect to various UI elements
             "display-brightness-ddcutil@themightydeity.github.com" # Control physical monitor brightness for external monitors
             "desktop-cube@schneegans.github.com" # 3D cube for switching workspaces
             "unblank@sun.wxg@gmail.com" # Prevent screen from blanking immediatly when locked
@@ -149,9 +147,6 @@
           show-all-slider = true;
           only-all-slider = true;
           show-display-name = false;
-        };
-        "org/gnome/shell/extensions/blur-my-shell/panel" = {
-          override-background-dynamically = true; # Un-blur/darken the panel when a window is near.
         };
         "org/gnome/shell/extensions/unblank" = {
           power = true; # Delay screen blanking only when plugged-in.
