@@ -11,6 +11,7 @@
       diff.external = "${pkgs.difftastic}/bin/difft --color auto --background dark --display inline";
       init.defaultBranch = "master";
       pull.rebase = true;
+      push.autoSetupRemote = true;
       credential = {
         "https://github.com" = {
           helper = "${pkgs.gh}/bin/gh auth git-credential";
