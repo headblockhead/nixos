@@ -79,6 +79,7 @@ inputs.nixpkgs.lib.nixosSystem {
     services.openssh
     services.pipewire
     services.printing
+    services.printingEnsureHomePrinter
     users.users
   ];
 }

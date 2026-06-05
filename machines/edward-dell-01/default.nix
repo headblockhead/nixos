@@ -60,6 +60,7 @@ inputs.nixpkgs.lib.nixosSystem {
     programs.fzf
     programs.git
     programs.gnupg
+    programs.neovim
     programs.zsh
     security.rtkit
     services.desktop-managers.gnome
@@ -68,5 +69,6 @@ inputs.nixpkgs.lib.nixosSystem {
     services.openssh
     services.pipewire
     users.users
+    services.printing
   ];
 }

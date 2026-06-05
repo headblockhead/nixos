@@ -41,6 +41,7 @@
     pkgs.gopass
     pkgs.openldap
     pkgs.jetbrains.rider
+    pkgs.haskell.compiler.ghcHEAD
   ];
 
   environment.sessionVariables = {
