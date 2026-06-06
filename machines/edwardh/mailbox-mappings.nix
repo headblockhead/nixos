@@ -189,6 +189,10 @@
     mailbox = "Newsletters.Thunderbird";
   }
   {
+    address = "glitchproductions@edwardh.dev";
+    mailbox = "Organizations.Glitch Productions";
+  }
+  {
     address = "ticketsource@edwardh.dev";
     mailbox = "Organizations.TicketSource";
   }
