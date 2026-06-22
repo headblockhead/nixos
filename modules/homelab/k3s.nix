@@ -15,7 +15,6 @@
     10250 # k3s kubelet
 
     8123 # home assistant
-    5580 # matter server
   ];
   networking.firewall.allowedUDPPorts = [
     8472 # k3s flannel
@@ -50,21 +49,13 @@
     enable = true;
     images = [
       config.services.k3s.package.airgap-images
-      # nix run nixpkgs#nix-prefetch-docker -- --image-name ghcr.io/home-assistant/aarch64-homeassistant --image-tag "2026.5.4" --arch arm64
+      # nix run nixpkgs#nix-prefetch-docker -- --image-name ghcr.io/home-assistant/aarch64-homeassistant --image-tag "2026.6.4" --arch arm64
       (pkgs.dockerTools.pullImage {
         imageName = "ghcr.io/home-assistant/aarch64-homeassistant";
-        imageDigest = "sha256:3494515af57b2a404cb084770f9dac1ab8695d15edacaddfdb979a91f44a600e";
-        hash = "sha256-vLYUakRvBWuGqVJGVzZEl6Ka0NLjY/AMjdW2DEDnG1Q=";
+        imageDigest = "sha256:a540a5f3c24eaf73485a51b0f999380dff105d7568b553731beef0e48f6462b9";
+        hash = "sha256-6xHKMGJAmVAh6rrOLnorL6FlsFvR+fiTWbv7YdyOHL8=";
         finalImageName = "ghcr.io/home-assistant/aarch64-homeassistant";
-        finalImageTag = "2026.5.4";
-      })
-      # nix run nixpkgs#nix-prefetch-docker -- --image-name ghcr.io/matter-js/python-matter-server --image-tag "stable" --arch arm64
-      (pkgs.dockerTools.pullImage {
-        imageName = "ghcr.io/matter-js/python-matter-server";
-        imageDigest = "sha256:6827e352011e2d8c2bde771e446fcf72acc49150ef66bad978816bac1762aad3";
-        hash = "sha256-DIGvlhN9hH7h1lsmn188PnE35YJwrW898+L+f63ykxk=";
-        finalImageName = "ghcr.io/matter-js/python-matter-server";
-        finalImageTag = "stable";
+        finalImageTag = "2026.6.4";
       })
     ];
     nodeName = config.networking.hostName;
@@ -77,7 +68,6 @@
     ];
     manifests = {
       home-assistant.content = import ./manifests/home-assistant.nix;
-      matter.content = import ./manifests/matter.nix;
 
       kyverno.source = pkgs.fetchurl {
         url = "https://github.com/kyverno/kyverno/releases/download/v1.16.3/install.yaml";

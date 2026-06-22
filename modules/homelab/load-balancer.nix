@@ -3,7 +3,6 @@
   networking.firewall.allowedTCPPorts = [
     6443
     8123
-    5580
   ];
   services.haproxy = {
     enable = true;
@@ -35,20 +34,6 @@
           server rpi5-01 172.27.30.51:8123 check
           server rpi5-02 172.27.30.52:8123 check
           server rpi5-03 172.27.30.53:8123 check
-
-      frontend matter_frontend
-          mode tcp
-          bind *:5580
-          default_backend matter_backend
-
-      backend matter_backend
-          mode tcp
-          option tcp-check
-          balance roundrobin
-          default-server inter 10s downinter 5s
-          server rpi5-01 172.27.30.51:5580 check
-          server rpi5-02 172.27.30.52:5580 check
-          server rpi5-03 172.27.30.53:5580 check
     '';
   };
   services.keepalived = {
