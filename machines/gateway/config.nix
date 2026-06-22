@@ -191,6 +191,8 @@
         briot = {
           allowedTCPPorts = [
             53 # DNS
+            5060 # asterisk
+            8072 # avaya-setup
           ];
           allowedUDPPorts = [
             53 # DNS
@@ -268,7 +270,8 @@
     ];
     zones."lan" = {
       master = true;
-      allowQuery = [ "any" ];
+      # Only allow the lan zone to be queried from the local network.
+      allowQuery = [ "172.27.0.0/16" ];
       file = pkgs.writeText "lan.zone" ''
         $TTL 3600
 
@@ -302,6 +305,8 @@
         rpi4-02 IN A 172.27.30.42 
 
         homeassistant IN A 172.27.30.100
+        avaya-setup IN A 172.27.20.1
+        asterisk IN A 172.27.20.1
       '';
     };
   };
@@ -457,7 +462,8 @@
                 option-data = [
                   {
                     name = "avaya";
-                    data = "SIG=2,HTTPSRVR=avaya-setup.iot,HTTPPORT=8072";
+                    # Commas must be escaped by a double backslash ('\\') in kea.
+                    data = "SIG=2\\,HTTPSRVR=avaya-setup.lan\\,HTTPPORT=8072";
                   }
                 ];
               }
@@ -521,6 +527,78 @@
             ];
           }
         ];
+      };
+    };
+  };
+
+  services.asterisk = {
+    enable = true;
+    confFiles = {
+      "extensions.conf" = ''
+        [from-internal]
+        exten => 1010,1,Dial(PJSIP/1010,20) ; edward-desktop-01
+        exten => 2024,1,Dial(PJSIP/2024,20) ; edward-bedroom-phone
+
+        ; Dial 1000 for "hello, world"
+        exten => 1000,1,Answer()
+        same  =>     n,Wait(2)
+        same  =>     n,Playback(hello-world)
+        same  =>     n,Wait(2)
+        same  =>     n,Playback(goodbye)
+        same  =>     n,Hangup()
+      '';
+      "pjsip.conf" = ''
+        [transport-tcp]
+        type=transport
+        protocol=tcp
+        bind=0.0.0.0
+
+        [endpoint_internal](!)
+        type=endpoint
+        context=from-internal
+        disallow=all
+        allow=g722,alaw
+
+        [auth_userpass](!)
+        type=auth
+        auth_type=userpass
+
+        [aor_dynamic](!)
+        type=aor
+        max_contacts=1
+
+        [1010](endpoint_internal)
+        auth=1010
+        aors=1010
+        [1010](auth_userpass)
+        password=1010
+        username=1010
+        [1010](aor_dynamic)
+
+        [2024](endpoint_internal)
+        auth=2024
+        aors=2024
+        [2024](auth_userpass)
+        password=2024
+        username=2024
+        [2024](aor_dynamic)
+      '';
+    };
+  };
+
+  services.nginx = {
+    enable = true;
+    virtualHosts = {
+      "avaya-setup.iot" = {
+        listen = [
+          {
+            addr = "172.27.20.1";
+            port = 8072;
+          }
+        ];
+        locations."/" = {
+          root = ./avaya-http;
+        };
       };
     };
   };
