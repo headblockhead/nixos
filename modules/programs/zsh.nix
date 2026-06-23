@@ -4,7 +4,6 @@
     builtins.mapAttrs (n: v: "f /home/${n}/.zprofile") accounts
   );
 
-  # TODO: allow for choice
   users.defaultUserShell = pkgs.zsh;
 
   programs.zsh = {

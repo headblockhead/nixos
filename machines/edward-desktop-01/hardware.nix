@@ -43,13 +43,11 @@
   boot.plymouth.extraConfig = ''
     DeviceScale=2
   '';
-  services.kmscon.extraConfig = lib.mkAfter ''
-    font-dpi=192
-  '';
   boot.kernelParams = [
     "video=HDMI-A-2:panel_orientation=left_side_up"
     "amdgpu.ppfeaturemask=0xf7fff"
   ];
+  environment.etc."xdg/monitors.xml".source = ./monitors.xml;
   systemd.tmpfiles.rules = [
     "L+ /run/gdm/.config/monitors.xml - - - - ${./monitors.xml}"
   ]

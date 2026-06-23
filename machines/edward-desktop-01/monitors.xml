@@ -10,7 +10,7 @@
           <connector>HDMI-2</connector>
           <vendor>AOC</vendor>
           <product>2270W</product>
-          <serial>AUNL71A000510</serial>
+          <serial>GREK7HA020731</serial>
         </monitorspec>
         <mode>
           <width>1080</width>
@@ -20,27 +20,9 @@
       </monitor>
     </logicalmonitor>
     <logicalmonitor>
-      <x>1080</x>
-      <y>311</y>
-      <scale>1</scale>
-      <monitor>
-        <monitorspec>
-          <connector>HDMI-1</connector>
-          <vendor>AOC</vendor>
-          <product>2270W</product>
-          <serial>GREK7HA020731</serial>
-        </monitorspec>
-        <mode>
-          <width>1920</width>
-          <height>1080</height>
-          <rate>60.000</rate>
-        </mode>
-      </monitor>
-    </logicalmonitor>
-    <logicalmonitor>
       <x>3000</x>
-      <y>499</y>
-      <scale>1.7518248558044434</scale>
+      <y>413</y>
+      <scale>1.5</scale>
       <primary>yes</primary>
       <monitor>
         <monitorspec>
@@ -53,7 +35,24 @@
           <width>3840</width>
           <height>2160</height>
           <rate>59.997</rate>
-          <ratemode>variable</ratemode>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+    <logicalmonitor>
+      <x>1080</x>
+      <y>273</y>
+      <scale>1</scale>
+      <monitor>
+        <monitorspec>
+          <connector>HDMI-1</connector>
+          <vendor>AOC</vendor>
+          <product>2270W</product>
+          <serial>AUNL71A000510</serial>
+        </monitorspec>
+        <mode>
+          <width>1920</width>
+          <height>1080</height>
+          <rate>60.000</rate>
         </mode>
       </monitor>
     </logicalmonitor>
