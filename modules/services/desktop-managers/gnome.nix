@@ -32,7 +32,6 @@
     gnomeExtensions.desktop-cube
     gnomeExtensions.alphabetical-app-grid
 
-    calls
     gnome-pomodoro
     newsflash
     warp
