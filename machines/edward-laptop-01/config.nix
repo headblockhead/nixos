@@ -1,5 +1,7 @@
 { pkgs, ... }:
 {
+  services.openssh.openFirewall = true;
+
   # Do not sleep on lid close when docked/plugged in.
   services.logind.settings.Login = {
     HandleLidSwitch = "suspend";
