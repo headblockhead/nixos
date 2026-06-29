@@ -60,6 +60,9 @@
     pulseview
     minicom
     #wireshark
+
+    # PHP
+    php
   ];
   services.gnome.core-developer-tools.enable = lib.mkDefault config.services.desktopManager.gnome.enable;
   users.users = builtins.mapAttrs (n: v: {

@@ -25,7 +25,8 @@
         vim.lsp.config("gopls", { cmd = {"${pkgs.gopls}/bin/gopls"} })
         vim.lsp.config("nil_ls", { cmd = {"${pkgs.nil}/bin/nil"} })
         vim.lsp.config("ccls", { cmd = {"${pkgs.ccls}/bin/ccls"} })
-        vim.lsp.enable({"gopls", "nil_ls", "ccls"})
+        vim.lsp.config("phpactor", { cmd = {"${pkgs.phpactor}/bin/phpactor"} })
+        vim.lsp.enable({"gopls", "nil_ls", "ccls", "phpactor"})
 
         vim.api.nvim_create_autocmd("LspAttach", { callback = function(ev)
           local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
@@ -56,7 +57,7 @@
       packages.myVimPackage.start = with pkgs.vimPlugins; [
         nvim-treesitter.withAllGrammars # Provides treesitter syntax highlighting grammars.
         nvim-lspconfig # Provides default vim.lsp.config entries.
-        trouble-nvim # Displays a LSP troubles nicely.
+        trouble-nvim # Displays LSP troubles nicely.
         vim-visual-multi # Adds a Visual-Multi mode.
         vim-surround # Adds various mappings for editing surrounding pairs of things.
         nerdcommenter # Adds comment/uncomment functionality and mappings.
