@@ -203,7 +203,6 @@
         brsrv = {
           allowedTCPPorts = [
             53 # DNS
-            8081 # otbr REST
             5580 # matter-server
           ];
           allowedUDPPorts = [
@@ -626,32 +625,5 @@
       domain = true;
       userServices = true;
     };
-  };
-
-  services.openthread-border-router = {
-    enable = true;
-    backboneInterfaces = [
-      "brinf"
-      "brlan"
-      "briot"
-      "brsrv"
-    ];
-    interfaceName = "otbr";
-    logLevel = "debug";
-    radio = {
-      device = "/dev/serial/by-id/usb-Nabu_Casa_ZBT-2_E072A1FB7F20-if00";
-      baudRate = 460800;
-      flowControl = true;
-    };
-    rest = {
-      listenAddress = "172.27.30.1";
-      listenPort = 8081;
-    };
-  };
-
-  services.matter-server = {
-    enable = true;
-    port = 5580;
-    logLevel = "debug";
   };
 }

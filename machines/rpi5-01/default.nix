@@ -36,7 +36,6 @@ inputs.nixos-raspberrypi.lib.nixosSystem {
     conf.headless
     conf.passwordless
     conf.utility
-    homelab.k3s
     nix.buildMachines
     nix.gc
     nix.optimise
