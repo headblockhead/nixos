@@ -412,7 +412,7 @@
               {
                 hostname = "homeassistant";
                 hw-address = "9c:69:d3:a0:8c:7f";
-                ip-addess = "172.27.20.10";
+                ip-address = "172.27.20.10";
               }
               {
                 hostname = "hesketh-tv";
