@@ -303,7 +303,7 @@
         rpi4-01 IN A 172.27.30.41 
         rpi4-02 IN A 172.27.30.42 
 
-        homeassistant IN A 172.27.30.100
+        homeassistant IN A 172.27.20.10
         avaya-setup IN A 172.27.20.1
         asterisk IN A 172.27.20.1
       '';
@@ -409,6 +409,11 @@
               }
             ];
             reservations = [
+              {
+                hostname = "homeassistant";
+                hw-address = "9c:69:d3:a0:8c:7f";
+                ip-addess = "172.27.20.10";
+              }
               {
                 hostname = "hesketh-tv";
                 hw-address = "a8:13:74:17:b6:18";
