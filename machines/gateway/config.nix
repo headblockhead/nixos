@@ -49,12 +49,12 @@
       };
       brlan = {
         interfaces = [
-          "ethernet1"
           "inf-lan"
         ];
       };
       briot = {
         interfaces = [
+          "ethernet1"
           "ethernet2"
           "inf-iot"
         ];
@@ -260,6 +260,8 @@
 
   services.bind = {
     enable = true;
+    # When ISP gets ipv6, enable this!
+    ipv4Only = true;
     cacheNetworks = [
       # Allow recursive queries from self
       "127.0.0.0/24"
@@ -269,8 +271,12 @@
     ];
     zones."lan" = {
       master = true;
-      # Only allow the lan zone to be queried from the local network.
-      allowQuery = [ "172.27.0.0/16" ];
+      # Only allow the lan zone to be queried from localhost or the local network.
+      allowQuery = [
+        "127.0.0.0/24"
+        "::1/128"
+        "172.27.0.0/16"
+      ];
       file = pkgs.writeText "lan.zone" ''
         $TTL 3600
 
@@ -543,13 +549,12 @@
         exten => 1010,1,Dial(PJSIP/1010,20) ; edward-desktop-01
         exten => 2024,1,Dial(PJSIP/2024,20) ; edward-bedroom-phone
 
-        ; Dial 1000 for "hello, world"
         exten => 1000,1,Answer()
-        same  =>     n,Wait(2)
-        same  =>     n,Playback(hello-world)
-        same  =>     n,Wait(2)
-        same  =>     n,Playback(goodbye)
-        same  =>     n,Hangup()
+        same  =>      n,Wait(2)
+        same  =>      n,Playback(hello-world)
+        same  =>      n,Wait(2)
+        same  =>      n,Playback(goodbye)
+        same  =>      n,Hangup()
       '';
       "pjsip.conf" = ''
         [transport-tcp]
