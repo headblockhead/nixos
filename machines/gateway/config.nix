@@ -197,6 +197,7 @@
           allowedUDPPorts = [
             53 # DNS
             67 # DHCP
+            5060 # asterisk
             5353 # mDNS
           ];
         };
@@ -548,6 +549,7 @@
         [from-internal]
         exten => 1010,1,Dial(PJSIP/1010,20) ; edward-desktop-01
         exten => 2024,1,Dial(PJSIP/2024,20) ; edward-bedroom-phone
+        exten => 2010,1,Dial(PJSIP/2010,20) ; homeassistant
 
         exten => 1000,1,Answer()
         same  =>      n,Wait(2)
@@ -560,6 +562,11 @@
         [transport-tcp]
         type=transport
         protocol=tcp
+        bind=0.0.0.0
+
+        [transport-udp]
+        type=transport
+        protocol=udp
         bind=0.0.0.0
 
         [endpoint_internal](!)
@@ -591,6 +598,14 @@
         password=2024
         username=2024
         [2024](aor_dynamic)
+
+        [2010](endpoint_internal)
+        auth=2010
+        aors=2010
+        [2010](auth_userpass)
+        password=2010
+        username=2010
+        [2010](aor_dynamic)
       '';
     };
   };
