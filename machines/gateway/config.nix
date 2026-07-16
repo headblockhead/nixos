@@ -39,12 +39,19 @@
         ];
       };
     };
+    defaultGateway = "10.42.0.1";
     interfaces = {
       ethernet1.useDHCP = false;
       ethernet2.useDHCP = false;
       ethernet3.useDHCP = false;
       ethernet4.useDHCP = false;
-      ethernet5.useDHCP = true;
+      #      ethernet5.useDHCP = true;
+      ethernet5.ipv4.addresses = [
+        {
+          address = "10.42.0.5";
+          prefixLength = 24;
+        }
+      ];
       brlan = {
         ipv4.addresses = [
           {
@@ -121,7 +128,7 @@
         $TTL 3600
 
         lan. IN SOA ns.lan. admin.lan. (
-          2026052703 	; Serial, MUST be updated every change
+          2026071601 	; Serial, MUST be updated every change
           86400       ; Refresh period
           86400       ; Retry period
           86400       ; Expire time
@@ -204,47 +211,55 @@
     confFiles = {
       "extensions.conf" = ''
         [from-internal]
+        exten => 2582,1,Dial(PJSIP/2582,20)
+
         exten => _X.,1,NoOp(Bridging TCP device to UDP Server)
-        same => n,Dial(PJSIP/udp-server-trunk/sip:$\{EXTEN}@sip.emf.camp:5060)
+        same => n,Dial(PJSIP/udp-server-trunk/sip:''${EXTEN}@sip.emf.camp:5060)
         same => n,Hangup()
-                 
-        exten => 1000,1,Answer()
-        same  =>      n,Wait(2)
-        same  =>      n,Playback(hello-world)
-        same  =>      n,Wait(2)
-        same  =>      n,Playback(goodbye)
-        same  =>      n,Hangup()
       '';
       "pjsip.conf" = ''
         [transport-udp]
         type=transport
         protocol=udp
         bind=0.0.0.0:5060
+                ;external_media_address=TODO
+                ;external_signaling_address=TODO
+                ;local_net=TODO
 
         [transport-tcp]
         type=transport
         protocol=tcp
         bind=0.0.0.0:5060
 
-
-        [tcp-endpoint]
+        [2582]
         type=endpoint
         transport=transport-tcp
         context=from-internal
         disallow=all
         allow=g722,alaw
-        aors=tcp-endpoint
+        aors=2582
+        auth=2582
 
-        [tcp-endpoint]
+        [2582]
         type=aor
-        contact=sip:172.27.10.10:5060
+        max_contacts=1
 
+        [2582]
+        type=auth
+        auth_type=userpass
+        password=2582
+        username=2582
 
         [udp-server-trunk]
         type=endpoint
         transport=transport-udp
         outbound_auth=udp-server-auth
         aors=udp-server-trunk
+        disallow=all
+        allow=g722,alaw
+        context=from-internal
+        from_domain=sip.emf.camp
+        from_user=2582 
 
         [udp-server-trunk]
         type=aor
@@ -253,8 +268,17 @@
         [udp-server-auth]
         type=auth
         auth_type=userpass
-        username=TODO
+        username=2582
         password=TODO
+
+        [udp-server-reg]
+        type=registration
+        transport=transport-udp
+        outbound_auth=udp-server-auth
+        server_uri=sip:sip.emf.camp:5060
+        client_uri=sip:2582@sip.emf.camp:5060
+        contact_user=2582
+        retry_interval=60
       '';
     };
   };
