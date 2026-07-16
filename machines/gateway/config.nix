@@ -267,7 +267,7 @@
         type=auth
         auth_type=userpass
         username=2582
-        password=TODO
+        password=1234123412341234
 
         [udp-server-reg]
         type=registration
