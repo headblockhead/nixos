@@ -45,13 +45,7 @@
       ethernet2.useDHCP = false;
       ethernet3.useDHCP = false;
       ethernet4.useDHCP = false;
-      #      ethernet5.useDHCP = true;
-      ethernet5.ipv4.addresses = [
-        {
-          address = "10.42.0.5";
-          prefixLength = 24;
-        }
-      ];
+      ethernet5.useDHCP = true;
       brlan = {
         ipv4.addresses = [
           {
@@ -229,9 +223,6 @@
         type=transport
         protocol=udp
         bind=0.0.0.0:5060
-                ;external_media_address=TODO
-                ;external_signaling_address=TODO
-                ;local_net=TODO
 
         [transport-tcp]
         type=transport
@@ -286,6 +277,11 @@
         client_uri=sip:2582@sip.emf.camp:5060
         contact_user=2582
         retry_interval=60
+
+        [udp-server-identify]
+        type=identify
+        endpoint=udp-server-trunk
+        match=sip.emf.camp
       '';
     };
   };
