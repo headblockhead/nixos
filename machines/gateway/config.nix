@@ -216,6 +216,13 @@
         exten => _X.,1,NoOp(Bridging TCP device to UDP Server)
         same => n,Dial(PJSIP/udp-server-trunk/sip:''${EXTEN}@sip.emf.camp:5060)
         same => n,Hangup()
+
+        exten => 0000,1,Answer()
+        same  =>      n,Wait(2)
+        same  =>      n,Playback(hello-world)
+        same  =>      n,Wait(2)
+        same  =>      n,Playback(goodbye)
+        same  =>      n,Hangup()
       '';
       "pjsip.conf" = ''
         [transport-udp]
