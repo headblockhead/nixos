@@ -39,7 +39,6 @@
         ];
       };
     };
-    defaultGateway = "10.42.0.1";
     interfaces = {
       ethernet1.useDHCP = false;
       ethernet2.useDHCP = false;
@@ -83,7 +82,7 @@
       trustedInterfaces = [ "brlan" ]; # Allow all input from LAN
       interfaces = {
         ethernet5 = {
-          allowedTCPPorts = [ ];
+          allowedTCPPorts = [ 22 ];
           allowedUDPPorts = [ ];
         };
       };
@@ -285,6 +284,19 @@
       '';
     };
   };
+
+  systemd.services.asterisk = {
+    after = [
+      "network-online.target"
+      "nss-lookup.target"
+    ];
+    wants = [
+      "network-online.target"
+      "nss-lookup.target"
+    ];
+  };
+
+  systemd.network.wait-online.enable = true; # if using networkd
 
   services.nginx = {
     enable = true;
