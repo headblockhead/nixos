@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    #    signal-desktop # depends on insecure pnpm
+    signal-desktop
     slack
     fractal
     tuba
