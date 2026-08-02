@@ -87,6 +87,11 @@
         "org/gnome/desktop/wm/preferences" = {
           num-workspaces = lib.gvariant.mkInt32 4;
         };
+        "org/gnome/desktop/input-sources" = {
+          xkb-options = [
+            "compose:rctrl"
+          ];
+        };
 
         "org/gnome/nautilus/list-view" = {
           default-zoom-level = "small";
