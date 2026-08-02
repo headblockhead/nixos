@@ -152,6 +152,14 @@ Switch to the new nixos configuration for the current machine.
 sudo nixos-rebuild switch --flake .#
 ```
 
+### boot
+
+Set the new nixos configuration for the current machine as the default boot option.
+
+```bash
+sudo nixos-rebuild boot --flake .#
+```
+
 ### test-deploy
 
 Deploy the nixos configurations to servers, without setting the boot-default.
