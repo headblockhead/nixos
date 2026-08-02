@@ -11,21 +11,26 @@
     };
 
     act_led_trigger = {
+      # green activity led behavior = off
       enable = true;
       value = "none";
-    }; # green activity led behavior = off
+    };
     pwr_led_trigger = {
+      # red power led behavior = off
       enable = true;
       value = "none";
-    }; # red power led behavior = off
+    };
+
     eth_led0 = {
+      # green ethernet led behavior = off
       enable = true;
       value = 4;
-    }; # green led behavior = off
+    };
     eth_led1 = {
+      # amber ethernet led behavior = link
       enable = true;
       value = 8;
-    }; # amber led behavior = link
+    };
   };
   nixpkgs.hostPlatform = "aarch64-linux";
 }
