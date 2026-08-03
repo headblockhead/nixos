@@ -160,7 +160,7 @@ Set the new nixos configuration for the current machine as the default boot opti
 sudo nixos-rebuild boot --flake .#
 ```
 
-### test-deploy
+### deploy-test
 
 Deploy the nixos configurations to servers, without setting the boot-default.
 
@@ -174,7 +174,7 @@ nixos-rebuild test --target-host rpi5-03.lan --sudo --no-reexec --flake .#rpi5-0
 nixos-rebuild test --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh
 ```
 
-### rollout
+### deploy-switch
 
 Deploy the nixos configurations to servers, setting the boot-default.
 
@@ -188,6 +188,19 @@ nixos-rebuild switch --target-host rpi5-03.lan --sudo --no-reexec --flake .#rpi5
 nixos-rebuild switch --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh
 ```
 
+### deploy-boot
+
+Deploy the nixos configurations to servers, setting the boot-default.
+
+```bash
+nixos-rebuild boot --target-host gateway.lan --sudo --no-reexec --flake .#gateway
+nixos-rebuild boot --target-host rpi4-01.lan --sudo --no-reexec --flake .#rpi4-01
+nixos-rebuild boot --target-host rpi4-02.lan --sudo --no-reexec --flake .#rpi4-02
+nixos-rebuild boot --target-host rpi5-01.lan --sudo --no-reexec --flake .#rpi5-01
+nixos-rebuild boot --target-host rpi5-02.lan --sudo --no-reexec --flake .#rpi5-02
+nixos-rebuild boot --target-host rpi5-03.lan --sudo --no-reexec --flake .#rpi5-03
+nixos-rebuild boot --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh
+```
 ### build
 
 Build the nixos configurations for all machines, without deploying.
