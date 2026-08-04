@@ -229,3 +229,17 @@ ssh rpi5-02.lan sudo nix-collect-garbage -d
 ssh rpi5-03.lan sudo nix-collect-garbage -d
 ssh edwardh.dev sudo nix-collect-garbage -d
 ```
+
+### reboot
+
+Reboot servers.
+
+```bash
+ssh edwardh.dev sudo systemctl reboot
+ssh rpi4-01.lan sudo systemctl reboot
+ssh rpi5-01.lan sudo systemctl reboot
+ssh rpi5-02.lan sudo systemctl reboot
+ssh rpi5-03.lan sudo systemctl reboot
+ssh rpi4-02.lan sudo systemctl reboot
+ssh gateway.lan sudo systemctl reboot
+```
