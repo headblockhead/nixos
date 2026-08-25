@@ -14,8 +14,8 @@
     ohMyZsh = {
       enable = true;
       plugins = [
-        "aws"
         "git"
+        "command-not-found"
       ];
     };
     interactiveShellInit = ''

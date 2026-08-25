@@ -21,8 +21,6 @@
     settings.max_wal_size = "30GB";
   };
 
-  virtualisation.virtualbox.host.enable = true;
-  virtualisation.virtualbox.host.enableExtensionPack = true;
   hardware.rtl-sdr.enable = true;
   users.users.headb.extraGroups = [
     "vboxusers"
@@ -45,6 +43,5 @@
     pkgs.kdePackages.kdenlive
     pkgs.prismlauncher
     pkgs.clonehero
-    pkgs.jetbrains.rider
   ];
 }

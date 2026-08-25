@@ -29,8 +29,6 @@ inputs.nixpkgs.lib.nixosSystem {
                 "code"
                 "code-with-extensions"
 
-                "rider"
-                "virtualbox-extpack"
                 "slack"
                 "spotify"
                 "clonehero"
