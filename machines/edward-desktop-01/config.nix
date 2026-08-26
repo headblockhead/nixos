@@ -37,6 +37,11 @@
     );
   };
 
+  programs.alvr = {
+    enable = true;
+    openFirewall = true;
+  };
+
   environment.systemPackages = [
     pkgs.cubicsdr
     pkgs.blender
