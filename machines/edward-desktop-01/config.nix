@@ -7,6 +7,7 @@
   ];
 
   services.openssh.openFirewall = true;
+  services.wivrn.openFirewall = true;
 
   programs.steam = {
     enable = true;
@@ -35,11 +36,6 @@
         dotnet-sdk_10
       ]
     );
-  };
-
-  programs.alvr = {
-    enable = true;
-    openFirewall = true;
   };
 
   environment.systemPackages = [

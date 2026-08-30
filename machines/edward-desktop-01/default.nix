@@ -69,7 +69,6 @@ inputs.nixpkgs.lib.nixosSystem {
     programs.git
     programs.gnupg
     programs.neovim
-    programs.sway
     programs.zsh
     security.rtkit
     services.desktop-managers.gnome
@@ -79,6 +78,7 @@ inputs.nixpkgs.lib.nixosSystem {
     services.pipewire
     services.printing
     services.printingEnsureHomePrinter
+    services.wivrn
     users.users
   ];
 }
