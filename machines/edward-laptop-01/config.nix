@@ -12,6 +12,7 @@
   environment.systemPackages = [
     pkgs.ardour
     pkgs.x32edit
+    pkgs.logseq
   ];
 
   networking.hosts = {
