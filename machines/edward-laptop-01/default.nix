@@ -27,6 +27,7 @@ inputs.nixpkgs.lib.nixosSystem {
               "slack"
               "spotify"
               "x32-edit"
+              "obsidian"
             ];
         };
       }
