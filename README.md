@@ -165,7 +165,7 @@ sudo nixos-rebuild boot --flake .#
 Deploy the nixos configurations to servers, without setting the boot-default.
 
 ```bash
-nixos-rebuild test --target-host gateway.lan --sudo --no-reexec --flake .#gateway
+nixos-rebuild test --target-host gateway-a.lan --sudo --no-reexec --flake .#gateway-a
 nixos-rebuild test --target-host rpi4-01.lan --sudo --no-reexec --flake .#rpi4-01
 nixos-rebuild test --target-host rpi4-02.lan --sudo --no-reexec --flake .#rpi4-02
 nixos-rebuild test --target-host rpi5-01.lan --sudo --no-reexec --flake .#rpi5-01
@@ -179,7 +179,7 @@ nixos-rebuild test --target-host edwardh.dev --sudo --no-reexec --flake .#edward
 Deploy the nixos configurations to servers, setting the boot-default.
 
 ```bash
-nixos-rebuild switch --target-host gateway.lan --sudo --no-reexec --flake .#gateway
+nixos-rebuild switch --target-host gateway-a.lan --sudo --no-reexec --flake .#gateway-a
 nixos-rebuild switch --target-host rpi4-01.lan --sudo --no-reexec --flake .#rpi4-01
 nixos-rebuild switch --target-host rpi4-02.lan --sudo --no-reexec --flake .#rpi4-02
 nixos-rebuild switch --target-host rpi5-01.lan --sudo --no-reexec --flake .#rpi5-01
@@ -193,7 +193,7 @@ nixos-rebuild switch --target-host edwardh.dev --sudo --no-reexec --flake .#edwa
 Deploy the nixos configurations to servers, setting the boot-default.
 
 ```bash
-nixos-rebuild boot --target-host gateway.lan --sudo --no-reexec --flake .#gateway
+nixos-rebuild boot --target-host gateway-a.lan --sudo --no-reexec --flake .#gateway-a
 nixos-rebuild boot --target-host rpi4-01.lan --sudo --no-reexec --flake .#rpi4-01
 nixos-rebuild boot --target-host rpi4-02.lan --sudo --no-reexec --flake .#rpi4-02
 nixos-rebuild boot --target-host rpi5-01.lan --sudo --no-reexec --flake .#rpi5-01
@@ -207,7 +207,7 @@ Build the nixos configurations for all machines, without deploying.
 
 ```bash
 nixos-rebuild build --flake .#
-nixos-rebuild build --flake .#gateway
+nixos-rebuild build --flake .#gateway-a
 nixos-rebuild build --flake .#rpi4-01
 nixos-rebuild build --flake .#rpi4-02
 nixos-rebuild build --flake .#rpi5-01
@@ -221,7 +221,7 @@ nixos-rebuild build --flake .#edwardh
 Clean up servers.
 
 ```bash
-ssh gateway.lan sudo nix-collect-garbage -d
+ssh gateway-a.lan sudo nix-collect-garbage -d
 ssh rpi4-01.lan sudo nix-collect-garbage -d
 ssh rpi4-02.lan sudo nix-collect-garbage -d
 ssh rpi5-01.lan sudo nix-collect-garbage -d
@@ -241,5 +241,5 @@ ssh rpi5-01.lan sudo systemctl reboot
 ssh rpi5-02.lan sudo systemctl reboot
 ssh rpi5-03.lan sudo systemctl reboot
 ssh rpi4-02.lan sudo systemctl reboot
-ssh gateway.lan sudo systemctl reboot
+ssh gateway-a.lan sudo systemctl reboot
 ```
