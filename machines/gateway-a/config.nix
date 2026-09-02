@@ -542,73 +542,73 @@
     };
   };
 
-  services.asterisk = {
-    enable = true;
-    confFiles = {
-      "extensions.conf" = ''
-        [from-internal]
-        exten => 1010,1,Dial(PJSIP/1010,20) ; edward-desktop-01
-        exten => 2024,1,Dial(PJSIP/2024,20) ; edward-bedroom-phone
-        exten => 2010,1,Dial(PJSIP/2010,20) ; homeassistant
+  # services.asterisk = {
+  #enable = true;
+  #confFiles = {
+  #"extensions.conf" = ''
+  #[from-internal]
+  #exten => 1010,1,Dial(PJSIP/1010,20) ; edward-desktop-01
+  #exten => 2024,1,Dial(PJSIP/2024,20) ; edward-bedroom-phone
+  #exten => 2010,1,Dial(PJSIP/2010,20) ; homeassistant
 
-        exten => 1000,1,Answer()
-        same  =>      n,Wait(2)
-        same  =>      n,Playback(hello-world)
-        same  =>      n,Wait(2)
-        same  =>      n,Playback(goodbye)
-        same  =>      n,Hangup()
-      '';
-      "pjsip.conf" = ''
-        [transport-tcp]
-        type=transport
-        protocol=tcp
-        bind=0.0.0.0
+  #exten => 1000,1,Answer()
+  #same  =>      n,Wait(2)
+  #same  =>      n,Playback(hello-world)
+  #same  =>      n,Wait(2)
+  #same  =>      n,Playback(goodbye)
+  #same  =>      n,Hangup()
+  #'';
+  #"pjsip.conf" = ''
+  #[transport-tcp]
+  #type=transport
+  #protocol=tcp
+  #bind=0.0.0.0
 
-        [transport-udp]
-        type=transport
-        protocol=udp
-        bind=0.0.0.0
+  #[transport-udp]
+  #type=transport
+  #protocol=udp
+  #bind=0.0.0.0
 
-        [endpoint_internal](!)
-        type=endpoint
-        context=from-internal
-        disallow=all
-        allow=g722,alaw
+  #[endpoint_internal](!)
+  #type=endpoint
+  #context=from-internal
+  #disallow=all
+  #allow=g722,alaw
 
-        [auth_userpass](!)
-        type=auth
-        auth_type=userpass
+  #[auth_userpass](!)
+  #type=auth
+  #auth_type=userpass
 
-        [aor_dynamic](!)
-        type=aor
-        max_contacts=1
+  #[aor_dynamic](!)
+  #type=aor
+  #max_contacts=1
 
-        [1010](endpoint_internal)
-        auth=1010
-        aors=1010
-        [1010](auth_userpass)
-        password=1010
-        username=1010
-        [1010](aor_dynamic)
+  #[1010](endpoint_internal)
+  #auth=1010
+  #aors=1010
+  #[1010](auth_userpass)
+  #password=1010
+  #username=1010
+  #[1010](aor_dynamic)
 
-        [2024](endpoint_internal)
-        auth=2024
-        aors=2024
-        [2024](auth_userpass)
-        password=2024
-        username=2024
-        [2024](aor_dynamic)
+  #[2024](endpoint_internal)
+  #auth=2024
+  #aors=2024
+  #[2024](auth_userpass)
+  #password=2024
+  #username=2024
+  #[2024](aor_dynamic)
 
-        [2010](endpoint_internal)
-        auth=2010
-        aors=2010
-        [2010](auth_userpass)
-        password=2010
-        username=2010
-        [2010](aor_dynamic)
-      '';
-    };
-  };
+  #[2010](endpoint_internal)
+  #auth=2010
+  #aors=2010
+  #[2010](auth_userpass)
+  #password=2010
+  #username=2010
+  #[2010](aor_dynamic)
+  #'';
+  #};
+  # };
 
   services.nginx = {
     enable = true;
@@ -627,11 +627,11 @@
     };
   };
 
-  services.unifi = {
-    enable = true;
-    unifiPackage = pkgs.unifi;
-    mongodbPackage = pkgs.mongodb-7_0;
-  };
+  #  services.unifi = {
+  #enable = true;
+  #unifiPackage = pkgs.unifi;
+  #mongodbPackage = pkgs.mongodb-7_0;
+  #};
 
   services.avahi = {
     enable = true;
