@@ -49,12 +49,12 @@
       };
       brlan = {
         interfaces = [
+          "ethernet1"
           "inf-lan"
         ];
       };
       briot = {
         interfaces = [
-          "ethernet1"
           "ethernet2"
           "inf-iot"
         ];
