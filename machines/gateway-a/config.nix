@@ -8,23 +8,23 @@
 
   # Assign custom interface names based on MAC addresses.
   systemd.network.links."10-ethernet1" = {
-    matchConfig.PermanentMACAddress = "1c:86:0b:22:7d:5e";
+    matchConfig.PermanentMACAddress = "20:7c:14:fa:38:64";
     linkConfig.Name = "ethernet1";
   };
   systemd.network.links."10-ethernet2" = {
-    matchConfig.PermanentMACAddress = "1c:86:0b:22:7d:5f";
+    matchConfig.PermanentMACAddress = "20:7c:14:fa:38:65";
     linkConfig.Name = "ethernet2";
   };
   systemd.network.links."10-ethernet3" = {
-    matchConfig.PermanentMACAddress = "1c:86:0b:2d:ff:5e";
+    matchConfig.PermanentMACAddress = "20:7c:14:fa:38:66";
     linkConfig.Name = "ethernet3";
   };
   systemd.network.links."10-ethernet4" = {
-    matchConfig.PermanentMACAddress = "1c:86:0b:2d:ff:5f";
+    matchConfig.PermanentMACAddress = "20:7c:14:fa:38:67";
     linkConfig.Name = "ethernet4";
   };
   systemd.network.links."10-ethernet5" = {
-    matchConfig.PermanentMACAddress = "c8:1f:66:48:c9:15";
+    matchConfig.PermanentMACAddress = "20:7c:14:fa:38:68";
     linkConfig.Name = "ethernet5";
   };
 
