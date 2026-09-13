@@ -33,7 +33,6 @@ inputs.nixos-raspberrypi.lib.nixosSystem {
     inputs.disko.nixosModules.disko
 
     conf.en-gb
-    conf.headless
     conf.passwordless
     conf.utility
     nix.buildMachines

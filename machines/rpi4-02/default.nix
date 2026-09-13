@@ -30,7 +30,6 @@ inputs.nixos-raspberrypi.lib.nixosSystem {
     inputs.nixos-raspberrypi.nixosModules.raspberry-pi-4.base
 
     conf.en-gb
-    conf.headless
     conf.passwordless
     conf.utility
     nix.gc
