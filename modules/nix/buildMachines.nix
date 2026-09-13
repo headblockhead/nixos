@@ -1,12 +1,12 @@
 { config, lib, ... }:
 let
   # Computer specific keys:
-  edward-desktop-01-key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOs2G2Yt7+A53v5tymBcbAlWnT9tLZYNSW+XGqZU6ITh";
-  edward-laptop-01-key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMut/MMjt9kH1+YuBLLZ0GcJ1rToFZObggpnyDEnRi7L";
+  edward-desktop-key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOs2G2Yt7+A53v5tymBcbAlWnT9tLZYNSW+XGqZU6ITh";
+  edward-laptop-key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMut/MMjt9kH1+YuBLLZ0GcJ1rToFZObggpnyDEnRi7L";
 
   buildMachines = [
     {
-      hostName = "edward-desktop-01.lan";
+      hostName = "edward-desktop.lan";
       systems = [ "x86_64-linux" ];
       sshUser = "nixbuilder";
       sshKey = "/etc/ssh/ssh_host_ed25519_key";
@@ -90,8 +90,8 @@ in
       "nixbld"
     ];
     openssh.authorizedKeys.keys = [
-      edward-desktop-01-key
-      edward-laptop-01-key
+      edward-desktop-key
+      edward-laptop-key
     ];
   };
   nix.distributedBuilds = true;
