@@ -7,6 +7,7 @@
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi";
     disko.url = "github:nix-community/disko";
     agenix.url = "github:ryantm/agenix";
+    wivrn.url = "github:wivrn/wivrn/v26.9";
 
     edwardh-dev.url = "github:headblockhead/edwardh.dev";
   };
@@ -56,6 +57,7 @@
               withDNS-SD = true;
               withAvahi = true;
             };
+            wivrn = inputs.wivrn.packages.${prev.stdenv.hostPlatform.system}.default;
           }
         );
       };
