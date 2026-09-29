@@ -23,6 +23,7 @@
     '';
     shellAliases = {
       q = "exit";
+      c = "clear";
       p = "gopass show -c -n";
       ls = "ls --color=tty -A";
     };
