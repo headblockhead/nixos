@@ -63,6 +63,7 @@
         nerdcommenter # Adds comment/uncomment functionality and mappings.
         vim-lastplace # Returns to the previous position in a file when reopened.
         vim-wakatime # Tracks coding time. Also used for Hack Club events.
+        copilot-vim # Official GitHub Copilot plugin.
       ];
     };
   };

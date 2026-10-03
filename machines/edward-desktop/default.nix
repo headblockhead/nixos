@@ -28,6 +28,7 @@ inputs.nixpkgs.lib.nixosSystem {
                 "vscode"
                 "code"
                 "code-with-extensions"
+                "copilot.vim"
 
                 "slack"
                 "spotify"

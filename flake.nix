@@ -58,6 +58,47 @@
               withAvahi = true;
             };
             wivrn = inputs.wivrn.packages.${prev.stdenv.hostPlatform.system}.default;
+            xrizer = prev.xrizer.overrideAttrs (
+              finalAttrs: previousAttrs: {
+                version = "unstable-2026-09-15";
+
+                src = prev.fetchFromGitHub {
+                  owner = "Supreeeme";
+                  repo = "xrizer";
+                  rev = "0989a7fac2d1efb7ea82f5fe1a8ed30c3eeb9596";
+                  hash = "sha256-Rb1pssAq6Zx6VmQVQtGcThkA6zCwi5X7G7aHmdsDrJo=";
+                };
+
+                cargoDeps = prev.rustPlatform.importCargoLock {
+                  lockFile = finalAttrs.src + "/Cargo.lock";
+                  allowBuiltinFetchGit = true;
+                };
+                cargoHash = null;
+
+                nativeBuildInputs = previousAttrs.nativeBuildInputs ++ [
+                  prev.cmake
+                  prev.python3
+                ];
+
+                buildInputs = previousAttrs.buildInputs ++ [
+                  prev.vulkan-headers
+                  prev.libx11
+                  prev.libxxf86vm
+                  prev.libxrandr
+                  prev.wayland
+                ];
+
+                cargoBuildFlags = (previousAttrs.cargoBuildFlags or [ ]) ++ [
+                  "--features"
+                  "static-openxr"
+                ];
+
+                postPatch = ''
+                  substituteInPlace src/graphics_backends/gl.rs \
+                    --replace-fail 'libGLX.so.0' '${prev.lib.getLib prev.libGL}/lib/libGLX.so.0'
+                '';
+              }
+            );
           }
         );
       };

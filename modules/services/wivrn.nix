@@ -11,6 +11,7 @@
 
   environment.systemPackages = [
     pkgs.android-tools
+    pkgs.xrizer
   ];
 
   users.users = builtins.mapAttrs (n: v: {
