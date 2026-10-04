@@ -281,7 +281,7 @@
         $TTL 3600
 
         lan. IN SOA ns.lan. admin.lan. (
-          2026100401 	; Serial, MUST be updated every change
+          2026100402 	; Serial, MUST be updated every change
           86400       ; Refresh period
           86400       ; Retry period
           86400       ; Expire time
@@ -295,11 +295,11 @@
         ns IN A 172.27.30.1
         ns IN A 172.27.40.1
 
-        gateway IN A 172.27.1.1
-        gateway IN A 172.27.10.1
-        gateway IN A 172.27.20.1
-        gateway IN A 172.27.30.1
-        gateway IN A 172.27.40.1
+        gateway-alpha IN A 172.27.1.1
+        gateway-alpha IN A 172.27.10.1
+        gateway-alpha IN A 172.27.20.1
+        gateway-alpha IN A 172.27.30.1
+        gateway-alpha IN A 172.27.40.1
 
         rpi5-01 IN A 172.27.30.51 
         rpi5-02 IN A 172.27.30.52 
