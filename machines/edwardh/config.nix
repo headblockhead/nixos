@@ -161,6 +161,7 @@ in
     # Web interface accessible from hostName.
     hostName = "mail.edwardh.dev";
     extraConfig = ''
+      $config['imap_host'] = "ssl://${config.mailserver.fqdn}";
       $config['smtp_server'] = "tls://${config.mailserver.fqdn}";
       $config['smtp_user'] = "%u";
       $config['smtp_pass'] = "%p";
