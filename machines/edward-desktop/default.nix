@@ -76,7 +76,6 @@ inputs.nixpkgs.lib.nixosSystem {
     services.display-managers.gdm
     services.fwupd
     services.openssh
-    services.pcscd
     services.pipewire
     services.printing
     services.printingEnsureHomePrinter
