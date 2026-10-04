@@ -19,9 +19,9 @@ in
   # TODO: make this a flake input, see https://nixos-mailserver.readthedocs.io/en/latest/flakes.html
   imports = [
     (builtins.fetchTarball {
-      # main as of 2026-05-06
-      url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver/-/archive/e33fbde199eaad513ef5d0746db19d5878150232/nixos-mailserver-e33fbde199eaad513ef5d0746db19d5878150232.tar.gz";
-      sha256 = "0x73hf947cky34104cfqdaqpxykvcqhykvvg1jz6wrpfakvx4ghn";
+      # nixos-26.05 as of 2026-10-05
+      url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver/-/archive/d357b9f048c5532ec81b0e0034c0b8463d5ddd46/nixos-mailserver-d357b9f048c5532ec81b0e0034c0b8463d5ddd46.tar.gz";
+      sha256 = "0jicsxjg2c3vami08csrfccw6273yv12627ws8qx69lg5wz43abx";
     })
   ];
 
