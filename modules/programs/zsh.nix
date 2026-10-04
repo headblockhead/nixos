@@ -13,10 +13,7 @@
     syntaxHighlighting.enable = true;
     ohMyZsh = {
       enable = true;
-      plugins = [
-        "git"
-        "command-not-found"
-      ];
+      plugins = [ "git" ];
     };
     interactiveShellInit = ''
       source ${./custom.zsh-theme}
@@ -24,7 +21,6 @@
     shellAliases = {
       q = "exit";
       c = "clear";
-      p = "gopass show -c -n";
       ls = "ls --color=tty -A";
     };
   };
