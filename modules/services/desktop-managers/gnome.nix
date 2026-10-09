@@ -32,8 +32,6 @@
     gnomeExtensions.desktop-cube
     gnomeExtensions.alphabetical-app-grid
 
-    gnome-pomodoro
-    newsflash
     warp
 
     ptyxis

@@ -14,9 +14,6 @@
     # AV
     obs-studio
     # Images
-    identity
-    switcheroo
-    curtail
     gimp
     inkscape
     # Scores

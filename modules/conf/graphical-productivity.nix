@@ -16,20 +16,8 @@
     texliveFull
     hieroglyphic
     citations
-
-    collision
-
-    gnome-graphs
     gnome-decoder
     dialect
-
     forge-sparks
-
-    wike
-    wordbook
-
-    textpieces
-
-    share-preview
   ];
 }
