@@ -28,6 +28,7 @@ inputs.nixpkgs.lib.nixosSystem {
               "spotify"
               "x32-edit"
               "obsidian"
+              "copilot.vim"
             ];
         };
       }

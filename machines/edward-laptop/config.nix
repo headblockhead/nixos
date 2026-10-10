@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   services.openssh.openFirewall = true;
+  services.flatpak.enable = true;
 
   # Do not sleep on lid close when docked/plugged in.
   services.logind.settings.Login = {
