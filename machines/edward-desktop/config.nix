@@ -6,6 +6,8 @@
     50051
   ];
 
+  services.flatpak.enable = true;
+
   services.openssh.openFirewall = true;
   services.wivrn.openFirewall = true;
 
