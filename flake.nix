@@ -2,12 +2,14 @@
   description = "NixOS configuration for my desktops, laptops, and local network.";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi";
     disko.url = "github:nix-community/disko";
     agenix.url = "github:ryantm/agenix";
     wivrn.url = "github:wivrn/wivrn/v26.9";
+    tangled.url = "git+https://tangled.org/tangled.org/core";
+    nixos-mailserver.url = "git+https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git?ref=main";
 
     edwardh-dev.url = "github:headblockhead/edwardh.dev";
   };

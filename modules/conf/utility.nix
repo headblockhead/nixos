@@ -3,7 +3,7 @@
   environment.systemPackages = with pkgs; [
     git
     vim
-    silver-searcher
+    silver-searcher-ng
     p7zip
     btop
     tree

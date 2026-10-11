@@ -2,6 +2,7 @@
   config,
   pkgs,
   inputs,
+  lib,
   ...
 }:
 let
@@ -16,13 +17,9 @@ let
   );
 in
 {
-  # TODO: make this a flake input, see https://nixos-mailserver.readthedocs.io/en/latest/flakes.html
   imports = [
-    (builtins.fetchTarball {
-      # nixos-26.05 as of 2026-10-05
-      url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver/-/archive/d357b9f048c5532ec81b0e0034c0b8463d5ddd46/nixos-mailserver-d357b9f048c5532ec81b0e0034c0b8463d5ddd46.tar.gz";
-      sha256 = "0jicsxjg2c3vami08csrfccw6273yv12627ws8qx69lg5wz43abx";
-    })
+    inputs.tangled.nixosModules.knot
+    inputs.nixos-mailserver.nixosModules.default
   ];
 
   networking.domain = "dev";
@@ -75,6 +72,7 @@ in
     group = "radicale";
     mode = "400";
   };
+  age.secrets.tranquil-pds.file = ../../secrets/tranquil-pds.age;
 
   # Avoid trying to use our own non-recursive BIND service.
   networking.resolvconf.useLocalResolver = false;
@@ -194,7 +192,7 @@ in
         $TTL 86400
 
         edwardh.dev. IN SOA ns.edwardh.dev. admin.edwardh.dev. (
-          2025122401 	; Serial, MUST be updated every change
+          2026101102 	; Serial, MUST be updated every change
           86400       ; Refresh period
           86400       ; Retry period
           86400       ; Expire time
@@ -223,12 +221,46 @@ in
 
         ; AT Protocol
         _atproto 600 IN TXT "did=did:plc:hmxed7odvvlp2xvoc7n52fqn"
+        pds 600 IN A 18.135.222.143
+
+        ; Tangled
+        knot 600 IN A 18.135.222.143
       '';
     };
   };
 
   security.acme.acceptTerms = true;
   security.acme.defaults.email = "security@edwardh.dev";
+
+  services.tangled.knot = {
+    enable = true;
+    openFirewall = false;
+    appviewEndpoint = "https://knot.edwardh.dev";
+    repo.mainBranch = "master";
+    server = {
+      listenAddr = "127.0.0.1:5555";
+      owner = "did:plc:hmxed7odvvlp2xvoc7n52fqn";
+      hostname = "knot.edwardh.dev";
+      secureMode = true;
+    };
+  };
+
+  services.tranquil-pds = {
+    enable = true;
+    database.createLocally = true;
+    environmentFiles = [ config.age.secrets.tranquil-pds.path ];
+    settings = {
+      server = {
+        hostname = "pds.edwardh.dev";
+        host = "127.0.0.1";
+        user_handle_domains = [ "edwardh.dev" ];
+        invite_code_required = true;
+        enable_pds_hosted_did_web = true;
+        disable_account_verification_gate = true;
+        trusted_proxy_count = 1;
+      };
+    };
+  };
 
   services.nginx = {
     enable = true;
@@ -260,19 +292,32 @@ in
           '';
         };
       };
+      "knot.edwardh.dev" = {
+        forceSSL = true;
+        enableACME = true;
+
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyWebsockets = true;
+          proxyPass = "http://127.0.0.1:5555";
+        };
+      };
+      "pds.edwardh.dev" = {
+        forceSSL = true;
+        enableACME = true;
+
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyPass = "http://127.0.0.1:3000";
+        };
+      };
       "calendar.edwardh.dev" = {
         forceSSL = true;
         enableACME = true;
-        quic = true;
-        http3 = true;
-        http3_hq = true;
 
         locations."/" = {
           recommendedProxySettings = true;
           proxyPass = "http://127.0.0.1:5232";
-          extraConfig = ''
-            add_header Alt-Svc 'h3=":443"; ma=86400';
-          '';
         };
         serverAliases = [ "contacts.edwardh.dev" ];
       };
