@@ -192,7 +192,7 @@ in
         $TTL 86400
 
         edwardh.dev. IN SOA ns.edwardh.dev. admin.edwardh.dev. (
-          2026101102 	; Serial, MUST be updated every change
+          2026101204 	; Serial, MUST be updated every change
           86400       ; Refresh period
           86400       ; Retry period
           86400       ; Expire time
@@ -220,11 +220,16 @@ in
         _dmarc 10800 IN TXT "v=DMARC1; p=quarantine"
 
         ; AT Protocol
-        _atproto 600 IN TXT "did=did:plc:hmxed7odvvlp2xvoc7n52fqn"
+        _atproto 600 IN TXT "did=did:plc:gbe2ojtpy3f2er6h246kk266"
         pds 600 IN A 18.135.222.143
 
         ; Tangled
         knot 600 IN A 18.135.222.143
+
+        ; Resend
+        resend._domainkey.pds 10800 IN TXT "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIfnw0joWP/+M0ZmcdRfNETGkOnuY6UuM3aH4IVhi1CaOwVkv02cfCWnG/KvLujM7FGfKMM+YJZ7ccE93cXUy7XVqqWhfRsACwEGlz0CuITAODK8zZKTTbTIpQXVG0N/qRjcgS7Co53kPDneZ77yg/jP00AXqbPAQGESFrchGsUQIDAQAB"
+        rsend.pds 600 IN CNAME rsend-euw1.forge.rmta.net.
+        send.pds 600 IN CNAME send.forge.rmta.net.
       '';
     };
   };
@@ -239,7 +244,7 @@ in
     repo.mainBranch = "master";
     server = {
       listenAddr = "127.0.0.1:5555";
-      owner = "did:plc:hmxed7odvvlp2xvoc7n52fqn";
+      owner = "did:plc:gbe2ojtpy3f2er6h246kk266";
       hostname = "knot.edwardh.dev";
       secureMode = true;
     };
@@ -258,6 +263,16 @@ in
         enable_pds_hosted_did_web = true;
         disable_account_verification_gate = true;
         trusted_proxy_count = 1;
+      };
+      email = {
+        from_address = "tranquil@pds.edwardh.dev";
+        from_name = "edwardh.dev PDS";
+        smarthost = {
+          host = "smtp.resend.com";
+          port = 587;
+          username = "resend";
+          password = "_"; # Set by environmentFiles.
+        };
       };
     };
   };
