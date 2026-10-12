@@ -267,7 +267,7 @@ in
         hostname = "knot.edwardh.dev";
         admins = [ "did:plc:gbe2ojtpy3f2er6h246kk266" ];
         listen_addr = "127.0.0.1:5555";
-        ssh_listen_addr = "127.0.0.1:22";
+        ssh_listen_addr = "[::]:22";
       };
       acl.admission = "closed";
       git.object_format = "sha256";

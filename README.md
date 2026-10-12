@@ -171,7 +171,7 @@ nixos-rebuild test --target-host rpi4-02.lan --sudo --no-reexec --flake .#rpi4-0
 nixos-rebuild test --target-host rpi5-01.lan --sudo --no-reexec --flake .#rpi5-01
 nixos-rebuild test --target-host rpi5-02.lan --sudo --no-reexec --flake .#rpi5-02
 nixos-rebuild test --target-host rpi5-03.lan --sudo --no-reexec --flake .#rpi5-03
-nixos-rebuild test --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh
+NIX_SSHOPTS="-p 2941" nixos-rebuild test --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh
 ```
 
 ### deploy-switch
@@ -185,7 +185,7 @@ nixos-rebuild switch --target-host rpi4-02.lan --sudo --no-reexec --flake .#rpi4
 nixos-rebuild switch --target-host rpi5-01.lan --sudo --no-reexec --flake .#rpi5-01
 nixos-rebuild switch --target-host rpi5-02.lan --sudo --no-reexec --flake .#rpi5-02
 nixos-rebuild switch --target-host rpi5-03.lan --sudo --no-reexec --flake .#rpi5-03
-nixos-rebuild switch --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh
+NIX_SSHOPTS="-p 2941" nixos-rebuild switch --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh
 ```
 
 ### deploy-boot
@@ -199,7 +199,7 @@ nixos-rebuild boot --target-host rpi4-02.lan --sudo --no-reexec --flake .#rpi4-0
 nixos-rebuild boot --target-host rpi5-01.lan --sudo --no-reexec --flake .#rpi5-01
 nixos-rebuild boot --target-host rpi5-02.lan --sudo --no-reexec --flake .#rpi5-02
 nixos-rebuild boot --target-host rpi5-03.lan --sudo --no-reexec --flake .#rpi5-03
-nixos-rebuild boot --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh
+NIX_SSHOPTS="-p 2941" nixos-rebuild boot --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh
 ```
 ### build
 
@@ -227,7 +227,7 @@ ssh rpi4-02.lan sudo nix-collect-garbage -d
 ssh rpi5-01.lan sudo nix-collect-garbage -d
 ssh rpi5-02.lan sudo nix-collect-garbage -d
 ssh rpi5-03.lan sudo nix-collect-garbage -d
-ssh edwardh.dev sudo nix-collect-garbage -d
+ssh edwardh.dev -p 2941 sudo nix-collect-garbage -d
 ```
 
 ### reboot
@@ -235,7 +235,7 @@ ssh edwardh.dev sudo nix-collect-garbage -d
 Reboot servers.
 
 ```bash
-ssh edwardh.dev sudo systemctl reboot
+ssh edwardh.dev -p 2941 sudo systemctl reboot
 ssh rpi4-01.lan sudo systemctl reboot
 ssh rpi5-01.lan sudo systemctl reboot
 ssh rpi5-02.lan sudo systemctl reboot

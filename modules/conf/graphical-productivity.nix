@@ -10,7 +10,7 @@
     thunderbird
     # CAD
     openscad-unstable
-    freecad-wayland
+    #freecad-wayland
     # LaTeX tools
     texstudio
     texliveFull
