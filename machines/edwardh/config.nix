@@ -18,6 +18,7 @@ in
 {
   imports = [
     inputs.tangled.nixosModules.knot-rs
+    inputs.tangled.nixosModules.appview
     inputs.nixos-mailserver.nixosModules.default
   ];
 
@@ -212,7 +213,7 @@ in
         $TTL 86400
 
         edwardh.dev. IN SOA ns.edwardh.dev. admin.edwardh.dev. (
-          2026101204 	; Serial, MUST be updated every change
+          2026101205 	; Serial, MUST be updated every change
           86400       ; Refresh period
           86400       ; Retry period
           86400       ; Expire time
@@ -245,6 +246,7 @@ in
 
         ; Tangled
         knot 600 IN A 18.135.222.143
+        tangled 600 IN A 18.135.222.143
 
         ; Resend
         resend._domainkey.pds 10800 IN TXT "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIfnw0joWP/+M0ZmcdRfNETGkOnuY6UuM3aH4IVhi1CaOwVkv02cfCWnG/KvLujM7FGfKMM+YJZ7ccE93cXUy7XVqqWhfRsACwEGlz0CuITAODK8zZKTTbTIpQXVG0N/qRjcgS7Co53kPDneZ77yg/jP00AXqbPAQGESFrchGsUQIDAQAB"
@@ -275,6 +277,13 @@ in
       repo.default_branch = "master";
       homepage.enabled = false;
     };
+  };
+  services.tangled.appview = {
+    enable = true;
+    port = 3010;
+    listenAddr = "127.0.0.1";
+    appviewHost = "tangled.edwardh.dev";
+    appviewName = "tangled.edwardh.dev";
   };
 
   services.tranquil-pds = {
@@ -345,6 +354,16 @@ in
           recommendedProxySettings = true;
           proxyWebsockets = true;
           proxyPass = "http://127.0.0.1:5555";
+        };
+      };
+      "tangled.edwardh.dev" = {
+        forceSSL = true;
+        enableACME = true;
+
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyWebsockets = true;
+          proxyPass = "http://127.0.0.1:3010";
         };
       };
       "pds.edwardh.dev" = {
