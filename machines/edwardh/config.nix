@@ -2,7 +2,6 @@
   config,
   pkgs,
   inputs,
-  lib,
   ...
 }:
 let
@@ -18,7 +17,7 @@ let
 in
 {
   imports = [
-    inputs.tangled.nixosModules.knot
+    inputs.tangled.nixosModules.knot-rs
     inputs.nixos-mailserver.nixosModules.default
   ];
 
@@ -30,7 +29,8 @@ in
       443 # HTTPS
 
       53 # DNS
-      22 # SSH
+      22 # SSH for Knot
+      2941 # SSH for me
     ];
     allowedUDPPorts = [
       # QUIC
@@ -41,9 +41,15 @@ in
     ];
   };
 
+  environment.etc."fail2ban/filter.d/nginx-scraping.conf".text = ''
+    [Definition]
+    failregex = ^.*?<HOST> - \S+ \[[^\]]+\] "(?:GET|POST|HEAD) [^"]*" (?:403|404) 
+    ignoreregex =
+  '';
   services.fail2ban = {
     enable = true;
     bantime = "8h";
+
     bantime-increment = {
       enable = true;
       rndtime = "30m";
@@ -62,6 +68,19 @@ in
         enabled = true;
         mode = "aggressive";
       };
+      nginx-bot.settings = {
+        enabled = true;
+      };
+      nginx-scraping.settings = {
+        enabled = true;
+        filter = "nginx-scraping";
+        backend = "systemd";
+        journalmatch = "_SYSTEMD_UNIT=nginx.service";
+        port = "http,https";
+        maxretry = 30;
+        findtime = 60;
+        bantime = 3600;
+      };
     };
   };
 
@@ -73,6 +92,7 @@ in
     mode = "400";
   };
   age.secrets.tranquil-pds.file = ../../secrets/tranquil-pds.age;
+  age.secrets.knot-rs.file = ../../secrets/knot-rs.age;
 
   # Avoid trying to use our own non-recursive BIND service.
   networking.resolvconf.useLocalResolver = false;
@@ -237,16 +257,23 @@ in
   security.acme.acceptTerms = true;
   security.acme.defaults.email = "security@edwardh.dev";
 
-  services.tangled.knot = {
+  services.openssh.ports = [ 2941 ];
+  services.tangled.knot-rs = {
     enable = true;
     openFirewall = false;
-    appviewEndpoint = "https://knot.edwardh.dev";
-    repo.mainBranch = "master";
-    server = {
-      listenAddr = "127.0.0.1:5555";
-      owner = "did:plc:gbe2ojtpy3f2er6h246kk266";
-      hostname = "knot.edwardh.dev";
-      secureMode = true;
+    environmentFile = config.age.secrets.knot-rs.path;
+    settings = {
+      server = {
+        hostname = "knot.edwardh.dev";
+        admins = [ "did:plc:gbe2ojtpy3f2er6h246kk266" ];
+        listen_addr = "127.0.0.1:5555";
+        ssh_listen_addr = "127.0.0.1:22";
+      };
+      acl.admission = "closed";
+      git.object_format = "sha256";
+      atproto.plc_directory = "https://plc.directory";
+      repo.default_branch = "master";
+      homepage.enabled = false;
     };
   };
 
@@ -280,6 +307,9 @@ in
   services.nginx = {
     enable = true;
     appendHttpConfig = ''
+      error_log stderr;
+      access_log syslog:server=unix:/dev/log combined;
+
       map $sent_http_content_type $expires {
         default                    off;
         text/html                  epoch;
@@ -323,6 +353,7 @@ in
 
         locations."/" = {
           recommendedProxySettings = true;
+          proxyWebsockets = true;
           proxyPass = "http://127.0.0.1:3000";
         };
       };

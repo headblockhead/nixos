@@ -5,4 +5,5 @@ in
   "mail-hashed-password.age".publicKeys = [ edwardh ];
   "radicale-htpasswd.age".publicKeys = [ edwardh ];
   "tranquil-pds.age".publicKeys = [ edwardh ];
+  "knot-rs.age".publicKeys = [ edwardh ];
 }
