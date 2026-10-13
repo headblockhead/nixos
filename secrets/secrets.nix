@@ -6,4 +6,5 @@ in
   "radicale-htpasswd.age".publicKeys = [ edwardh ];
   "tranquil-pds.age".publicKeys = [ edwardh ];
   "knot-rs.age".publicKeys = [ edwardh ];
+  "tangled-appview.age".publicKeys = [ edwardh ];
 }

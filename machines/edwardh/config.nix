@@ -18,7 +18,7 @@ in
 {
   imports = [
     inputs.tangled.nixosModules.knot-rs
-    inputs.tangled.nixosModules.appview
+    #inputs.tangled.nixosModules.appview
     inputs.nixos-mailserver.nixosModules.default
   ];
 
@@ -94,6 +94,7 @@ in
   };
   age.secrets.tranquil-pds.file = ../../secrets/tranquil-pds.age;
   age.secrets.knot-rs.file = ../../secrets/knot-rs.age;
+  #age.secrets.tangled-appview.file = ../../secrets/tangled-appview.age;
 
   # Avoid trying to use our own non-recursive BIND service.
   networking.resolvconf.useLocalResolver = false;
@@ -213,7 +214,7 @@ in
         $TTL 86400
 
         edwardh.dev. IN SOA ns.edwardh.dev. admin.edwardh.dev. (
-          2026101205 	; Serial, MUST be updated every change
+          2026101301 	; Serial, MUST be updated every change
           86400       ; Refresh period
           86400       ; Retry period
           86400       ; Expire time
@@ -246,7 +247,6 @@ in
 
         ; Tangled
         knot 600 IN A 18.135.222.143
-        tangled 600 IN A 18.135.222.143
 
         ; Resend
         resend._domainkey.pds 10800 IN TXT "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIfnw0joWP/+M0ZmcdRfNETGkOnuY6UuM3aH4IVhi1CaOwVkv02cfCWnG/KvLujM7FGfKMM+YJZ7ccE93cXUy7XVqqWhfRsACwEGlz0CuITAODK8zZKTTbTIpQXVG0N/qRjcgS7Co53kPDneZ77yg/jP00AXqbPAQGESFrchGsUQIDAQAB"
@@ -263,6 +263,7 @@ in
   services.tangled.knot-rs = {
     enable = true;
     openFirewall = false;
+    # sets KNOT_MASTER_KEY.
     environmentFile = config.age.secrets.knot-rs.path;
     settings = {
       server = {
@@ -278,17 +279,23 @@ in
       homepage.enabled = false;
     };
   };
-  services.tangled.appview = {
-    enable = true;
-    port = 3010;
-    listenAddr = "127.0.0.1";
-    appviewHost = "tangled.edwardh.dev";
-    appviewName = "tangled.edwardh.dev";
-  };
+  #  services.tangled.appview = {
+  #enable = true;
+  #port = 3010;
+  #listenAddr = "127.0.0.1:3010";
+  #appviewHost = "tangled.edwardh.dev";
+  #appviewName = "tangled.edwardh.dev";
+  #pds.host = "https://pds.edwardh.dev";
+  ## sets TANGLED_COOKIE_SECRET and TANGLED_OAUTH_CLIENT_SECRET.
+  #environmentFile = config.age.secrets.tangled-appview.path;
+  #};
+  #systemd.services.appview.environment.TANGLED_OAUTH_CLIENT_KID =
+  #"31d6be32871d716e51b5fb55cd63d105fec1b30e0cf5cdc2b6f6edd441b2a4ab";
 
   services.tranquil-pds = {
     enable = true;
     database.createLocally = true;
+    # sets JWT_SECRET, DPOP_SECRET, MASTER_KEY, and MAIL_SMARTHOST_PASSWORD.
     environmentFiles = [ config.age.secrets.tranquil-pds.path ];
     settings = {
       server = {
@@ -356,16 +363,16 @@ in
           proxyPass = "http://127.0.0.1:5555";
         };
       };
-      "tangled.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
+      #      "tangled.edwardh.dev" = {
+      #forceSSL = true;
+      #enableACME = true;
 
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyWebsockets = true;
-          proxyPass = "http://127.0.0.1:3010";
-        };
-      };
+      #locations."/" = {
+      #recommendedProxySettings = true;
+      #proxyWebsockets = true;
+      #proxyPass = "http://127.0.0.1:3010";
+      #};
+      #};
       "pds.edwardh.dev" = {
         forceSSL = true;
         enableACME = true;
