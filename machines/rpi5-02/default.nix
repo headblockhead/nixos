@@ -29,7 +29,6 @@ inputs.nixos-raspberrypi.lib.nixosSystem {
     ../rpi5-disko.nix
 
     inputs.nixos-raspberrypi.nixosModules.raspberry-pi-5.base
-    inputs.agenix.nixosModules.age
     inputs.disko.nixosModules.disko
 
     conf.en-gb

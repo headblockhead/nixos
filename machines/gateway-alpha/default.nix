@@ -34,8 +34,6 @@ inputs.nixpkgs.lib.nixosSystem {
     ./config.nix
     ./hardware.nix
 
-    inputs.agenix.nixosModules.default
-
     boot.loader.systemd-boot
     conf.en-gb
     conf.passwordless

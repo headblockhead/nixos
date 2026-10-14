@@ -1,11 +1,10 @@
-{ pkgs, ... }:
 {
-  # Allow packet forwarding
-  boot.kernel.sysctl = {
-    "net.ipv4.conf.all.forwarding" = true;
-    "net.ipv6.conf.all.forwarding" = true;
-  };
-
+  pkgs,
+  inputs,
+  config,
+  ...
+}:
+{
   # Assign custom interface names based on MAC addresses.
   systemd.network.links."10-ethernet1" = {
     matchConfig.PermanentMACAddress = "20:7c:14:fa:38:64";
@@ -27,6 +26,12 @@
     matchConfig.PermanentMACAddress = "20:7c:14:fa:38:68";
     linkConfig.Name = "ethernet5";
   };
+
+  imports = [
+    inputs.agenix.nixosModules.age
+  ];
+
+  age.secrets.gateway-alpha-wg.file = "${inputs.self.outPath}/secrets/gateway-alpha-wg.age";
 
   networking = {
     vlans = {
@@ -164,6 +169,29 @@
       enable = true;
       flushRuleset = true;
     };
+    wireguard = {
+      enable = true;
+      interfaces = {
+        wg = {
+          privateKeyFile = config.age.secrets.gateway-alpha-wg.path;
+          ips = [
+            "172.27.100.1/24"
+            "fdae:a100:5f6a:100::1/64"
+          ];
+          peers = [
+            {
+              name = "edwardh-alpha";
+              publicKey = "JOxqaV5gQHbL+op9Amag/H5QjZ2Tvw6eJAdFL+VN5Es=";
+              allowedIPs = [
+                "172.27.100.91/32"
+                "fdae:a100:5f6a:100::91/128"
+              ];
+              endpoint = "alpha.edwardh.dev:51820";
+            }
+          ];
+        };
+      };
+    };
     firewall = {
       logRefusedPackets = true;
       logReversePathDrops = true;
@@ -174,7 +202,12 @@
       trustedInterfaces = [ "brlan" ]; # Allow all input from LAN.
       interfaces = {
         ethernet5 = {
-          allowedTCPPorts = [ 22 ]; # Allow SSH access from WAN.
+          allowedTCPPorts = [
+            26 # SSH
+          ];
+        };
+        wg = {
+          allowedTCPPorts = [ ];
           allowedUDPPorts = [ ];
         };
         brinf = {
@@ -228,6 +261,9 @@
 
         iifname briot oifname brsrv accept comment "from iot to srv"
         iifname brsrv oifname briot accept comment "from srv to iot"
+
+        iifname wg oifname brsrv accept comment "from wg to srv"
+        oifname brsrv ct state established,related accept comment "returning to wg"
       '';
     };
   };
@@ -281,7 +317,7 @@
         $TTL 3600
 
         lan. IN SOA ns.lan. admin.lan. (
-          2026100402 	; Serial, MUST be updated every change
+          2026101401 	; Serial, MUST be updated every change
           86400       ; Refresh period
           86400       ; Retry period
           86400       ; Expire time
@@ -295,11 +331,11 @@
         ns IN A 172.27.30.1
         ns IN A 172.27.40.1
 
-        gateway-alpha IN A 172.27.1.1
-        gateway-alpha IN A 172.27.10.1
-        gateway-alpha IN A 172.27.20.1
-        gateway-alpha IN A 172.27.30.1
-        gateway-alpha IN A 172.27.40.1
+        alpha.gateway IN A 172.27.1.1
+        alpha.gateway IN A 172.27.10.1
+        alpha.gateway IN A 172.27.20.1
+        alpha.gateway IN A 172.27.30.1
+        alpha.gateway IN A 172.27.40.1
 
         rpi5-01 IN A 172.27.30.51 
         rpi5-02 IN A 172.27.30.52 

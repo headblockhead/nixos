@@ -27,7 +27,6 @@ inputs.nixpkgs.lib.nixosSystem {
     ./hardware.nix
 
     "${inputs.nixpkgs}/nixos/modules/virtualisation/amazon-image.nix"
-    inputs.agenix.nixosModules.default
 
     conf.en-gb
     conf.utility

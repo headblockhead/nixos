@@ -89,7 +89,7 @@ nixos-generate-config --show-hardware-config > hardware-auto.nix
 Clone a copy of this repo.
 
 ```bash
-git clone https://github.com/headblockhead/nixos.git
+git clone https://knot.edwardh.dev/edwardh.dev/nixos.git
 ```
 
 Compare the hardware-auto.nix file to the hardware.nix of the machine you intend to install, and update accordingly (imports, kernel modules, CPU microcode, etc.)
@@ -131,7 +131,7 @@ sudo usermod -L root
 Complete the first half of the setup form, then quit when reaching 'generating new key pair'.
 
 ```bash
-gopass clone git@github.com:headblockhead/gopass
+gopass clone git@knot.edwardh.dev:edwardh.dev/gopass
 ```
 
 #### GNOME theme for Firefox
@@ -164,42 +164,48 @@ sudo nixos-rebuild boot --flake .#
 
 Deploy the nixos configurations to servers, without setting the boot-default.
 
+Env: NIX_SSHOPTS="-p 26"
+
 ```bash
-nixos-rebuild test --target-host gateway-alpha.lan --sudo --no-reexec --flake .#gateway-alpha
+nixos-rebuild test --target-host alpha.gateway.lan --sudo --no-reexec --flake .#gateway-alpha
 nixos-rebuild test --target-host rpi4-01.lan --sudo --no-reexec --flake .#rpi4-01
 nixos-rebuild test --target-host rpi4-02.lan --sudo --no-reexec --flake .#rpi4-02
 nixos-rebuild test --target-host rpi5-01.lan --sudo --no-reexec --flake .#rpi5-01
 nixos-rebuild test --target-host rpi5-02.lan --sudo --no-reexec --flake .#rpi5-02
 nixos-rebuild test --target-host rpi5-03.lan --sudo --no-reexec --flake .#rpi5-03
-NIX_SSHOPTS="-p 2941" nixos-rebuild test --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh
+nixos-rebuild test --target-host alpha.edwardh.dev --sudo --no-reexec --flake .#edwardh-alpha
 ```
 
 ### deploy-switch
 
 Deploy the nixos configurations to servers, setting the boot-default.
 
+Env: NIX_SSHOPTS="-p 26"
+
 ```bash
-nixos-rebuild switch --target-host gateway-alpha.lan --sudo --no-reexec --flake .#gateway-alpha
+nixos-rebuild switch --target-host alpha.gateway.lan --sudo --no-reexec --flake .#gateway-alpha
 nixos-rebuild switch --target-host rpi4-01.lan --sudo --no-reexec --flake .#rpi4-01
 nixos-rebuild switch --target-host rpi4-02.lan --sudo --no-reexec --flake .#rpi4-02
 nixos-rebuild switch --target-host rpi5-01.lan --sudo --no-reexec --flake .#rpi5-01
 nixos-rebuild switch --target-host rpi5-02.lan --sudo --no-reexec --flake .#rpi5-02
 nixos-rebuild switch --target-host rpi5-03.lan --sudo --no-reexec --flake .#rpi5-03
-NIX_SSHOPTS="-p 2941" nixos-rebuild switch --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh
+nixos-rebuild switch --target-host alpha.edwardh.dev --sudo --no-reexec --flake .#edwardh-alpha
 ```
 
 ### deploy-boot
 
 Deploy the nixos configurations to servers, setting the boot-default.
 
+Env: NIX_SSHOPTS="-p 26"
+
 ```bash
-nixos-rebuild boot --target-host gateway-alpha.lan --sudo --no-reexec --flake .#gateway-alpha
+nixos-rebuild boot --target-host alpha.gateway.lan --sudo --no-reexec --flake .#gateway-alpha
 nixos-rebuild boot --target-host rpi4-01.lan --sudo --no-reexec --flake .#rpi4-01
 nixos-rebuild boot --target-host rpi4-02.lan --sudo --no-reexec --flake .#rpi4-02
 nixos-rebuild boot --target-host rpi5-01.lan --sudo --no-reexec --flake .#rpi5-01
 nixos-rebuild boot --target-host rpi5-02.lan --sudo --no-reexec --flake .#rpi5-02
 nixos-rebuild boot --target-host rpi5-03.lan --sudo --no-reexec --flake .#rpi5-03
-NIX_SSHOPTS="-p 2941" nixos-rebuild boot --target-host edwardh.dev --sudo --no-reexec --flake .#edwardh
+nixos-rebuild boot --target-host alpha.edwardh.dev --sudo --no-reexec --flake .#edwardh-alpha
 ```
 ### build
 
@@ -213,7 +219,7 @@ nixos-rebuild build --flake .#rpi4-02
 nixos-rebuild build --flake .#rpi5-01
 nixos-rebuild build --flake .#rpi5-02
 nixos-rebuild build --flake .#rpi5-03
-nixos-rebuild build --flake .#edwardh
+nixos-rebuild build --flake .#edwardh-alpha
 ```
 
 ### clean
@@ -221,13 +227,13 @@ nixos-rebuild build --flake .#edwardh
 Clean up servers.
 
 ```bash
-ssh gateway-alpha.lan sudo nix-collect-garbage -d
-ssh rpi4-01.lan sudo nix-collect-garbage -d
-ssh rpi4-02.lan sudo nix-collect-garbage -d
-ssh rpi5-01.lan sudo nix-collect-garbage -d
-ssh rpi5-02.lan sudo nix-collect-garbage -d
-ssh rpi5-03.lan sudo nix-collect-garbage -d
-ssh edwardh.dev -p 2941 sudo nix-collect-garbage -d
+ssh alpha.gateway.lan -p 26 sudo nix-collect-garbage -d
+ssh rpi4-01.lan -p 26 sudo nix-collect-garbage -d
+ssh rpi4-02.lan -p 26 sudo nix-collect-garbage -d
+ssh rpi5-01.lan -p 26 sudo nix-collect-garbage -d
+ssh rpi5-02.lan -p 26 sudo nix-collect-garbage -d
+ssh rpi5-03.lan -p 26 sudo nix-collect-garbage -d
+ssh alpha.edwardh.dev -p 26 sudo nix-collect-garbage -d
 ```
 
 ### reboot
@@ -235,11 +241,11 @@ ssh edwardh.dev -p 2941 sudo nix-collect-garbage -d
 Reboot servers.
 
 ```bash
-ssh edwardh.dev -p 2941 sudo systemctl reboot
-ssh rpi4-01.lan sudo systemctl reboot
-ssh rpi5-01.lan sudo systemctl reboot
-ssh rpi5-02.lan sudo systemctl reboot
-ssh rpi5-03.lan sudo systemctl reboot
-ssh rpi4-02.lan sudo systemctl reboot
-ssh gateway-alpha.lan sudo systemctl reboot
+ssh alpha.edwardh.dev -p 26 sudo systemctl reboot
+ssh rpi4-01.lan -p 26 sudo systemctl reboot
+ssh rpi5-01.lan -p 26 sudo systemctl reboot
+ssh rpi5-02.lan -p 26 sudo systemctl reboot
+ssh rpi5-03.lan -p 26 sudo systemctl reboot
+ssh rpi4-02.lan -p 26 sudo systemctl reboot
+ssh alpha.gateway.lan -p 26 sudo systemctl reboot
 ```

@@ -15,11 +15,12 @@
     tangled.url = "git+https://tangled.org/tangled.org/core";
     nixos-mailserver.url = "git+https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git?ref=main";
 
+    #edwardh-dev.url = "git+https://knot.edwardh.dev/edwardh.dev/edwardh.dev";
     edwardh-dev.url = "github:headblockhead/edwardh.dev";
   };
 
   outputs =
-    { nixpkgs, ... }@inputs:
+    { nixpkgs, self, ... }@inputs:
     let
       recurseFindNixFiles =
         yield: directory:

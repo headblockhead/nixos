@@ -17,8 +17,7 @@ let
 in
 {
   imports = [
-    inputs.tangled.nixosModules.knot-rs
-    #inputs.tangled.nixosModules.appview
+    inputs.agenix.nixosModules.age
     inputs.nixos-mailserver.nixosModules.default
   ];
 
@@ -31,7 +30,7 @@ in
 
       53 # DNS
       22 # SSH for Knot
-      2941 # SSH for me
+      26 # SSH for me
     ];
     allowedUDPPorts = [
       # QUIC
@@ -39,6 +38,8 @@ in
       443 # HTTPS
 
       53 # DNS
+
+      51820 # WireGuard
     ];
   };
 
@@ -85,16 +86,61 @@ in
     };
   };
 
-  age.secrets.mail-hashed-password.file = ../../secrets/mail-hashed-password.age;
+  age.secrets.mail-hashed-password.file = "${inputs.self.outPath}/secrets/mail-hashed-password.age";
   age.secrets.radicale-htpasswd = {
-    file = ../../secrets/radicale-htpasswd.age;
+    file = "${inputs.self.outPath}/secrets/radicale-htpasswd.age";
     owner = "radicale";
     group = "radicale";
     mode = "400";
   };
-  age.secrets.tranquil-pds.file = ../../secrets/tranquil-pds.age;
-  age.secrets.knot-rs.file = ../../secrets/knot-rs.age;
-  #age.secrets.tangled-appview.file = ../../secrets/tangled-appview.age;
+  age.secrets.edwardh-alpha-wg.file = "${inputs.self.outPath}/secrets/edwardh-alpha-wg.age";
+
+  networking.wireguard = {
+    enable = true;
+    interfaces = {
+      wg = {
+        privateKeyFile = config.age.secrets.edwardh-alpha-wg.path;
+        listenPort = 51820;
+        ips = [
+          "172.27.100.91/24"
+          "fdae:a100:5f6a:100::91/64"
+        ];
+        peers = [
+          {
+            name = "gateway-alpha";
+            publicKey = "r7b+VwJA6xi9KcyjzrVrF30Zx0PBU1+/5xozZ+BHLVA=";
+            allowedIPs = [
+              "172.27.0.0/16"
+              "fdae:a100:5f6a::/48"
+            ];
+          }
+        ];
+      };
+    };
+  };
+  networking.nat = {
+    enable = true;
+    externalInterface = "ens5";
+    internalInterfaces = [ "wg" ];
+    forwardPorts = [
+      {
+        destination = "172.27.30.51:22";
+        proto = "tcp";
+        sourcePort = 22;
+      }
+    ];
+    extraCommands = ''
+      iptables -t nat -A POSTROUTING -d 172.27.30.51 -p tcp --dport 22 -j MASQUERADE
+    '';
+  };
+
+  networking.firewall = {
+    logRefusedPackets = true;
+    logReversePathDrops = true;
+    logRefusedConnections = true;
+    logRefusedUnicastsOnly = true;
+    rejectPackets = true;
+  };
 
   # Avoid trying to use our own non-recursive BIND service.
   networking.resolvconf.useLocalResolver = false;
@@ -214,115 +260,45 @@ in
         $TTL 86400
 
         edwardh.dev. IN SOA ns.edwardh.dev. admin.edwardh.dev. (
-          2026101301 	; Serial, MUST be updated every change
-          86400       ; Refresh period
-          86400       ; Retry period
-          86400       ; Expire time
-          86400       ; Negative Cache TTL
+          2026101407 	; Serial, MUST be updated every change
+          1800        ; Refresh period
+          900         ; Retry period
+          604800      ; Expire time
+          300         ; Negative Cache TTL
         )
 
-        edwardh.dev. IN NS ns.edwardh.dev.
-        ns IN A 18.135.222.143
+        edwardh.dev.                IN NS     ns.edwardh.dev.
+        ns                          IN A      18.135.222.143
+        alpha                       IN A      18.135.222.143
 
-        ; Webserver
-        edwardh.dev. 600 IN A 18.135.222.143
-        www 600 IN CNAME edwardh.dev.
+        edwardh.dev.          600   IN A      18.135.222.143
+        calendar              600   IN A      18.135.222.143
+        contacts              600   IN A      18.135.222.143
+        knot                  600   IN A      18.135.222.143
+        tangled               600   IN A      18.135.222.143
+        pds                   600   IN A      18.135.222.143
+        mail                  600   IN A      18.135.222.143
 
-        ; CalDAV and CardDAV
-        calendar 600 IN A 18.135.222.143
-        contacts 600 IN A 18.135.222.143
+        edwardh.dev.          600   IN MX  10 mail.edwardh.dev.
 
-        ; Mailserver
-        mail 10800 IN A 18.135.222.143
-        edwardh.dev. 600 IN MX 10 mail.edwardh.dev.
+        edwardh.dev.          10800 IN TXT    "v=spf1 a:mail.edwardh.dev -all"
+        mail._domainkey       10800 IN TXT    "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCqdWWB1LMiqpeNve6nTiYSQDtMcTw8KzNESEomkTvsWstjjRA2IQC7oGeW8yMqeCFniKx+TJ1QyH8UTktUvm/XPv0mSSzR4mjYGpY6sSiRB7z57CGtpcV4Tsi5Oz7NNOGt/vm3fZbi7xLQHfIpFrjdBtIbYFfc1LrQOWzceTt+VQIDAQAB"
+        _dmarc                10800 IN TXT    "v=DMARC1; p=quarantine"
 
-        ; Mailserver SPF, DKIM, and DMARC
-        edwardh.dev. 10800 IN TXT "v=spf1 a:mail.edwardh.dev -all"
-        mail._domainkey 10800 IN TXT "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCqdWWB1LMiqpeNve6nTiYSQDtMcTw8KzNESEomkTvsWstjjRA2IQC7oGeW8yMqeCFniKx+TJ1QyH8UTktUvm/XPv0mSSzR4mjYGpY6sSiRB7z57CGtpcV4Tsi5Oz7NNOGt/vm3fZbi7xLQHfIpFrjdBtIbYFfc1LrQOWzceTt+VQIDAQAB"
-        _dmarc 10800 IN TXT "v=DMARC1; p=quarantine"
+        _atproto              600   IN TXT    "did=did:plc:gbe2ojtpy3f2er6h246kk266"
 
-        ; AT Protocol
-        _atproto 600 IN TXT "did=did:plc:gbe2ojtpy3f2er6h246kk266"
-        pds 600 IN A 18.135.222.143
-
-        ; Tangled
-        knot 600 IN A 18.135.222.143
-
-        ; Resend
-        resend._domainkey.pds 10800 IN TXT "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIfnw0joWP/+M0ZmcdRfNETGkOnuY6UuM3aH4IVhi1CaOwVkv02cfCWnG/KvLujM7FGfKMM+YJZ7ccE93cXUy7XVqqWhfRsACwEGlz0CuITAODK8zZKTTbTIpQXVG0N/qRjcgS7Co53kPDneZ77yg/jP00AXqbPAQGESFrchGsUQIDAQAB"
-        rsend.pds 600 IN CNAME rsend-euw1.forge.rmta.net.
-        send.pds 600 IN CNAME send.forge.rmta.net.
+        resend._domainkey.pds 10800 IN TXT    "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIfnw0joWP/+M0ZmcdRfNETGkOnuY6UuM3aH4IVhi1CaOwVkv02cfCWnG/KvLujM7FGfKMM+YJZ7ccE93cXUy7XVqqWhfRsACwEGlz0CuITAODK8zZKTTbTIpQXVG0N/qRjcgS7Co53kPDneZ77yg/jP00AXqbPAQGESFrchGsUQIDAQAB"
+        rsend.pds             600   IN CNAME  rsend-euw1.forge.rmta.net.
+        send.pds              600   IN CNAME  send.forge.rmta.net.
+        resend._domainkey.tangled 10800 IN TXT    "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCzQwaX7E5h7P5VLIRkyavmfmCLqiaJhAGschJ8KPMPYd2gemuWskfMjDzg5IIcH0NhQXGDIE/YvwaXp+sKAWbWWz7bQHPcJkK6cxv1PMWR4ZZf0HbpXjzVeMyUy4KpzcycEwbhiMfbp/uzD+xeGg2Q+QOCt67KGrtRMeMS7UzC1QIDAQAB"
+        rsend.tangled         600   IN CNAME  rsend-euw1.forge.rmta.net.
+        send.tangled          600   IN CNAME  send.forge.rmta.net.
       '';
     };
   };
 
   security.acme.acceptTerms = true;
   security.acme.defaults.email = "security@edwardh.dev";
-
-  services.openssh.ports = [ 2941 ];
-  services.tangled.knot-rs = {
-    enable = true;
-    openFirewall = false;
-    # sets KNOT_MASTER_KEY.
-    environmentFile = config.age.secrets.knot-rs.path;
-    settings = {
-      server = {
-        hostname = "knot.edwardh.dev";
-        admins = [ "did:plc:gbe2ojtpy3f2er6h246kk266" ];
-        listen_addr = "127.0.0.1:5555";
-        ssh_listen_addr = "0.0.0.0:22";
-      };
-      acl.admission = "closed";
-      git.object_format = "sha256";
-      atproto.plc_directory = "https://plc.directory";
-      repo.default_branch = "master";
-      xrpc = {
-        trusted_proxy_header = "x-forwarded-for";
-        trusted_proxies = [ "127.0.0.1" ];
-      };
-      homepage.enabled = false;
-    };
-  };
-  #  services.tangled.appview = {
-  #enable = true;
-  #port = 3010;
-  #listenAddr = "127.0.0.1:3010";
-  #appviewHost = "tangled.edwardh.dev";
-  #appviewName = "tangled.edwardh.dev";
-  #pds.host = "https://pds.edwardh.dev";
-  ## sets TANGLED_COOKIE_SECRET and TANGLED_OAUTH_CLIENT_SECRET.
-  #environmentFile = config.age.secrets.tangled-appview.path;
-  #};
-  #systemd.services.appview.environment.TANGLED_OAUTH_CLIENT_KID =
-  #"31d6be32871d716e51b5fb55cd63d105fec1b30e0cf5cdc2b6f6edd441b2a4ab";
-
-  services.tranquil-pds = {
-    enable = true;
-    database.createLocally = true;
-    # sets JWT_SECRET, DPOP_SECRET, MASTER_KEY, and MAIL_SMARTHOST_PASSWORD.
-    environmentFiles = [ config.age.secrets.tranquil-pds.path ];
-    settings = {
-      server = {
-        hostname = "pds.edwardh.dev";
-        host = "127.0.0.1";
-        user_handle_domains = [ "edwardh.dev" ];
-        invite_code_required = true;
-        enable_pds_hosted_did_web = true;
-        disable_account_verification_gate = true;
-        trusted_proxy_count = 1;
-      };
-      email = {
-        from_address = "tranquil@pds.edwardh.dev";
-        from_name = "edwardh.dev PDS";
-        smarthost = {
-          host = "smtp.resend.com";
-          port = 587;
-          username = "resend";
-          password = "_"; # Set by environmentFiles.
-        };
-      };
-    };
-  };
 
   services.nginx = {
     enable = true;
@@ -357,36 +333,6 @@ in
           '';
         };
       };
-      "knot.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
-
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyWebsockets = true;
-          proxyPass = "http://127.0.0.1:5555";
-        };
-      };
-      #      "tangled.edwardh.dev" = {
-      #forceSSL = true;
-      #enableACME = true;
-
-      #locations."/" = {
-      #recommendedProxySettings = true;
-      #proxyWebsockets = true;
-      #proxyPass = "http://127.0.0.1:3010";
-      #};
-      #};
-      "pds.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
-
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyWebsockets = true;
-          proxyPass = "http://127.0.0.1:3000";
-        };
-      };
       "calendar.edwardh.dev" = {
         forceSSL = true;
         enableACME = true;
@@ -396,6 +342,36 @@ in
           proxyPass = "http://127.0.0.1:5232";
         };
         serverAliases = [ "contacts.edwardh.dev" ];
+      };
+      "knot.edwardh.dev" = {
+        forceSSL = true;
+        enableACME = true;
+
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyWebsockets = true;
+          proxyPass = "http://172.27.30.51:5555";
+        };
+      };
+      "tangled.edwardh.dev" = {
+        forceSSL = true;
+        enableACME = true;
+
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyWebsockets = true;
+          proxyPass = "http://172.27.30.51:3010";
+        };
+      };
+      "pds.edwardh.dev" = {
+        forceSSL = true;
+        enableACME = true;
+
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyWebsockets = true;
+          proxyPass = "http://172.27.30.51:3000";
+        };
       };
     };
   };
