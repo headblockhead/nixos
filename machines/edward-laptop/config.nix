@@ -17,6 +17,16 @@
     pkgs.obsidian
   ];
 
+  programs.ssh = {
+    # Redirect SSH connections to GitHub to port 443, to get around firewall.
+    extraConfig = ''
+      Host github.com
+        Hostname ssh.github.com
+        Port 443
+        User git
+    '';
+  };
+
   networking.hosts = {
     "crosscountrywifi.co.uk" = [ "192.168.200.1" ];
   };
