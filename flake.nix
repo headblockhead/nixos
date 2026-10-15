@@ -65,9 +65,6 @@
               withAvahi = true;
             };
             wivrn = inputs.wivrn.packages.${prev.stdenv.hostPlatform.system}.default;
-            libgit2 = prev.libgit2.overrideAttrs (oldAttrs: {
-              withExperimentalSha256 = true;
-            });
             xrizer = prev.callPackage ./custom-packages/xrizer/default.nix { };
           }
         );
