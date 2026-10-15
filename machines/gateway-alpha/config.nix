@@ -193,12 +193,6 @@
       };
     };
     firewall = {
-      logRefusedPackets = true;
-      logReversePathDrops = true;
-      logRefusedConnections = true;
-      logRefusedUnicastsOnly = true;
-      rejectPackets = true;
-
       trustedInterfaces = [ "brlan" ]; # Allow all input from LAN.
       interfaces = {
         ethernet5 = {

@@ -134,14 +134,6 @@ in
     '';
   };
 
-  networking.firewall = {
-    logRefusedPackets = true;
-    logReversePathDrops = true;
-    logRefusedConnections = true;
-    logRefusedUnicastsOnly = true;
-    rejectPackets = true;
-  };
-
   # Avoid trying to use our own non-recursive BIND service.
   networking.resolvconf.useLocalResolver = false;
 
