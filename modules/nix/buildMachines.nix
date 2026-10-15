@@ -79,7 +79,7 @@ in
 {
   # Exclude ourself from the buildMachines list.
   nix.buildMachines = lib.lists.remove (lib.lists.findFirst (
-    m: m.hostName == (config.networking.hostName + ".lan")
+    m: m.hostName == (config.networking.hostName + ".lan:26")
   ) { } buildMachines) buildMachines;
 
   nix.settings.trusted-users = [ "nixbuilder" ];
