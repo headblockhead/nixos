@@ -32,23 +32,7 @@
         trusted_proxy_header = "x-forwarded-for";
         trusted_proxies = [ "172.27.100.91" ];
       };
-      homepage.path = pkgs.writeText "knot-rs-homepage" ''
-
-                                      ____    _.-'
-                         _.---..__ .-'____i-+'_.-'
-              .__     .-'_.---.._i'.-'____.--'
-              .__""--: .'__..--"_.' ""    '.'.    __
-                 ""-: :.___..--" .---._____i.i--""__
-              ...___: :________.-"""-.______..--""
-              ...____: '.______.-"""-.__.-'
-                      '-.___.'
-
-        This is a knot server. More info at https://docs.tangled.org/knot-self-hosting-guide.html
-
-        Looking for a UI? See https://tangled.edwardh.dev
-
-        Server configuration availiable at https://tangled.edwardh.dev/edwardh.dev/nixos/tree/${inputs.self.rev or "master"}
-      '';
+      homepage.enabled = false;
     };
   };
 }
