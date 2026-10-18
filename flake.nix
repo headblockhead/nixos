@@ -4,16 +4,14 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    nixos-raspberrypi = {
-      url = "github:nvmd/nixos-raspberrypi";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi";
 
     disko.url = "github:nix-community/disko";
     agenix.url = "github:ryantm/agenix";
     wivrn.url = "github:wivrn/wivrn/v26.9";
     tangled.url = "git+https://tangled.org/tangled.org/core";
     nixos-mailserver.url = "git+https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git?ref=main";
+    impermanence.url = "github:nix-community/impermanence";
 
     #edwardh-dev.url = "git+https://knot.edwardh.dev/edwardh.dev/edwardh.dev";
     edwardh-dev.url = "github:headblockhead/edwardh.dev";
@@ -33,7 +31,7 @@
                 elementPath = directory + "/${element.name}";
               in
               if element.type == "directory" then
-                { ${element.name} = recurseFindNixFiles yield elementPath; } # Recurse into subdirectory
+                { ${element.name} = recurseFindNixFiles yield elementPath; }
               else if nixpkgs.lib.hasSuffix ".nix" element.name then
                 { ${nixpkgs.lib.removeSuffix ".nix" element.name} = yield elementPath; }
               else

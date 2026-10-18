@@ -6,7 +6,7 @@
   accounts,
   ...
 }:
-inputs.nixos-raspberrypi.lib.nixosSystem {
+inputs.nixpkgs.lib.nixosSystem {
   specialArgs = {
     inherit inputs;
     nixos-raspberrypi = inputs.nixos-raspberrypi;
@@ -15,25 +15,20 @@ inputs.nixos-raspberrypi.lib.nixosSystem {
     ) accounts;
   };
   modules = with nixosModules; [
-    (
-      { lib, ... }:
-      {
-        system.stateVersion = "25.05";
-        networking.hostName = hostname;
-        nixpkgs.overlays = builtins.attrValues overlays;
-      }
-    )
+    {
+      system.stateVersion = "26.11";
+      networking.hostName = hostname;
+      nixpkgs.overlays = builtins.attrValues overlays;
+    }
 
     ./config.nix
     ../rpi5-hardware.nix
-    ../rpi5-disko.nix
-
-    inputs.nixos-raspberrypi.nixosModules.raspberry-pi-5.base
-    inputs.disko.nixosModules.disko
 
     conf.en-gb
     conf.passwordless
     conf.utility
+    disko.rpi5
+    environment.persistence
     nix.buildMachines
     nix.gc
     nix.optimise

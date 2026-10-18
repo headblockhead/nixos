@@ -18,6 +18,5 @@
     citations
     gnome-decoder
     dialect
-    forge-sparks
   ];
 }
