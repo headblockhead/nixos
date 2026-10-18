@@ -6,6 +6,7 @@
     50051
   ];
 
+  services.pcscd.enable = true;
   services.flatpak.enable = true;
 
   services.openssh.openFirewall = true;

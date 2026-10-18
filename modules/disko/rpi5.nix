@@ -30,6 +30,11 @@
                 type = "luks";
                 name = "crypted";
                 enrollFido2 = true;
+                extraFido2EnrollArgs = [
+                  "--fido2-with-user-presence=true"
+                  "--fido2-with-user-verification=false"
+                  "--fido2-credential-algorithm=eddsa"
+                ];
                 enrollRecovery = false;
                 content = {
                   type = "btrfs";
