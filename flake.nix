@@ -5,6 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi";
+    nixos-raspberrypi.inputs.nixpkgs.follows = "nixpkgs";
 
     disko.url = "github:nix-community/disko";
     agenix.url = "github:ryantm/agenix";
