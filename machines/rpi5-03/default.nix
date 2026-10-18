@@ -6,7 +6,9 @@
   accounts,
   ...
 }:
-inputs.nixpkgs.lib.nixosSystem {
+inputs.nixos-raspberrypi.lib.nixosSystem {
+  nixpkgs = inputs.nixpkgs;
+  trustCaches = false;
   specialArgs = {
     inherit inputs;
     nixos-raspberrypi = inputs.nixos-raspberrypi;
