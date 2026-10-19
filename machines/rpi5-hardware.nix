@@ -3,7 +3,6 @@
   imports = [
     inputs.nixos-raspberrypi.lib.inject-overlays
     inputs.nixos-raspberrypi.nixosModules.raspberry-pi-5.base
-    inputs.nixos-raspberrypi.nixosModules.raspberry-pi-5.page-size-16k
   ];
   boot.loader.raspberry-pi.bootloader = "kernel";
   hardware.raspberry-pi.config.all.base-dt-params = {
