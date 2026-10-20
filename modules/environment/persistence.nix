@@ -3,12 +3,6 @@
   imports = [
     inputs.impermanence.nixosModules.impermanence
   ];
-  environment.etc = {
-    "ssh/ssh_host_rsa_key".source = "/persist/etc/ssh/ssh_host_rsa_key";
-    "ssh/ssh_host_rsa_key.pub".source = "/persist/etc/ssh/ssh_host_rsa_key.pub";
-    "ssh/ssh_host_ed25519_key".source = "/persist/etc/ssh/ssh_host_ed25519_key";
-    "ssh/ssh_host_ed25519_key.pub".source = "/persist/etc/ssh/ssh_host_ed25519_key.pub";
-  };
   environment.persistence."/persist" = {
     enable = true;
     hideMounts = true;
@@ -20,6 +14,10 @@
     ];
     files = [
       "/etc/machine-id"
+      "/etc/ssh/ssh_host_ed25519_key.pub"
+      "/etc/ssh/ssh_host_ed25519_key"
+      "/etc/ssh/ssh_host_rsa_key.pub"
+      "/etc/ssh/ssh_host_rsa_key"
     ];
     users = builtins.mapAttrs (n: v: {
       files = [
