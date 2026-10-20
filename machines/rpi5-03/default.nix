@@ -25,10 +25,10 @@ inputs.nixpkgs.lib.nixosSystem {
     ../rpi5-hardware.nix
 
     conf.en-gb
+    conf.impermanence
     conf.passwordless
     conf.utility
     disko.rpi5
-    environment.persistence
     nix.buildMachines
     nix.gc
     nix.optimise

@@ -12,6 +12,10 @@
 
   age.secrets.knot-rs.file = "${inputs.self.outPath}/secrets/knot-rs.age";
 
+  environment.persistence."/persist".directories = [
+    config.services.tangled.knot-rs.stateDir
+  ];
+
   services.tangled.knot-rs = {
     enable = true;
     openFirewall = false;

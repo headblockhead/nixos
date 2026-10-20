@@ -10,6 +10,11 @@
 
   age.secrets.tranquil-pds.file = "${inputs.self.outPath}/secrets/tranquil-pds.age";
 
+  environment.persistence."/persist".directories = [
+    config.services.postgresql.dataDir
+    config.services.tranquil-pds.dataDir
+  ];
+
   services.tranquil-pds = {
     enable = true;
     database.createLocally = true;

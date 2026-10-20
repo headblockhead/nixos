@@ -9,7 +9,6 @@ in
 
   "tranquil-pds.age".publicKeys = [ rpi5-01 ];
   "knot-rs.age".publicKeys = [ rpi5-01 ];
-  "tangled-appview.age".publicKeys = [ rpi5-01 ];
 
   "gateway-alpha-wg.age".publicKeys = [ gateway-alpha ];
   "edwardh-alpha-wg.age".publicKeys = [ edwardh-alpha ];

@@ -24,10 +24,11 @@ inputs.nixpkgs.lib.nixosSystem {
     ./config.nix
     ../rpi5-hardware.nix
 
-    disko.rpi5
     conf.en-gb
+    conf.impermanence
     conf.passwordless
     conf.utility
+    disko.rpi5
     nix.buildMachines
     nix.gc
     nix.optimise
@@ -36,9 +37,6 @@ inputs.nixpkgs.lib.nixosSystem {
     programs.fzf
     programs.zsh
     services.openssh
-    services.tangled.appview
-    services.tangled.knot-rs
-    services.tranquil-pds
     users.users
   ];
 }
