@@ -311,7 +311,7 @@
         $TTL 3600
 
         lan. IN SOA ns.lan. admin.lan. (
-          2026101401 	; Serial, MUST be updated every change
+          2026102001 	; Serial, MUST be updated every change
           86400       ; Refresh period
           86400       ; Retry period
           86400       ; Expire time
@@ -383,7 +383,7 @@
             ];
             reservations = [
               {
-                hostname = "u7-pro-01";
+                hostname = "u7-pro";
                 hw-address = "28:70:4e:8b:98:91";
                 ip-address = "172.27.1.5";
               }
@@ -405,17 +405,17 @@
             ];
             reservations = [
               {
-                hostname = "edward-desktop-01";
+                hostname = "edward-desktop";
                 hw-address = "a0:d3:65:bb:f8:ff";
                 ip-address = "172.27.10.10";
               }
               {
-                hostname = "edward-laptop-01";
+                hostname = "edward-laptop";
                 hw-address = "34:02:86:2b:84:c3";
                 ip-address = "172.27.10.11";
               }
               {
-                hostname = "edward-iphone";
+                hostname = "edward-phone";
                 hw-address = "5a:35:ab:18:40:82";
                 ip-address = "172.27.10.12";
               }
