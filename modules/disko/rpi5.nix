@@ -48,9 +48,7 @@
                   };
                   "/var/lib/swap" = {
                     mountpoint = "/var/lib/swap";
-                    swap = {
-                      swapfile.size = "16G";
-                    };
+                    swap.swapfile.size = "16G";
                   };
                 };
               };
@@ -63,7 +61,6 @@
       fsType = "tmpfs";
       mountOptions = [
         "size=50%"
-        "defaults"
         "mode=755"
       ];
     };
