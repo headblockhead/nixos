@@ -215,7 +215,8 @@ in
   };
 
   services.roundcube = {
-    enable = true;
+    # Temporarily disabled due to CVE-2026-109618 and CVE-2026-109619.
+    enable = false;
     # Web interface accessible from hostName.
     hostName = "mail.edwardh.dev";
     extraConfig = ''
@@ -324,6 +325,11 @@ in
             add_header Alt-Svc 'h3=":443"; ma=86400';
           '';
         };
+      };
+      "mail.edwardh.dev" = {
+        # temporary placeholder whilst roundcube is vulnerable, see above
+        forceSSL = true;
+        enableACME = true;
       };
       "calendar.edwardh.dev" = {
         forceSSL = true;

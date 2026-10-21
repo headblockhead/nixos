@@ -1,13 +1,13 @@
 { pkgs, config, ... }:
 {
   # For OBS virtual camera.
-  boot.extraModulePackages = with config.boot.kernelPackages; [
-    v4l2loopback
-  ];
+  #boot.extraModulePackages = with config.boot.kernelPackages; [
+  #v4l2loopback
+  #];
   environment.systemPackages = with pkgs; [
     # Audio
     spotify
-    audacity
+    #audacity
     easyeffects
     qpwgraph
     # Video
@@ -17,6 +17,6 @@
     gimp
     inkscape
     # Scores
-    musescore
+    #musescore
   ];
 }

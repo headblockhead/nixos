@@ -6,6 +6,10 @@
     50051
   ];
 
+  users.groups.libvirtd.members = [ "headb" ];
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+
   services.pcscd.enable = true;
   services.flatpak.enable = true;
 

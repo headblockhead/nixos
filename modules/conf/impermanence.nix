@@ -3,6 +3,7 @@
   imports = [
     inputs.impermanence.nixosModules.impermanence
   ];
+  age.identityPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
   environment.persistence."/persist" = {
     enable = true;
     hideMounts = true;
