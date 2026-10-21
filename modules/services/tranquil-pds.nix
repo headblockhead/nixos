@@ -12,7 +12,12 @@
 
   environment.persistence."/persist".directories = [
     config.services.postgresql.dataDir
-    config.services.tranquil-pds.dataDir
+    {
+      directory = config.services.tranquil-pds.dataDir;
+      user = "tranquil-pds";
+      group = "tranquil-pds";
+      mode = "755";
+    }
   ];
 
   services.tranquil-pds = {

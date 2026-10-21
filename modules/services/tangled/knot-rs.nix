@@ -11,9 +11,16 @@
 
   age.secrets.knot-rs.file = "${inputs.self.outPath}/secrets/knot-rs.age";
 
-  environment.persistence."/persist".directories = [
-    config.services.tangled.knot-rs.stateDir
-  ];
+  environment.persistence."/persist" = {
+    directories = [
+      {
+        directory = config.services.tangled.knot-rs.stateDir;
+        user = "knot";
+        group = "knot";
+        mode = "755";
+      }
+    ];
+  };
 
   services.tangled.knot-rs = {
     enable = true;
