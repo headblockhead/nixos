@@ -1,5 +1,6 @@
 { inputs, ... }:
 {
+  boot.kernelParams = [ "pcie_aspm=off" ];
   imports = [
     inputs.nixos-raspberrypi.lib.inject-overlays
     inputs.nixos-raspberrypi.nixosModules.raspberry-pi-5.base
