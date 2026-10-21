@@ -20,9 +20,6 @@
       "/etc/ssh/ssh_host_rsa_key"
     ];
     users = builtins.mapAttrs (n: v: {
-      files = [
-        ".zsh_history"
-      ];
     }) accounts;
   };
 }
