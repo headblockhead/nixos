@@ -65,6 +65,7 @@
             };
             wivrn = inputs.wivrn.packages.${prev.stdenv.hostPlatform.system}.default;
             xrizer = prev.callPackage ./custom-packages/xrizer/default.nix { };
+            unifi = prev.callPackage ./custom-packages/unifi/default.nix { };
           }
         );
       };

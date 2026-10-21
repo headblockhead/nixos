@@ -577,18 +577,13 @@
     enable = true;
     nssmdns4 = true;
     nssmdns6 = true;
-    domainName = "local";
-    reflector = true;
-    allowInterfaces = [
-      "brlan"
-      "briot"
-      "brsrv"
-    ];
-    publish = {
-      enable = true;
-      addresses = true;
-      domain = true;
-      userServices = true;
+    settings = {
+      server.allow-interfaces = [
+        "brlan"
+        "briot"
+        "brsrv"
+      ];
+      reflector.enable-reflector = true;
     };
   };
 }
