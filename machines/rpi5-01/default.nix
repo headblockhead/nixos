@@ -37,6 +37,8 @@ inputs.nixpkgs.lib.nixosSystem {
     programs.fzf
     programs.zsh
     services.openssh
+    services.tranquil-pds
+    services.tangled.knot-rs
     users.users
   ];
 }

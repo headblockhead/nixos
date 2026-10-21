@@ -16,23 +16,6 @@
       value = 3;
     };
 
-    #    hdmi = {
-    #enable = true;
-    #value = "off";
-    #};
-    #sd = {
-    #enable = true;
-    #value = "off";
-    #};
-    #uart0 = {
-    #enable = true;
-    #value = "off";
-    #};
-    #uart1 = {
-    #enable = true;
-    #value = "off";
-    #};
-
     act_led_trigger = {
       # green led behavior = heartbeat
       enable = true;

@@ -30,7 +30,7 @@ let
       sshKey = "/etc/ssh/ssh_host_ed25519_key";
       protocol = "ssh-ng";
       # base64 -w0
-      publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUt0dmh4T1JPbGF2WTJqTlpVZ3BEMUJrVGdETmF2eS9UdW9MbkR5R1d4bFY=";
+      publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUtEbVpOb0VRVHpXczFUZzhyTFhwb29hUCtlSnR0QnNqemIrMWtLNlRLdVIK";
       supportedFeatures = [
         "nixos-test"
         "benchmark"
@@ -47,7 +47,7 @@ let
       sshKey = "/etc/ssh/ssh_host_ed25519_key";
       protocol = "ssh-ng";
       # base64 -w0
-      publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU1SclFyZnFoQTVlcitBVzkvd2NkNldqZXg3OUpuK0lCNllOZFhmelliVFk=";
+      publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUhSMWVsZzhGL1BzMk9QMDdzb2xBa2ZMRnVwYVFZSzRDMUhsTitjZk52UXIK";
       supportedFeatures = [
         "nixos-test"
         "benchmark"
@@ -64,7 +64,7 @@ let
       sshKey = "/etc/ssh/ssh_host_ed25519_key";
       protocol = "ssh-ng";
       # base64 -w0
-      publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUovNFFoNnI3YTA2NWJ5WXFJOWdFYmE0NERSWER1VUY2dmJJVWR1ay9FSkY=";
+      publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUUxMkxkVDVDVUl5ZXlHQy9LcjZIUEFTOUt6UXRKNEhFRDlLWVlDdlhVUmIK";
       supportedFeatures = [
         "nixos-test"
         "benchmark"
