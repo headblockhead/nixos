@@ -50,7 +50,7 @@
       };
       node = {
         alias = radicleAlias;
-        externalAddresses = [ "${radicleAlias}:${radicleNodePort}" ];
+        externalAddresses = [ "${radicleAlias}:${builtins.toString radicleNodePort}" ];
         seedingPolicy = {
           default = "block";
           scope = "all";

@@ -147,7 +147,9 @@ in
     ];
     extraCommands = ''
       iptables -t nat -A POSTROUTING -d 172.27.30.51 -p tcp --dport 22 -j MASQUERADE
+      iptables -t nat -A POSTROUTING -d 172.27.30.51 -p tcp --dport 8775 -j MASQUERADE
       iptables -t nat -A POSTROUTING -d 172.27.30.52 -p tcp --dport 8776 -j MASQUERADE
+      iptables -t nat -A POSTROUTING -d 172.27.30.53 -p tcp --dport 8777 -j MASQUERADE
     '';
   };
 
