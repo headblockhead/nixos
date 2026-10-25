@@ -91,15 +91,15 @@
       "locked": {
         "lastModified": 1792888752,
         "narHash": "sha256-ayPHjFdSZ7ug5PlkAfTLhR25/yJjuu4GhiXwxpD/t7o=",
-        "owner": "headblockhead",
-        "repo": "edwardh.dev",
+        "ref": "refs/heads/master",
         "rev": "77c430ef8a7fcef98e1335300a112b74cf4c6d8e",
-        "type": "github"
+        "revCount": 52,
+        "type": "git",
+        "url": "https://bravo.seed.edwardh.dev/rad:zudXi8ABTLpwYLAce7NR8KntbcZU"
       },
       "original": {
-        "owner": "headblockhead",
-        "repo": "edwardh.dev",
-        "type": "github"
+        "type": "git",
+        "url": "https://bravo.seed.edwardh.dev/rad:zudXi8ABTLpwYLAce7NR8KntbcZU"
       }
     },
     "fenix": {

@@ -14,8 +14,7 @@
     nixos-mailserver.url = "git+https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git?ref=main";
     impermanence.url = "github:nix-community/impermanence";
 
-    #edwardh-dev.url = "git+https://knot.edwardh.dev/edwardh.dev/edwardh.dev";
-    edwardh-dev.url = "github:headblockhead/edwardh.dev";
+    edwardh-dev.url = "git+https://bravo.seed.edwardh.dev/rad:zudXi8ABTLpwYLAce7NR8KntbcZU";
   };
 
   outputs =
