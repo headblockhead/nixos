@@ -45,6 +45,7 @@
         description = "One of Edward Hesketh's personal nodes.";
         pinned.repositories = [
           "rad:zBJiVgq6DhTjUg8Tqp9DZAQqSJcz" # nixos
+          "rad:zudXi8ABTLpwYLAce7NR8KntbcZU" # edwardh.dev
         ];
       };
       node = {
