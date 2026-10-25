@@ -7,7 +7,7 @@
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi";
     nixos-raspberrypi.inputs.nixpkgs.follows = "nixpkgs";
 
-    disko.url = "github:nix-community/disko";
+    disko.url = "github:headblockhead/disko";
     agenix.url = "github:ryantm/agenix";
     wivrn.url = "github:wivrn/wivrn/v26.9";
     tangled.url = "git+https://tangled.org/tangled.org/core";

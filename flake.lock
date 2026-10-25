@@ -71,15 +71,15 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1792526520,
-        "narHash": "sha256-3hSJlv8mUVnZPMWK2+CM7a9O+nR6Z4mCh27NfLCmTPc=",
-        "owner": "nix-community",
+        "lastModified": 1792898391,
+        "narHash": "sha256-pGY58Hhz8f4ITurfM91u4dJX2fMlb6KvuDCYqjWudB8=",
+        "owner": "headblockhead",
         "repo": "disko",
-        "rev": "cedd626e11b635470fa6f9fdb8ad79b0075dd7f9",
+        "rev": "848faebb3704e5a6a25b39696d87959548deb83f",
         "type": "github"
       },
       "original": {
-        "owner": "nix-community",
+        "owner": "headblockhead",
         "repo": "disko",
         "type": "github"
       }

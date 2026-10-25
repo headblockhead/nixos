@@ -260,7 +260,7 @@ in
         $TTL 86400
 
         edwardh.dev. IN SOA ns.edwardh.dev. admin.edwardh.dev. (
-          2026102501 	; Serial, MUST be updated every change
+          2026102503 	; Serial, MUST be updated every change
           1800        ; Refresh period
           900         ; Retry period
           604800      ; Expire time
@@ -277,12 +277,13 @@ in
         knot                  600   IN A      18.135.222.143
         tangled               600   IN A      18.135.222.143
         pds                   600   IN A      18.135.222.143
-        mail                  600   IN A      18.135.222.143
+        seed                  600   IN A      18.135.222.143
         radicle               600   IN A      18.135.222.143
+        mail                  600   IN A      18.135.222.143
 
-        radicle._radicle-node._tcp   3600  IN  SRV  32767 32767 8776 radicle.edwardh.dev.
-        radicle._radicle-node._tcp   3600  IN  TXT  "nid=z6MkjNAKEmva2qnGWGGWJXuV46pwYHS3FF2t7mTubb9AoHVg"
-        _radicle-node._tcp           3600  IN  PTR  radicle._radicle-node._tcp.edwardh.dev.
+        seed._radicle-node._tcp   3600  IN  SRV  32767 32767 8776 seed.edwardh.dev.
+        seed._radicle-node._tcp   3600  IN  TXT  "nid=z6MkjNAKEmva2qnGWGGWJXuV46pwYHS3FF2t7mTubb9AoHVg"
+        _radicle-node._tcp        3600  IN  PTR  seed._radicle-node._tcp.edwardh.dev.
 
         edwardh.dev.          600   IN MX  10 mail.edwardh.dev.
 
@@ -325,7 +326,6 @@ in
         enableACME = true;
         quic = true;
         http3 = true;
-        http3_hq = true;
 
         locations."/" = {
           root = inputs.edwardh-dev.packages.edwardh-dev;
@@ -383,13 +383,38 @@ in
           proxyPass = "http://172.27.30.51:3000";
         };
       };
-      "radicle.edwardh.dev" = {
+      "seed.edwardh.dev" = {
         forceSSL = true;
         enableACME = true;
 
         locations."/" = {
           recommendedProxySettings = true;
           proxyPass = "http://172.27.30.52:3015";
+        };
+      };
+      "radicle.edwardh.dev" = {
+        forceSSL = true;
+        enableACME = true;
+
+        quic = true;
+        http3 = true;
+
+        locations."/" = {
+          root = pkgs.radicle-explorer.withConfig {
+            preferredSeeds = [
+              {
+                hostname = "seed.edwardh.dev";
+                port = 443;
+                scheme = "https";
+              }
+            ];
+          };
+          extraConfig = ''
+            gzip on;
+            gzip_types text/html text/css;
+            add_header Alt-Svc 'h3=":443"; ma=86400';
+            try_files $uri /index.html;
+          '';
         };
       };
     };

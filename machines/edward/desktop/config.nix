@@ -2,6 +2,7 @@
 {
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   networking.firewall.allowedTCPPorts = [
+    8080
     64023
     50051
   ];

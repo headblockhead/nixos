@@ -188,6 +188,7 @@
                 "fdae:a100:5f6a:100::91/128"
               ];
               endpoint = "alpha.edwardh.dev:51820";
+              persistentKeepalive = 5;
             }
           ];
         };
