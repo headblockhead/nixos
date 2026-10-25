@@ -50,7 +50,7 @@
       };
       node = {
         alias = radicleAlias;
-        externalAddresses = [ "${radicleAlias}:443" ];
+        externalAddresses = [ "${radicleAlias}:${radicleNodePort}" ];
         seedingPolicy = {
           default = "block";
           scope = "all";
