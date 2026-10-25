@@ -401,6 +401,7 @@ in
 
         locations."/" = {
           root = pkgs.radicle-explorer.withConfig {
+            nodes.fallbackPublicExplorer = "https://radicle.edwardh.dev/nodes/$host/$rid$path";
             preferredSeeds = [
               {
                 hostname = "seed.edwardh.dev";
