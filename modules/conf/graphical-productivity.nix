@@ -18,5 +18,6 @@
     citations
     gnome-decoder
     dialect
+    radicle-desktop
   ];
 }

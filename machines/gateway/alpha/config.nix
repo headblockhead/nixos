@@ -2,6 +2,7 @@
   pkgs,
   inputs,
   config,
+  reverseDomainName,
   ...
 }:
 {
@@ -31,7 +32,7 @@
     inputs.agenix.nixosModules.age
   ];
 
-  age.secrets.gateway-alpha-wg.file = "${inputs.self.outPath}/secrets/gateway-alpha-wg.age";
+  age.secrets.wg.file = "${inputs.self.outPath}/secrets/${reverseDomainName}.wg.age";
 
   networking = {
     vlans = {
@@ -173,7 +174,7 @@
       enable = true;
       interfaces = {
         wg = {
-          privateKeyFile = config.age.secrets.gateway-alpha-wg.path;
+          privateKeyFile = config.age.secrets.wg.path;
           ips = [
             "172.27.100.1/24"
             "fdae:a100:5f6a:100::1/64"
@@ -331,11 +332,14 @@
         alpha.gateway IN A 172.27.30.1
         alpha.gateway IN A 172.27.40.1
 
-        rpi5-01 IN A 172.27.30.51 
-        rpi5-02 IN A 172.27.30.52 
-        rpi5-03 IN A 172.27.30.53 
-        rpi4-01 IN A 172.27.30.41 
-        rpi4-02 IN A 172.27.30.42 
+        desktop.edward IN A 172.27.10.10
+        laptop.edward IN A 172.27.10.11
+
+        alpha.rpi4 IN A 172.27.30.41 
+        bravo.rpi4 IN A 172.27.30.42 
+        alpha.rpi5 IN A 172.27.30.51 
+        bravo.rpi5 IN A 172.27.30.52 
+        charlie.rpi5 IN A 172.27.30.53 
 
         homeassistant IN A 172.27.20.10
       '';
@@ -406,7 +410,7 @@
             reservations = [
               {
                 hostname = "edward-desktop";
-                hw-address = "a0:d3:65:bb:f8:ff";
+                hw-address = "bc:f4:d4:82:6f:a9";
                 ip-address = "172.27.10.10";
               }
               {
@@ -521,27 +525,27 @@
             ];
             reservations = [
               {
-                hostname = "rpi5-01";
+                hostname = "rpi5-alpha";
                 hw-address = "2c:cf:67:94:37:82";
                 ip-address = "172.27.30.51";
               }
               {
-                hostname = "rpi5-02";
+                hostname = "rpi5-bravo";
                 hw-address = "2c:cf:67:94:38:23";
                 ip-address = "172.27.30.52";
               }
               {
-                hostname = "rpi5-03";
+                hostname = "rpi5-charlie";
                 hw-address = "d8:3a:dd:97:a9:c4";
                 ip-address = "172.27.30.53";
               }
               {
-                hostname = "rpi4-01";
+                hostname = "rpi4-alpha";
                 hw-address = "dc:a6:32:31:50:3b";
                 ip-address = "172.27.30.41";
               }
               {
-                hostname = "rpi4-02";
+                hostname = "rpi4-bravo";
                 hw-address = "e4:5f:01:11:a6:8e";
                 ip-address = "172.27.30.42";
               }

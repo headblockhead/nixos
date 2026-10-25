@@ -2,43 +2,39 @@
   inputs,
   overlays,
   nixosModules,
-  hostname,
+  hostName,
+  reverseDomainName,
   accounts,
   ...
 }:
 inputs.nixpkgs.lib.nixosSystem {
   specialArgs = {
-    inherit inputs;
-    nixos-raspberrypi = inputs.nixos-raspberrypi;
+    inherit inputs hostName reverseDomainName;
     accounts = inputs.nixpkgs.lib.filterAttrs (
       username: account: builtins.elem username [ "headb" ]
     ) accounts;
   };
   modules = with nixosModules; [
     {
-      system.stateVersion = "26.11";
-      networking.hostName = hostname;
+      system.stateVersion = "22.05";
+      networking.hostName = hostName;
       nixpkgs.overlays = builtins.attrValues overlays;
     }
 
     ./config.nix
-    ../rpi5-hardware.nix
+    ./hardware.nix
+
+    "${inputs.nixpkgs}/nixos/modules/virtualisation/amazon-image.nix"
 
     conf.en-gb
-    conf.impermanence
     conf.passwordless
     conf.utility
-    disko.rpi5
-    nix.buildMachines
     nix.gc
-    nix.optimise
     nix.registry
     nix.settings
     programs.fzf
     programs.zsh
     services.openssh
-    services.tranquil-pds
-    services.tangled.knot-rs
     users.users
   ];
 }

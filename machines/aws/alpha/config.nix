@@ -2,6 +2,7 @@
   config,
   pkgs,
   inputs,
+  reverseDomainName,
   ...
 }:
 let
@@ -86,20 +87,20 @@ in
     };
   };
 
-  age.secrets.mail-hashed-password.file = "${inputs.self.outPath}/secrets/mail-hashed-password.age";
-  age.secrets.radicale-htpasswd = {
-    file = "${inputs.self.outPath}/secrets/radicale-htpasswd.age";
+  age.secrets.mail.file = "${inputs.self.outPath}/secrets/${reverseDomainName}.mail.age";
+  age.secrets.radicale = {
+    file = "${inputs.self.outPath}/secrets/${reverseDomainName}.radicale.age";
     owner = "radicale";
     group = "radicale";
     mode = "400";
   };
-  age.secrets.edwardh-alpha-wg.file = "${inputs.self.outPath}/secrets/edwardh-alpha-wg.age";
+  age.secrets.wg.file = "${inputs.self.outPath}/secrets/${reverseDomainName}.wg.age";
 
   networking.wireguard = {
     enable = true;
     interfaces = {
       wg = {
-        privateKeyFile = config.age.secrets.edwardh-alpha-wg.path;
+        privateKeyFile = config.age.secrets.wg.path;
         listenPort = 51820;
         ips = [
           "172.27.100.91/24"
@@ -128,9 +129,15 @@ in
         proto = "tcp";
         sourcePort = 22;
       }
+      {
+        destination = "172.27.30.52:8776";
+        proto = "tcp";
+        sourcePort = 8776;
+      }
     ];
     extraCommands = ''
       iptables -t nat -A POSTROUTING -d 172.27.30.51 -p tcp --dport 22 -j MASQUERADE
+      iptables -t nat -A POSTROUTING -d 172.27.30.52 -p tcp --dport 8776 -j MASQUERADE
     '';
   };
 
@@ -155,7 +162,7 @@ in
     accounts = {
       "inbox@edwardh.dev" = {
         # mkpasswd -sm bcrypt
-        hashedPasswordFile = config.age.secrets.mail-hashed-password.path;
+        hashedPasswordFile = config.age.secrets.mail.path;
         aliases = [ "@edwardh.dev" ];
         sieveScript = builtins.concatStringsSep "\n" [
           (builtins.readFile ./mail.sieve)
@@ -233,7 +240,7 @@ in
       server.hosts = [ "127.0.0.1:5232" ];
       auth = {
         type = "htpasswd";
-        htpasswd_filename = config.age.secrets.radicale-htpasswd.path;
+        htpasswd_filename = config.age.secrets.radicale.path;
         htpasswd_encryption = "bcrypt";
       };
     };
@@ -253,16 +260,16 @@ in
         $TTL 86400
 
         edwardh.dev. IN SOA ns.edwardh.dev. admin.edwardh.dev. (
-          2026101407 	; Serial, MUST be updated every change
+          2026102501 	; Serial, MUST be updated every change
           1800        ; Refresh period
           900         ; Retry period
           604800      ; Expire time
           300         ; Negative Cache TTL
         )
 
-        edwardh.dev.                IN NS     ns.edwardh.dev.
-        ns                          IN A      18.135.222.143
-        alpha                       IN A      18.135.222.143
+        edwardh.dev.          600   IN NS     ns.edwardh.dev.
+        ns                    600   IN A      18.135.222.143
+        alpha                 600   IN A      18.135.222.143
 
         edwardh.dev.          600   IN A      18.135.222.143
         calendar              600   IN A      18.135.222.143
@@ -271,6 +278,7 @@ in
         tangled               600   IN A      18.135.222.143
         pds                   600   IN A      18.135.222.143
         mail                  600   IN A      18.135.222.143
+        radicle               600   IN A      18.135.222.143
 
         edwardh.dev.          600   IN MX  10 mail.edwardh.dev.
 
@@ -369,6 +377,15 @@ in
           recommendedProxySettings = true;
           proxyWebsockets = true;
           proxyPass = "http://172.27.30.51:3000";
+        };
+      };
+      "radicle.edwardh.dev" = {
+        forceSSL = true;
+        enableACME = true;
+
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyPass = "http://172.27.30.52:3015";
         };
       };
     };

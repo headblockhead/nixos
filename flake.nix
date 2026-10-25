@@ -21,31 +21,59 @@
   outputs =
     { nixpkgs, self, ... }@inputs:
     let
-      recurseFindNixFiles =
-        yield: directory:
-        nixpkgs.lib.foldl'
-          (
-            accumulated: element:
-            accumulated
-            // (
-              let
-                elementPath = directory + "/${element.name}";
-              in
-              if element.type == "directory" then
-                { ${element.name} = recurseFindNixFiles yield elementPath; }
-              else if nixpkgs.lib.hasSuffix ".nix" element.name then
-                { ${nixpkgs.lib.removeSuffix ".nix" element.name} = yield elementPath; }
-              else
-                { } # Ignore non-Nix files
-            )
+      explore =
+        do: path:
+        builtins.listToAttrs (
+          builtins.filter (x: x != null) (
+            nixpkgs.lib.mapAttrsToList (name: type: do { inherit name type; }) (builtins.readDir path)
           )
-          { }
-          (
-            nixpkgs.lib.mapAttrsToList (name: value: {
-              name = name;
-              type = value;
-            }) (builtins.readDir directory)
-          );
+        );
+
+      findFiles =
+        do: path:
+        explore (
+          element:
+          let
+            elementPath = path + "/${element.name}";
+          in
+          if element.type == "directory" then
+            nixpkgs.lib.nameValuePair element.name (findFiles do elementPath)
+          else if nixpkgs.lib.hasSuffix ".nix" element.name then
+            nixpkgs.lib.nameValuePair (nixpkgs.lib.removeSuffix ".nix" element.name) (do elementPath)
+          else
+            null
+        ) path;
+
+      findDirectories =
+        do: path:
+        explore (
+          element:
+          let
+            elementPath = path + "/${element.name}";
+          in
+          if builtins.pathExists (elementPath + "/default.nix") then
+            nixpkgs.lib.nameValuePair element.name (do elementPath)
+          else if element.type == "directory" then
+            nixpkgs.lib.nameValuePair element.name (findDirectories do elementPath)
+          else
+            null
+        ) path;
+
+      flatten =
+        prefix: set:
+        nixpkgs.lib.concatMapAttrs (
+          name: value:
+          let
+            key = if prefix == "" then name else "${prefix}-${name}";
+          in
+          if builtins.isPath value then { ${key} = value; } else flatten key value
+        ) set;
+
+      findConfigurations =
+        do: path:
+        nixpkgs.lib.mapAttrs (name: value: do { inherit name value; }) (
+          flatten "" (findDirectories (p: p) path)
+        );
     in
     rec {
       overlays = {
@@ -70,26 +98,16 @@
         );
       };
 
-      nixosModules = recurseFindNixFiles (file: file) ./modules;
+      nixosModules = findFiles (f: f) ./modules;
 
-      nixosConfigurations =
-        nixpkgs.lib.genAttrs
-          (builtins.attrNames (
-            nixpkgs.lib.filterAttrs (path: type: type == "directory") (builtins.readDir ./machines)
-          ))
-          (
-            hostname:
-            import ./machines/${hostname} {
-              inherit
-                inputs
-                overlays
-                nixosModules
-                hostname
-                ;
-              accounts = recurseFindNixFiles (file: import file) ./accounts;
-            }
-          );
-
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
+      nixosConfigurations = findConfigurations (
+        { name, value }:
+        import value {
+          inherit inputs overlays nixosModules;
+          hostName = name;
+          reverseDomainName = builtins.replaceStrings [ "-" ] [ "." ] name;
+          accounts = findFiles (f: import f) ./accounts;
+        }
+      ) ./machines;
     };
 }

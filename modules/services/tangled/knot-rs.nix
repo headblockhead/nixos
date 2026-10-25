@@ -1,6 +1,7 @@
 {
   inputs,
   config,
+  reverseDomainName,
   ...
 }:
 {
@@ -9,30 +10,28 @@
     inputs.tangled.nixosModules.knot-rs
   ];
 
-  age.secrets.knot-rs.file = "${inputs.self.outPath}/secrets/knot-rs.age";
+  age.secrets.knot.file = "${inputs.self.outPath}/secrets/${reverseDomainName}.knot.age";
 
-  environment.persistence."/persist" = {
-    directories = [
-      {
-        directory = config.services.tangled.knot-rs.stateDir;
-        user = "knot";
-        group = "knot";
-        mode = "755";
-      }
-    ];
-  };
+  environment.persistence."/persist".directories = [
+    {
+      directory = config.services.tangled.knot-rs.stateDir;
+      user = config.users.users.knot.name;
+      group = config.users.users.knot.group;
+      mode = "755";
+    }
+  ];
 
   services.tangled.knot-rs = {
     enable = true;
     openFirewall = false;
     # sets KNOT_MASTER_KEY.
-    environmentFile = config.age.secrets.knot-rs.path;
+    environmentFile = config.age.secrets.knot.path;
     settings = {
       server = {
         hostname = "knot.edwardh.dev";
         admins = [ "did:plc:gbe2ojtpy3f2er6h246kk266" ];
-        listen_addr = "0.0.0.0:5555";
-        ssh_listen_addr = "0.0.0.0:22";
+        listen_addr = "[::]:5555";
+        ssh_listen_addr = "[::]:22";
       };
       acl.admission = "closed";
       git.object_format = "sha256";

@@ -2,27 +2,35 @@
   inputs,
   overlays,
   nixosModules,
-  hostname,
+  hostName,
+  reverseDomainName,
   accounts,
   ...
 }:
 inputs.nixpkgs.lib.nixosSystem {
   specialArgs = {
-    inherit inputs;
+    inherit inputs hostName reverseDomainName;
     nixos-raspberrypi = inputs.nixos-raspberrypi;
     accounts = inputs.nixpkgs.lib.filterAttrs (
       username: account: builtins.elem username [ "headb" ]
     ) accounts;
+    radicleAlias = "radicle.edwardh.dev";
+    radiclePublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEj8DSiy4sxC8tB3xvXYQJHc+2tgZnNDnxP5CJ9V9c//";
   };
   modules = with nixosModules; [
     {
       system.stateVersion = "26.11";
-      networking.hostName = hostname;
-      nixpkgs.overlays = builtins.attrValues overlays;
+      networking.hostName = hostName;
+      nixpkgs = {
+        config.permittedInsecurePackages = [
+          "radicle-node-1.10.3"
+        ];
+        overlays = builtins.attrValues overlays;
+      };
     }
 
     ./config.nix
-    ../rpi5-hardware.nix
+    ../hardware.nix
 
     conf.en-gb
     conf.impermanence
@@ -37,6 +45,7 @@ inputs.nixpkgs.lib.nixosSystem {
     programs.fzf
     programs.zsh
     services.openssh
+    services.radicle
     users.users
   ];
 }

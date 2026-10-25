@@ -168,12 +168,12 @@ Env: NIX_SSHOPTS="-p 26"
 
 ```bash
 nixos-rebuild test --target-host alpha.gateway.lan --sudo --no-reexec --flake .#gateway-alpha
-nixos-rebuild test --target-host rpi4-01.lan --sudo --no-reexec --flake .#rpi4-01
-nixos-rebuild test --target-host rpi4-02.lan --sudo --no-reexec --flake .#rpi4-02
-nixos-rebuild test --target-host rpi5-01.lan --sudo --no-reexec --flake .#rpi5-01
-nixos-rebuild test --target-host rpi5-02.lan --sudo --no-reexec --flake .#rpi5-02
-nixos-rebuild test --target-host rpi5-03.lan --sudo --no-reexec --flake .#rpi5-03
-nixos-rebuild test --target-host alpha.edwardh.dev --sudo --no-reexec --flake .#edwardh-alpha
+nixos-rebuild test --target-host alpha.rpi4.lan --sudo --no-reexec --flake .#rpi4-alpha
+nixos-rebuild test --target-host bravo.rpi4.lan --sudo --no-reexec --flake .#rpi4-bravo
+nixos-rebuild test --target-host alpha.rpi5.lan --sudo --no-reexec --flake .#rpi5-alpha
+nixos-rebuild test --target-host bravo.rpi5.lan --sudo --no-reexec --flake .#rpi5-bravo
+nixos-rebuild test --target-host charlie.rpi5.lan --sudo --no-reexec --flake .#rpi5-charlie
+nixos-rebuild test --target-host alpha.edwardh.dev --sudo --no-reexec --flake .#aws-alpha
 ```
 
 ### deploy-switch
@@ -184,12 +184,12 @@ Env: NIX_SSHOPTS="-p 26"
 
 ```bash
 nixos-rebuild switch --target-host alpha.gateway.lan --sudo --no-reexec --flake .#gateway-alpha
-nixos-rebuild switch --target-host rpi4-01.lan --sudo --no-reexec --flake .#rpi4-01
-nixos-rebuild switch --target-host rpi4-02.lan --sudo --no-reexec --flake .#rpi4-02
-nixos-rebuild switch --target-host rpi5-01.lan --sudo --no-reexec --flake .#rpi5-01
-nixos-rebuild switch --target-host rpi5-02.lan --sudo --no-reexec --flake .#rpi5-02
-nixos-rebuild switch --target-host rpi5-03.lan --sudo --no-reexec --flake .#rpi5-03
-nixos-rebuild switch --target-host alpha.edwardh.dev --sudo --no-reexec --flake .#edwardh-alpha
+nixos-rebuild switch --target-host alpha.rpi4.lan --sudo --no-reexec --flake .#rpi4-alpha
+nixos-rebuild switch --target-host bravo.rpi4.lan --sudo --no-reexec --flake .#rpi4-bravo
+nixos-rebuild switch --target-host alpha.rpi5.lan --sudo --no-reexec --flake .#rpi5-alpha
+nixos-rebuild switch --target-host bravo.rpi5.lan --sudo --no-reexec --flake .#rpi5-bravo
+nixos-rebuild switch --target-host charlie.rpi5.lan --sudo --no-reexec --flake .#rpi5-charlie
+nixos-rebuild switch --target-host alpha.edwardh.dev --sudo --no-reexec --flake .#aws-alpha
 ```
 
 ### deploy-boot
@@ -200,12 +200,12 @@ Env: NIX_SSHOPTS="-p 26"
 
 ```bash
 nixos-rebuild boot --target-host alpha.gateway.lan --sudo --no-reexec --flake .#gateway-alpha
-nixos-rebuild boot --target-host rpi4-01.lan --sudo --no-reexec --flake .#rpi4-01
-nixos-rebuild boot --target-host rpi4-02.lan --sudo --no-reexec --flake .#rpi4-02
-nixos-rebuild boot --target-host rpi5-01.lan --sudo --no-reexec --flake .#rpi5-01
-nixos-rebuild boot --target-host rpi5-02.lan --sudo --no-reexec --flake .#rpi5-02
-nixos-rebuild boot --target-host rpi5-03.lan --sudo --no-reexec --flake .#rpi5-03
-nixos-rebuild boot --target-host alpha.edwardh.dev --sudo --no-reexec --flake .#edwardh-alpha
+nixos-rebuild boot --target-host alpha.rpi4.lan --sudo --no-reexec --flake .#rpi4-alpha
+nixos-rebuild boot --target-host bravo.rpi4.lan --sudo --no-reexec --flake .#rpi4-bravo
+nixos-rebuild boot --target-host alpha.rpi5.lan --sudo --no-reexec --flake .#rpi5-alpha
+nixos-rebuild boot --target-host bravo.rpi5.lan --sudo --no-reexec --flake .#rpi5-bravo
+nixos-rebuild boot --target-host charlie.rpi5.lan --sudo --no-reexec --flake .#rpi5-charlie
+nixos-rebuild boot --target-host alpha.edwardh.dev --sudo --no-reexec --flake .#aws-alpha
 ```
 ### build
 
@@ -214,12 +214,12 @@ Build the nixos configurations for all machines, without deploying.
 ```bash
 nixos-rebuild build --flake .#
 nixos-rebuild build --flake .#gateway-alpha
-nixos-rebuild build --flake .#rpi4-01
-nixos-rebuild build --flake .#rpi4-02
-nixos-rebuild build --flake .#rpi5-01
-nixos-rebuild build --flake .#rpi5-02
-nixos-rebuild build --flake .#rpi5-03
-nixos-rebuild build --flake .#edwardh-alpha
+nixos-rebuild build --flake .#rpi4-alpha
+nixos-rebuild build --flake .#rpi4-bravo
+nixos-rebuild build --flake .#rpi5-alpha
+nixos-rebuild build --flake .#rpi5-bravo
+nixos-rebuild build --flake .#rpi5-charlie
+nixos-rebuild build --flake .#aws-alpha
 ```
 
 ### clean
@@ -228,11 +228,11 @@ Clean up servers.
 
 ```bash
 ssh alpha.gateway.lan -p 26 sudo nix-collect-garbage -d
-ssh rpi4-01.lan -p 26 sudo nix-collect-garbage -d
-ssh rpi4-02.lan -p 26 sudo nix-collect-garbage -d
-ssh rpi5-01.lan -p 26 sudo nix-collect-garbage -d
-ssh rpi5-02.lan -p 26 sudo nix-collect-garbage -d
-ssh rpi5-03.lan -p 26 sudo nix-collect-garbage -d
+ssh alpha.rpi4.lan -p 26 sudo nix-collect-garbage -d
+ssh bravo.rpi4.lan -p 26 sudo nix-collect-garbage -d
+ssh alpha.rpi5.lan -p 26 sudo nix-collect-garbage -d
+ssh bravo.rpi5.lan -p 26 sudo nix-collect-garbage -d
+ssh charlie.rpi5.lan -p 26 sudo nix-collect-garbage -d
 ssh alpha.edwardh.dev -p 26 sudo nix-collect-garbage -d
 ```
 
@@ -242,10 +242,10 @@ Reboot servers.
 
 ```bash
 ssh alpha.edwardh.dev -p 26 sudo systemctl reboot
-ssh rpi4-01.lan -p 26 sudo systemctl reboot
-ssh rpi5-01.lan -p 26 sudo systemctl reboot
-ssh rpi5-02.lan -p 26 sudo systemctl reboot
-ssh rpi5-03.lan -p 26 sudo systemctl reboot
-ssh rpi4-02.lan -p 26 sudo systemctl reboot
+ssh alpha.rpi4.lan -p 26 sudo systemctl reboot
+ssh bravo.rpi4.lan -p 26 sudo systemctl reboot
+ssh alpha.rpi5.lan -p 26 sudo systemctl reboot
+ssh bravo.rpi5.lan -p 26 sudo systemctl reboot
+ssh charlie.rpi5.lan -p 26 sudo systemctl reboot
 ssh alpha.gateway.lan -p 26 sudo systemctl reboot
 ```

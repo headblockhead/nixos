@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ lib, reverseDomainName, ... }:
 let
   # Computer specific keys:
   edward-desktop-key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOs2G2Yt7+A53v5tymBcbAlWnT9tLZYNSW+XGqZU6ITh";
@@ -6,7 +6,7 @@ let
 
   buildMachines = [
     {
-      hostName = "edward-desktop.lan:26";
+      hostName = "desktop.edward.lan:26";
       systems = [ "x86_64-linux" ];
       sshUser = "nixbuilder";
       sshKey = "/etc/ssh/ssh_host_ed25519_key";
@@ -24,7 +24,7 @@ let
       speedFactor = 10;
     }
     {
-      hostName = "rpi5-01.lan:26";
+      hostName = "alpha.rpi5.lan:26";
       systems = [ "aarch64-linux" ];
       sshUser = "nixbuilder";
       sshKey = "/etc/ssh/ssh_host_ed25519_key";
@@ -41,7 +41,7 @@ let
       speedFactor = 3;
     }
     {
-      hostName = "rpi5-02.lan:26";
+      hostName = "bravo.rpi5.lan:26";
       systems = [ "aarch64-linux" ];
       sshUser = "nixbuilder";
       sshKey = "/etc/ssh/ssh_host_ed25519_key";
@@ -58,7 +58,7 @@ let
       speedFactor = 3;
     }
     {
-      hostName = "rpi5-03.lan:26";
+      hostName = "charlie.rpi5.lan:26";
       systems = [ "aarch64-linux" ];
       sshUser = "nixbuilder";
       sshKey = "/etc/ssh/ssh_host_ed25519_key";
@@ -79,7 +79,10 @@ in
 {
   # Exclude ourself from the buildMachines list.
   nix.buildMachines = lib.lists.remove (lib.lists.findFirst (
-    m: m.hostName == (config.networking.hostName + ".lan:26")
+    m:
+    m.hostName == (
+      (lib.concatStringsSep "." (lib.reverseList (lib.splitString "." reverseDomainName))) + ".lan:26"
+    )
   ) { } buildMachines) buildMachines;
 
   nix.settings.trusted-users = [ "nixbuilder" ];

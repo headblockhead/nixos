@@ -2,13 +2,14 @@
   inputs,
   overlays,
   nixosModules,
-  hostname,
+  hostName,
+  reverseDomainName,
   accounts,
   ...
 }:
 inputs.nixpkgs.lib.nixosSystem {
   specialArgs = {
-    inherit inputs;
+    inherit inputs hostName reverseDomainName;
     nixos-raspberrypi = inputs.nixos-raspberrypi;
     accounts = inputs.nixpkgs.lib.filterAttrs (
       username: account: builtins.elem username [ "headb" ]
@@ -17,12 +18,12 @@ inputs.nixpkgs.lib.nixosSystem {
   modules = with nixosModules; [
     {
       system.stateVersion = "26.11";
-      networking.hostName = hostname;
+      networking.hostName = hostName;
       nixpkgs.overlays = builtins.attrValues overlays;
     }
 
     ./config.nix
-    ../rpi5-hardware.nix
+    ../hardware.nix
 
     conf.en-gb
     conf.impermanence
@@ -37,6 +38,8 @@ inputs.nixpkgs.lib.nixosSystem {
     programs.fzf
     programs.zsh
     services.openssh
+    services.tangled.knot-rs
+    services.tranquil-pds
     users.users
   ];
 }

@@ -1,11 +1,14 @@
 { inputs, ... }:
 {
   boot.kernelParams = [ "pcie_aspm=off" ];
+
   imports = [
     inputs.nixos-raspberrypi.lib.inject-overlays
     inputs.nixos-raspberrypi.nixosModules.raspberry-pi-5.base
   ];
+
   boot.loader.raspberry-pi.bootloader = "kernel";
+
   hardware.raspberry-pi.config.all.base-dt-params = {
     pciex1 = {
       enable = true;
@@ -38,5 +41,6 @@
       value = 9;
     };
   };
+
   nixpkgs.hostPlatform = "aarch64-linux";
 }

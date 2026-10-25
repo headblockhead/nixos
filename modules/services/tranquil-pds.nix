@@ -1,6 +1,7 @@
 {
   inputs,
   config,
+  reverseDomainName,
   ...
 }:
 {
@@ -8,14 +9,14 @@
     inputs.agenix.nixosModules.age
   ];
 
-  age.secrets.tranquil-pds.file = "${inputs.self.outPath}/secrets/tranquil-pds.age";
+  age.secrets.tranquil.file = "${inputs.self.outPath}/secrets/${reverseDomainName}.tranquil.age";
 
   environment.persistence."/persist".directories = [
     config.services.postgresql.dataDir
     {
       directory = config.services.tranquil-pds.dataDir;
-      user = "tranquil-pds";
-      group = "tranquil-pds";
+      user = config.users.users.tranquil-pds.name;
+      group = config.users.users.tranquil-pds.group;
       mode = "755";
     }
   ];
@@ -25,7 +26,7 @@
     database.createLocally = true;
     dataDir = "/var/lib/tranquil-pds";
     # sets JWT_SECRET, DPOP_SECRET, MASTER_KEY, and MAIL_SMARTHOST_PASSWORD.
-    environmentFiles = [ config.age.secrets.tranquil-pds.path ];
+    environmentFiles = [ config.age.secrets.tranquil.path ];
     settings = {
       server = {
         hostname = "pds.edwardh.dev";

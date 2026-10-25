@@ -2,35 +2,40 @@
   inputs,
   overlays,
   nixosModules,
-  hostname,
+  hostName,
+  reverseDomainName,
   accounts,
   ...
 }:
 inputs.nixpkgs.lib.nixosSystem {
   specialArgs = {
-    inherit inputs;
+    inherit inputs hostName reverseDomainName;
     accounts = inputs.nixpkgs.lib.filterAttrs (
       username: account: builtins.elem username [ "headb" ]
     ) accounts;
   };
   modules = with nixosModules; [
-    (
-      { lib, ... }:
-      {
-        system.stateVersion = "22.05";
-        networking.hostName = hostname;
-        nixpkgs.overlays = builtins.attrValues overlays;
-      }
-    )
+    {
+      system.stateVersion = "25.11";
+      networking.hostName = hostName;
+      nixpkgs = {
+        overlays = builtins.attrValues overlays;
+        config.allowUnfreePackages = [
+          "unifi-controller" # unfree
+          "mongodb" # sspl
+        ];
+      };
+    }
 
     ./config.nix
     ./hardware.nix
 
-    "${inputs.nixpkgs}/nixos/modules/virtualisation/amazon-image.nix"
-
+    boot.loader.systemd-boot
     conf.en-gb
-    conf.utility
     conf.passwordless
+    conf.utility
+    fileSystems
+    hardware.enableRedistributableFirmware
     nix.gc
     nix.registry
     nix.settings

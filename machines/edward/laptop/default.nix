@@ -2,45 +2,33 @@
   inputs,
   overlays,
   nixosModules,
-  hostname,
+  hostName,
+  reverseDomainName,
   accounts,
   ...
 }:
 inputs.nixpkgs.lib.nixosSystem {
   specialArgs = {
-    inherit inputs;
+    inherit inputs hostName reverseDomainName;
     accounts = inputs.nixpkgs.lib.filterAttrs (
       username: account: builtins.elem username [ "headb" ]
     ) accounts;
   };
   modules = with nixosModules; [
-    (
-      { lib, ... }:
-      {
-        system.stateVersion = "22.05";
-        networking.hostName = hostname;
-        nixpkgs = {
-          overlays = builtins.attrValues overlays;
-          config = {
-            allowUnfreePredicate =
-              pkg:
-              builtins.elem (lib.getName pkg) [
-                "vscode"
-                "code"
-                "code-with-extensions"
-                "copilot.vim"
-
-                "slack"
-                "spotify"
-                "clonehero"
-                "steam"
-                "steam-unwrapped"
-              ];
-            rocmSupport = true;
-          };
-        };
-      }
-    )
+    {
+      system.stateVersion = "25.11";
+      networking.hostName = hostName;
+      nixpkgs = {
+        overlays = builtins.attrValues overlays;
+        config.allowUnfreePackages = [
+          "slack"
+          "spotify"
+          "x32-edit"
+          "obsidian"
+          "copilot.vim"
+        ];
+      };
+    }
 
     ./config.nix
     ./hardware.nix
@@ -61,9 +49,7 @@ inputs.nixpkgs.lib.nixosSystem {
     fonts.favourites
     hardware.enableRedistributableFirmware
     networking.networkmanager
-    nix.buildMachines
     nix.gc
-    nix.optimise
     nix.registry
     nix.settings
     programs.fzf
@@ -79,7 +65,6 @@ inputs.nixpkgs.lib.nixosSystem {
     services.pipewire
     services.printing
     services.printingEnsureHomePrinter
-    #services.wivrn
     users.users
   ];
 }
