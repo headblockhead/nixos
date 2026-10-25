@@ -14,12 +14,20 @@ inputs.nixpkgs.lib.nixosSystem {
     accounts = inputs.nixpkgs.lib.filterAttrs (
       username: account: builtins.elem username [ "headb" ]
     ) accounts;
+    radicleAlias = "alpha.seed.edwardh.dev";
+    radiclePublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBV3gnYcsqk2Cd5M6Tw08qTEZaTSigbZmO4jVdBTYjLu";
+    radicleNodePort = 8775;
   };
   modules = with nixosModules; [
     {
       system.stateVersion = "26.11";
       networking.hostName = hostName;
-      nixpkgs.overlays = builtins.attrValues overlays;
+      nixpkgs = {
+        config.permittedInsecurePackages = [
+          "radicle-node-1.10.3"
+        ];
+        overlays = builtins.attrValues overlays;
+      };
     }
 
     ./config.nix
@@ -38,6 +46,7 @@ inputs.nixpkgs.lib.nixosSystem {
     programs.fzf
     programs.zsh
     services.openssh
+    services.radicle
     services.tangled.knot-rs
     services.tranquil-pds
     users.users

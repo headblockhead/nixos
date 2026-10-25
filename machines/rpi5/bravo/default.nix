@@ -14,8 +14,9 @@ inputs.nixpkgs.lib.nixosSystem {
     accounts = inputs.nixpkgs.lib.filterAttrs (
       username: account: builtins.elem username [ "headb" ]
     ) accounts;
-    radicleAlias = "radicle.edwardh.dev";
-    radiclePublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEj8DSiy4sxC8tB3xvXYQJHc+2tgZnNDnxP5CJ9V9c//";
+    radicleAlias = "bravo.seed.edwardh.dev";
+    radiclePublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP0xLWlmCVFGuuvKEWaBa55nIIpfvsyUKePXMlACN6+H";
+    radicleNodePort = 8776;
   };
   modules = with nixosModules; [
     {

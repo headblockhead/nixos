@@ -130,9 +130,19 @@ in
         sourcePort = 22;
       }
       {
+        destination = "172.27.30.51:8775";
+        proto = "tcp";
+        sourcePort = 8775;
+      }
+      {
         destination = "172.27.30.52:8776";
         proto = "tcp";
         sourcePort = 8776;
+      }
+      {
+        destination = "172.27.30.53:8777";
+        proto = "tcp";
+        sourcePort = 8777;
       }
     ];
     extraCommands = ''
@@ -260,7 +270,7 @@ in
         $TTL 86400
 
         edwardh.dev. IN SOA ns.edwardh.dev. admin.edwardh.dev. (
-          2026102503 	; Serial, MUST be updated every change
+          2026102505 	; Serial, MUST be updated every change
           1800        ; Refresh period
           900         ; Retry period
           604800      ; Expire time
@@ -277,13 +287,21 @@ in
         knot                  600   IN A      18.135.222.143
         tangled               600   IN A      18.135.222.143
         pds                   600   IN A      18.135.222.143
-        seed                  600   IN A      18.135.222.143
+        alpha.seed            600   IN A      18.135.222.143
+        bravo.seed            600   IN A      18.135.222.143
+        charlie.seed          600   IN A      18.135.222.143
         radicle               600   IN A      18.135.222.143
         mail                  600   IN A      18.135.222.143
 
-        seed._radicle-node._tcp   3600  IN  SRV  32767 32767 8776 seed.edwardh.dev.
-        seed._radicle-node._tcp   3600  IN  TXT  "nid=z6MkjNAKEmva2qnGWGGWJXuV46pwYHS3FF2t7mTubb9AoHVg"
-        _radicle-node._tcp        3600  IN  PTR  seed._radicle-node._tcp.edwardh.dev.
+        alpha.seed._radicle-node._tcp    600  IN  SRV  32767 32767 8775 alpha.seed.edwardh.dev.
+        alpha.seed._radicle-node._tcp    600  IN  TXT  "nid=z6Mkfu4JUKbWmXmy9JzbwhuDd7hDscdJeMDW5fCqCC5oz8VK"
+        bravo.seed._radicle-node._tcp    600  IN  SRV  32767 32767 8776 bravo.seed.edwardh.dev.
+        bravo.seed._radicle-node._tcp    600  IN  TXT  "nid=z6MkwVcgj6s24Uzca2SrC7j5LP9RNgECGUk545SF4xcBvA22"
+        charlie.seed._radicle-node._tcp  600  IN  SRV  32767 32767 8777 charlie.seed.edwardh.dev.
+        charlie.seed._radicle-node._tcp  600  IN  TXT  "nid=z6MkgrJNVuaLcF8ur45YsqjvUby25MTWok8gnpc8Moma6V32"
+        _radicle-node._tcp    600  IN PTR    alpha.seed._radicle-node._tcp.edwardh.dev.
+        _radicle-node._tcp    600  IN PTR    bravo.seed._radicle-node._tcp.edwardh.dev.
+        _radicle-node._tcp    600  IN PTR    charlie.seed._radicle-node._tcp.edwardh.dev.
 
         edwardh.dev.          600   IN MX  10 mail.edwardh.dev.
 
@@ -296,9 +314,6 @@ in
         resend._domainkey.pds 10800 IN TXT    "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIfnw0joWP/+M0ZmcdRfNETGkOnuY6UuM3aH4IVhi1CaOwVkv02cfCWnG/KvLujM7FGfKMM+YJZ7ccE93cXUy7XVqqWhfRsACwEGlz0CuITAODK8zZKTTbTIpQXVG0N/qRjcgS7Co53kPDneZ77yg/jP00AXqbPAQGESFrchGsUQIDAQAB"
         rsend.pds             600   IN CNAME  rsend-euw1.forge.rmta.net.
         send.pds              600   IN CNAME  send.forge.rmta.net.
-        resend._domainkey.tangled 10800 IN TXT    "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCzQwaX7E5h7P5VLIRkyavmfmCLqiaJhAGschJ8KPMPYd2gemuWskfMjDzg5IIcH0NhQXGDIE/YvwaXp+sKAWbWWz7bQHPcJkK6cxv1PMWR4ZZf0HbpXjzVeMyUy4KpzcycEwbhiMfbp/uzD+xeGg2Q+QOCt67KGrtRMeMS7UzC1QIDAQAB"
-        rsend.tangled         600   IN CNAME  rsend-euw1.forge.rmta.net.
-        send.tangled          600   IN CNAME  send.forge.rmta.net.
       '';
     };
   };
@@ -363,16 +378,6 @@ in
           proxyPass = "http://172.27.30.51:5555";
         };
       };
-      "tangled.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
-
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyWebsockets = true;
-          proxyPass = "http://172.27.30.51:3010";
-        };
-      };
       "pds.edwardh.dev" = {
         forceSSL = true;
         enableACME = true;
@@ -383,13 +388,31 @@ in
           proxyPass = "http://172.27.30.51:3000";
         };
       };
-      "seed.edwardh.dev" = {
+      "alpha.seed.edwardh.dev" = {
+        forceSSL = true;
+        enableACME = true;
+
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyPass = "http://172.27.30.51:3015";
+        };
+      };
+      "bravo.seed.edwardh.dev" = {
         forceSSL = true;
         enableACME = true;
 
         locations."/" = {
           recommendedProxySettings = true;
           proxyPass = "http://172.27.30.52:3015";
+        };
+      };
+      "charlie.seed.edwardh.dev" = {
+        forceSSL = true;
+        enableACME = true;
+
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyPass = "http://172.27.30.53:3015";
         };
       };
       "radicle.edwardh.dev" = {
@@ -404,7 +427,17 @@ in
             nodes.fallbackPublicExplorer = "https://radicle.edwardh.dev/nodes/$host/$rid$path";
             preferredSeeds = [
               {
-                hostname = "seed.edwardh.dev";
+                hostname = "alpha.seed.edwardh.dev";
+                port = 443;
+                scheme = "https";
+              }
+              {
+                hostname = "bravo.seed.edwardh.dev";
+                port = 443;
+                scheme = "https";
+              }
+              {
+                hostname = "charlie.seed.edwardh.dev";
                 port = 443;
                 scheme = "https";
               }

@@ -4,6 +4,7 @@
   radicleAlias,
   radiclePublicKey,
   reverseDomainName,
+  radicleNodePort,
   ...
 }:
 {
@@ -31,18 +32,19 @@
     };
     node = {
       listenAddress = "[::]";
-      listenPort = 8776;
+      listenPort = radicleNodePort;
       openFirewall = false;
     };
     publicKey = radiclePublicKey;
     privateKey = config.age.secrets.radicle.path;
+    checkConfig = false;
     settings = {
       web = {
         avatarUrl = "https://edwardh.dev/edward-hesketh-close.jpg";
         bannerUrl = "https://edwardh.dev/edward-hesketh.jpg";
-        description = "Edward Hesketh's personal node.";
+        description = "One of Edward Hesketh's personal nodes.";
         pinned.repositories = [
-          "rad:zBJiVgq6DhTjUg8Tqp9DZAQqSJcz"
+          "rad:zBJiVgq6DhTjUg8Tqp9DZAQqSJcz" # nixos
         ];
       };
       node = {
