@@ -280,6 +280,10 @@ in
         mail                  600   IN A      18.135.222.143
         radicle               600   IN A      18.135.222.143
 
+        radicle._radicle-node._tcp   3600  IN  SRV  32767 32767 8776 radicle.edwardh.dev.
+        radicle._radicle-node._tcp   3600  IN  TXT  "nid=z6MkjNAKEmva2qnGWGGWJXuV46pwYHS3FF2t7mTubb9AoHVg"
+        _radicle-node._tcp           3600  IN  PTR  radicle._radicle-node._tcp.edwardh.dev.
+
         edwardh.dev.          600   IN MX  10 mail.edwardh.dev.
 
         edwardh.dev.          10800 IN TXT    "v=spf1 a:mail.edwardh.dev -all"

@@ -18,7 +18,7 @@
       directory = "/var/lib/radicle";
       user = config.users.users.radicle.name;
       group = config.users.users.radicle.group;
-      mode = "755";
+      mode = "750";
     }
   ];
 
@@ -40,8 +40,10 @@
       web = {
         avatarUrl = "https://edwardh.dev/edward-hesketh-close.jpg";
         bannerUrl = "https://edwardh.dev/edward-hesketh.jpg";
-        description = "Edward Hesketh's Radicle node";
-        pinned = [ ];
+        description = "Edward Hesketh's personal node.";
+        pinned.repositories = [
+          "rad:zBJiVgq6DhTjUg8Tqp9DZAQqSJcz"
+        ];
       };
       node = {
         alias = radicleAlias;
