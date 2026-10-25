@@ -27,6 +27,9 @@ inputs.nixpkgs.lib.nixosSystem {
           "obsidian"
           "copilot.vim"
         ];
+        config.permittedInsecurePackages = [
+          "radicle-node-1.10.3"
+        ];
       };
     }
 
