@@ -395,10 +395,13 @@ in
         addSSL = true;
         enableACME = true;
         locations."/".extraConfig = ''
-          rewrite ^(.*)$ https://radicle.edwardh.dev/$1;
+          rewrite ^(.*)$ https://radicle.edwardh.dev$1;
         '';
-        locations."~ ^/pio(/[a-z0-9-_/]+)?$".return = ''
-          200 '<meta name="go-import" content="git.edwardh.dev/pio$1 git https://alpha.seed.edwardh.dev/z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ.git">'
+        locations."~ ^/pio(/[A-Za-z0-9-_/]+)?$".return = ''
+          200 '
+          <meta name="go-import" content="git.edwardh.dev/pio$1 git https://alpha.seed.edwardh.dev/z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ.git">
+          <meta http-equiv="refresh" content="0; url=https://radicle.edwardh.dev/nodes/alpha.seed.edwardh.dev/rad:z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ">
+          '
         '';
       };
       "alpha.seed.edwardh.dev" = {
