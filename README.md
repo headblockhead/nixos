@@ -227,13 +227,13 @@ nixos-rebuild build --flake .#aws-alpha
 Clean up servers.
 
 ```bash
-ssh alpha.gateway.lan -p 26 sudo nix-collect-garbage -d
-ssh alpha.rpi4.lan -p 26 sudo nix-collect-garbage -d
-ssh bravo.rpi4.lan -p 26 sudo nix-collect-garbage -d
-ssh alpha.rpi5.lan -p 26 sudo nix-collect-garbage -d
-ssh bravo.rpi5.lan -p 26 sudo nix-collect-garbage -d
-ssh charlie.rpi5.lan -p 26 sudo nix-collect-garbage -d
-ssh alpha.edwardh.dev -p 26 sudo nix-collect-garbage -d
+ssh alpha.gateway.lan -p 26 sudo nix-collect-garbage -d --quiet
+ssh alpha.rpi4.lan -p 26 sudo nix-collect-garbage -d --quiet
+ssh bravo.rpi4.lan -p 26 sudo nix-collect-garbage -d --quiet
+ssh alpha.rpi5.lan -p 26 sudo nix-collect-garbage -d --quiet
+ssh bravo.rpi5.lan -p 26 sudo nix-collect-garbage -d --quiet
+ssh charlie.rpi5.lan -p 26 sudo nix-collect-garbage -d --quiet
+ssh alpha.edwardh.dev -p 26 sudo nix-collect-garbage -d --quiet
 ```
 
 ### reboot
