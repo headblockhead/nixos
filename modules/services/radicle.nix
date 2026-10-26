@@ -46,6 +46,7 @@
         pinned.repositories = [
           "rad:zBJiVgq6DhTjUg8Tqp9DZAQqSJcz" # nixos
           "rad:zudXi8ABTLpwYLAce7NR8KntbcZU" # edwardh.dev
+          "rad:z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ" # pio
         ];
       };
       node = {
