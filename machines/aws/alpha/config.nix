@@ -490,7 +490,29 @@
           '';
           locations."~ ^/pio(/[A-Za-z0-9-_/]+)?$" = {
             return = ''
-              200 '<meta name="go-import" content="git.edwardh.dev/pio git https://$random_abc.seed.edwardh.dev/z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ.git"><meta http-equiv="refresh" content="0; url=https://radicle.edwardh.dev/nodes/$random_abc.seed.edwardh.dev/rad:z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ">'
+              200 '
+              <!DOCTYPE html>
+              <html lang="en">
+                <head>
+                  <meta charset="utf-8">
+                  <meta name="viewport" content="width=device-width, initial-scale=1">
+                  <meta name="go-import" content="git.edwardh.dev/pio git https://$random_abc.seed.edwardh.dev/z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ.git">
+                  <style>
+                    :root {
+                      color-scheme: light dark;
+                    }
+                  </style>
+                </head>
+                <body style="font-size: x-large;">
+                <h1>git.edwardh.dev/pio</h1>
+                <p>You have reached a redirect page. Please select where you would like to view this repository:</p>
+                  <ul>
+                    <li> <a href="https://radicle.edwardh.dev/nodes/$random_abc.seed.edwardh.dev/rad:z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ">View on Radicle (rad:z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ)</a></li>
+                    <li> <a href="https://github.com/headblockhead/pio">View on GitHub (headblockhead/pio)</a></li>
+                  </ul>
+                </body>
+              </html>
+              '
             '';
             extraConfig = "default_type text/html;";
           };
