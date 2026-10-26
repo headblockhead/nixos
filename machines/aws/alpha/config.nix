@@ -5,17 +5,6 @@
   reverseDomainName,
   ...
 }:
-let
-  mailboxMappings = import ./mailbox-mappings.nix;
-  mailboxList = builtins.map (m: m.mailbox) mailboxMappings;
-  autoScript = builtins.concatStringsSep "\n" (
-    builtins.map (m: ''
-      if address :is ["to", "cc"] "${m.address}" {
-        fileinto "${m.mailbox}";
-        stop;
-      }'') mailboxMappings
-  );
-in
 {
   imports = [
     inputs.agenix.nixosModules.age
@@ -156,82 +145,94 @@ in
   # Avoid trying to use our own non-recursive BIND service.
   networking.resolvconf.useLocalResolver = false;
 
-  mailserver = {
-    enable = true;
-    stateVersion = 3;
-    localDnsResolver = false;
-
-    fullTextSearch = {
+  mailserver =
+    let
+      mailboxMappings = import ./mailbox-mappings.nix;
+      mailboxList = builtins.map (m: m.mailbox) mailboxMappings;
+      autoScript = builtins.concatStringsSep "\n" (
+        builtins.map (m: ''
+          if address :is ["to", "cc"] "${m.address}" {
+            fileinto "${m.mailbox}";
+            stop;
+          }'') mailboxMappings
+      );
+    in
+    {
       enable = true;
-      autoIndex = true;
-      fallback = false;
-    };
+      stateVersion = 3;
+      localDnsResolver = false;
 
-    fqdn = "mail.edwardh.dev";
-    sendingFqdn = "edwardh.dev";
-    domains = [ "edwardh.dev" ];
-
-    accounts = {
-      "inbox@edwardh.dev" = {
-        # mkpasswd -sm bcrypt
-        hashedPasswordFile = config.age.secrets.mail.path;
-        aliases = [ "@edwardh.dev" ];
-        sieveScript = builtins.concatStringsSep "\n" [
-          (builtins.readFile ./mail.sieve)
-          autoScript
-        ];
-      };
-    };
-
-    mailboxes = {
-      # Special mailboxes
-      Drafts = {
-        auto = "subscribe";
-        special_use = "\\Drafts";
-      };
-      Junk = {
-        auto = "subscribe";
-        fts_autoindex = false;
-        special_use = "\\Junk";
-      };
-      Sent = {
-        auto = "subscribe";
-        special_use = "\\Sent";
-      };
-      Trash = {
-        auto = "subscribe";
-        special_use = "\\Trash";
-      };
-      Archives = {
-        auto = "subscribe";
-        special_use = "\\Archive";
+      fullTextSearch = {
+        enable = true;
+        autoIndex = true;
+        fallback = false;
       };
 
-      # non-auto-sorted mailboxes
-      "Shipping and Recipts" = {
-        auto = "subscribe";
+      fqdn = "mail.edwardh.dev";
+      sendingFqdn = "edwardh.dev";
+      domains = [ "edwardh.dev" ];
+
+      accounts = {
+        "inbox@edwardh.dev" = {
+          # mkpasswd -sm bcrypt
+          hashedPasswordFile = config.age.secrets.mail.path;
+          aliases = [ "@edwardh.dev" ];
+          sieveScript = builtins.concatStringsSep "\n" [
+            (builtins.readFile ./mail.sieve)
+            autoScript
+          ];
+        };
       };
-      "School" = {
-        auto = "subscribe";
-      };
-      "Performances" = {
-        auto = "subscribe";
-      };
-      "Music" = {
-        auto = "subscribe";
-      };
-    }
-    // builtins.listToAttrs (
-      builtins.map (m: {
-        name = m;
-        value = {
+
+      mailboxes = {
+        # Special mailboxes
+        Drafts = {
+          auto = "subscribe";
+          special_use = "\\Drafts";
+        };
+        Junk = {
+          auto = "subscribe";
+          fts_autoindex = false;
+          special_use = "\\Junk";
+        };
+        Sent = {
+          auto = "subscribe";
+          special_use = "\\Sent";
+        };
+        Trash = {
+          auto = "subscribe";
+          special_use = "\\Trash";
+        };
+        Archives = {
+          auto = "subscribe";
+          special_use = "\\Archive";
+        };
+
+        # non-auto-sorted mailboxes
+        "Shipping and Recipts" = {
           auto = "subscribe";
         };
-      }) mailboxList
-    );
+        "School" = {
+          auto = "subscribe";
+        };
+        "Performances" = {
+          auto = "subscribe";
+        };
+        "Music" = {
+          auto = "subscribe";
+        };
+      }
+      // builtins.listToAttrs (
+        builtins.map (m: {
+          name = m;
+          value = {
+            auto = "subscribe";
+          };
+        }) mailboxList
+      );
 
-    x509.useACMEHost = "mail.edwardh.dev";
-  };
+      x509.useACMEHost = "mail.edwardh.dev";
+    };
 
   services.roundcube = {
     # Temporarily disabled due to CVE-2026-109618 and CVE-2026-109619.
@@ -329,201 +330,218 @@ in
   security.acme.acceptTerms = true;
   security.acme.defaults.email = "security@edwardh.dev";
 
-  services.nginx = {
-    enable = true;
-    appendHttpConfig = ''
-      error_log stderr;
-      access_log syslog:server=unix:/dev/log combined;
+  services.nginx =
+    let
+      nginxSeedCacheConfig = ''
+        proxy_cache radicle_seed;
+        proxy_cache_valid 200 60s;
+        proxy_cache_lock on;
+        proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
+        proxy_cache_background_update on;
+        proxy_cache_bypass $http_authorization;
+        proxy_no_cache $http_authorization;
+        add_header X-Cache-Status $upstream_cache_status always;
+      '';
 
-      map $sent_http_content_type $expires {
-        default                    off;
-        text/html                  epoch;
-        text/css                   1h;
-      }
-
-      split_clients "''${remote_addr}''${date_gmt}" $random_abc {
-        33.3%    alpha;
-        33.3%    bravo;
-        *        charlie;
-      } 
-    '';
-    virtualHosts = {
-      "edwardh.dev" = {
-        default = true;
-
-        addSSL = true;
-        enableACME = true;
-        quic = true;
-        http3 = true;
-
-        locations."/" = {
-          root = inputs.edwardh-dev.packages.edwardh-dev;
-          extraConfig = ''
-            gzip on;
-            gzip_types text/html text/css;
-            etag on;
-            expires $expires;
-            add_header Alt-Svc 'h3=":443"; ma=86400';
-          '';
-        };
-      };
-      "mail.edwardh.dev" = {
-        # temporary placeholder whilst roundcube is vulnerable, see above
-        forceSSL = true;
-        enableACME = true;
-      };
-      "calendar.edwardh.dev" = {
+      nginxSeedVHost = proxyPass: {
         forceSSL = true;
         enableACME = true;
 
         locations."/" = {
           recommendedProxySettings = true;
-          proxyPass = "http://127.0.0.1:5232";
+          proxyPass = proxyPass;
         };
-        serverAliases = [ "contacts.edwardh.dev" ];
-      };
-      "knot.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
-
-        locations."/" = {
+        locations."/api/" = {
           recommendedProxySettings = true;
-          proxyWebsockets = true;
-          proxyPass = "http://172.27.30.51:5555";
+          proxyPass = proxyPass;
+          extraConfig = nginxSeedCacheConfig;
         };
-      };
-      "pds.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
-
-        locations."/" = {
+        locations."/raw/" = {
           recommendedProxySettings = true;
-          proxyWebsockets = true;
-          proxyPass = "http://172.27.30.51:3000";
+          proxyPass = proxyPass;
+          extraConfig = nginxSeedCacheConfig;
         };
       };
-      "grafana.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
-
-        locations."/".extraConfig = ''
-          rewrite ^(.*)$ https://$random_abc.grafana.edwardh.dev$1;
-        '';
+    in
+    {
+      enable = true;
+      proxyCachePath."radicle_seed" = {
+        enable = true;
+        keysZoneName = "radicle_seed";
+        keysZoneSize = "10m";
+        maxSize = "1g";
+        inactive = "1h";
+        levels = "1:2";
       };
-      "alpha.grafana.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
+      appendHttpConfig = ''
+        error_log stderr;
+        access_log syslog:server=unix:/dev/log combined;
 
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyWebsockets = true;
-          proxyPass = "http://172.27.30.51:3210";
-        };
-      };
-      "bravo.grafana.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
+        map $sent_http_content_type $expires {
+          default                    off;
+          text/html                  epoch;
+          text/css                   1h;
+        }
 
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyWebsockets = true;
-          proxyPass = "http://172.27.30.52:3210";
-        };
-      };
-      "charlie.grafana.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
+        split_clients "''${remote_addr}''${date_gmt}" $random_abc {
+          33.3%    alpha;
+          33.3%    bravo;
+          *        charlie;
+        } 
+      '';
+      virtualHosts = {
+        "edwardh.dev" = {
+          default = true;
 
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyWebsockets = true;
-          proxyPass = "http://172.27.30.53:3210";
-        };
-      };
-      "git.edwardh.dev" = {
-        addSSL = true;
-        enableACME = true;
-        locations."/".extraConfig = ''
-          rewrite ^(.*)$ https://radicle.edwardh.dev$1;
-        '';
-        locations."~ ^/pio(/[A-Za-z0-9-_/]+)?$" = {
-          return = ''
-            200 '<meta name="go-import" content="git.edwardh.dev/pio git https://$random_abc.seed.edwardh.dev/z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ.git"><meta http-equiv="refresh" content="0; url=https://radicle.edwardh.dev/nodes/$random_abc.seed.edwardh.dev/rad:z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ">'
-          '';
-          extraConfig = "default_type text/html;";
-        };
-      };
-      "seed.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
+          addSSL = true;
+          enableACME = true;
+          quic = true;
+          http3 = true;
 
-        locations."/".extraConfig = ''
-          rewrite ^(.*)$ https://$random_abc.seed.edwardh.dev$1;
-        '';
-      };
-      "alpha.seed.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
-
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyPass = "http://172.27.30.51:3015";
-        };
-      };
-      "bravo.seed.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
-
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyPass = "http://172.27.30.52:3015";
-        };
-      };
-      "charlie.seed.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
-
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyPass = "http://172.27.30.53:3015";
-        };
-      };
-      "radicle.edwardh.dev" = {
-        forceSSL = true;
-        enableACME = true;
-
-        quic = true;
-        http3 = true;
-
-        locations."/" = {
-          root = pkgs.radicle-explorer.withConfig {
-            nodes.fallbackPublicExplorer = "https://radicle.edwardh.dev/nodes/$host/$rid$path";
-            preferredSeeds = [
-              {
-                hostname = "alpha.seed.edwardh.dev";
-                port = 443;
-                scheme = "https";
-              }
-              {
-                hostname = "bravo.seed.edwardh.dev";
-                port = 443;
-                scheme = "https";
-              }
-              {
-                hostname = "charlie.seed.edwardh.dev";
-                port = 443;
-                scheme = "https";
-              }
-            ];
+          locations."/" = {
+            root = inputs.edwardh-dev.packages.edwardh-dev;
+            extraConfig = ''
+              gzip on;
+              gzip_types text/html text/css;
+              etag on;
+              expires $expires;
+              add_header Alt-Svc 'h3=":443"; ma=86400';
+            '';
           };
-          tryFiles = "$uri /index.html";
-          extraConfig = ''
-            gzip on;
-            gzip_types text/html text/css;
-            add_header Alt-Svc 'h3=":443"; ma=86400';
+        };
+        "mail.edwardh.dev" = {
+          # temporary placeholder whilst roundcube is vulnerable, see above
+          forceSSL = true;
+          enableACME = true;
+        };
+        "calendar.edwardh.dev" = {
+          forceSSL = true;
+          enableACME = true;
+
+          locations."/" = {
+            recommendedProxySettings = true;
+            proxyPass = "http://127.0.0.1:5232";
+          };
+          serverAliases = [ "contacts.edwardh.dev" ];
+        };
+        "knot.edwardh.dev" = {
+          forceSSL = true;
+          enableACME = true;
+
+          locations."/" = {
+            recommendedProxySettings = true;
+            proxyWebsockets = true;
+            proxyPass = "http://172.27.30.51:5555";
+          };
+        };
+        "pds.edwardh.dev" = {
+          forceSSL = true;
+          enableACME = true;
+
+          locations."/" = {
+            recommendedProxySettings = true;
+            proxyWebsockets = true;
+            proxyPass = "http://172.27.30.51:3000";
+          };
+        };
+        "grafana.edwardh.dev" = {
+          forceSSL = true;
+          enableACME = true;
+
+          locations."/".extraConfig = ''
+            rewrite ^(.*)$ https://$random_abc.grafana.edwardh.dev$1;
           '';
+        };
+        "alpha.grafana.edwardh.dev" = {
+          forceSSL = true;
+          enableACME = true;
+
+          locations."/" = {
+            recommendedProxySettings = true;
+            proxyWebsockets = true;
+            proxyPass = "http://172.27.30.51:3210";
+          };
+        };
+        "bravo.grafana.edwardh.dev" = {
+          forceSSL = true;
+          enableACME = true;
+
+          locations."/" = {
+            recommendedProxySettings = true;
+            proxyWebsockets = true;
+            proxyPass = "http://172.27.30.52:3210";
+          };
+        };
+        "charlie.grafana.edwardh.dev" = {
+          forceSSL = true;
+          enableACME = true;
+
+          locations."/" = {
+            recommendedProxySettings = true;
+            proxyWebsockets = true;
+            proxyPass = "http://172.27.30.53:3210";
+          };
+        };
+        "git.edwardh.dev" = {
+          addSSL = true;
+          enableACME = true;
+          locations."/".extraConfig = ''
+            rewrite ^(.*)$ https://radicle.edwardh.dev$1;
+          '';
+          locations."~ ^/pio(/[A-Za-z0-9-_/]+)?$" = {
+            return = ''
+              200 '<meta name="go-import" content="git.edwardh.dev/pio git https://$random_abc.seed.edwardh.dev/z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ.git"><meta http-equiv="refresh" content="0; url=https://radicle.edwardh.dev/nodes/$random_abc.seed.edwardh.dev/rad:z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ">'
+            '';
+            extraConfig = "default_type text/html;";
+          };
+        };
+        "seed.edwardh.dev" = {
+          forceSSL = true;
+          enableACME = true;
+
+          locations."/".extraConfig = ''
+            rewrite ^(.*)$ https://$random_abc.seed.edwardh.dev$1;
+          '';
+        };
+        "alpha.seed.edwardh.dev" = nginxSeedVHost "http://172.27.30.51:3015";
+        "bravo.seed.edwardh.dev" = nginxSeedVHost "http://172.27.30.52:3015";
+        "charlie.seed.edwardh.dev" = nginxSeedVHost "http://172.27.30.53:3015";
+        "radicle.edwardh.dev" = {
+          forceSSL = true;
+          enableACME = true;
+
+          quic = true;
+          http3 = true;
+
+          locations."/" = {
+            root = pkgs.radicle-explorer.withConfig {
+              nodes.fallbackPublicExplorer = "https://radicle.edwardh.dev/nodes/$host/$rid$path";
+              preferredSeeds = [
+                {
+                  hostname = "alpha.seed.edwardh.dev";
+                  port = 443;
+                  scheme = "https";
+                }
+                {
+                  hostname = "bravo.seed.edwardh.dev";
+                  port = 443;
+                  scheme = "https";
+                }
+                {
+                  hostname = "charlie.seed.edwardh.dev";
+                  port = 443;
+                  scheme = "https";
+                }
+              ];
+            };
+            tryFiles = "$uri /index.html";
+            extraConfig = ''
+              gzip on;
+              gzip_types text/html text/css;
+              add_header Alt-Svc 'h3=":443"; ma=86400';
+            '';
+          };
         };
       };
     };
-  };
 }
