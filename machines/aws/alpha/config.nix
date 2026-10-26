@@ -272,7 +272,7 @@ in
         $TTL 86400
 
         edwardh.dev. IN SOA ns.edwardh.dev. admin.edwardh.dev. (
-          2026102505 	; Serial, MUST be updated every change
+          2026102601 	; Serial, MUST be updated every change
           1800        ; Refresh period
           900         ; Retry period
           604800      ; Expire time
@@ -289,6 +289,7 @@ in
         knot                  600   IN A      18.135.222.143
         tangled               600   IN A      18.135.222.143
         pds                   600   IN A      18.135.222.143
+        git                   600   IN A      18.135.222.143
         alpha.seed            600   IN A      18.135.222.143
         bravo.seed            600   IN A      18.135.222.143
         charlie.seed          600   IN A      18.135.222.143
@@ -390,6 +391,16 @@ in
           proxyPass = "http://172.27.30.51:3000";
         };
       };
+      "git.edwardh.dev" = {
+        addSSL = true;
+        enableACME = true;
+        locations."/".extraConfig = ''
+          rewrite ^(.*)$ https://radicle.edwardh.dev/$1;
+        '';
+        locations."~ ^/pio(/[a-z0-9-_/]+)?$".return = ''
+          200 '<meta name="go-import" content="git.edwardh.dev/pio$1 git https://alpha.seed.edwardh.dev/z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ.git">'
+        '';
+      };
       "alpha.seed.edwardh.dev" = {
         forceSSL = true;
         enableACME = true;
@@ -445,11 +456,11 @@ in
               }
             ];
           };
+          tryFiles = "$uri /index.html";
           extraConfig = ''
             gzip on;
             gzip_types text/html text/css;
             add_header Alt-Svc 'h3=":443"; ma=86400';
-            try_files $uri /index.html;
           '';
         };
       };
