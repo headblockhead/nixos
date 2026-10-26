@@ -503,12 +503,12 @@
                     }
                   </style>
                 </head>
-                <body style="font-size: x-large;">
+                <body>
                 <h1>git.edwardh.dev/pio</h1>
-                <p>You have reached a redirect page. Please select where you would like to view this repository:</p>
-                  <ul>
-                    <li> <a href="https://radicle.edwardh.dev/nodes/$random_abc.seed.edwardh.dev/rad:z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ">View on Radicle (rad:z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ)</a></li>
-                    <li> <a href="https://github.com/headblockhead/pio">View on GitHub (headblockhead/pio)</a></li>
+                <p style="font-size: larger;">You have reached a redirect page. Please select where you would like to view this repository:</p>
+                  <ul style="font-size: x-large; line-height: 2.5rem;">
+                    <li> <a href="https://radicle.edwardh.dev/nodes/$random_abc.seed.edwardh.dev/rad:z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ">View on Radicle</a></li>
+                    <li> <a href="https://github.com/headblockhead/pio">View on GitHub</a></li>
                   </ul>
                 </body>
               </html>
