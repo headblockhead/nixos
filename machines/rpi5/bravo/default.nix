@@ -17,6 +17,7 @@ inputs.nixpkgs.lib.nixosSystem {
     radicleAlias = "bravo.seed.edwardh.dev";
     radiclePublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP0xLWlmCVFGuuvKEWaBa55nIIpfvsyUKePXMlACN6+H";
     radicleNodePort = 8776;
+    grafanaAlias = "bravo.grafana.edwardh.dev";
   };
   modules = with nixosModules; [
     {
@@ -45,7 +46,10 @@ inputs.nixpkgs.lib.nixosSystem {
     nix.settings
     programs.fzf
     programs.zsh
+    services.grafana
     services.openssh
+    services.prometheus.prometheus
+    services.prometheus.exporters.node
     services.radicle
     users.users
   ];

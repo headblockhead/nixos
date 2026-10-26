@@ -272,7 +272,7 @@ in
         $TTL 86400
 
         edwardh.dev. IN SOA ns.edwardh.dev. admin.edwardh.dev. (
-          2026102601 	; Serial, MUST be updated every change
+          2026102603 	; Serial, MUST be updated every change
           1800        ; Refresh period
           900         ; Retry period
           604800      ; Expire time
@@ -290,6 +290,11 @@ in
         tangled               600   IN A      18.135.222.143
         pds                   600   IN A      18.135.222.143
         git                   600   IN A      18.135.222.143
+        grafana               600   IN A      18.135.222.143
+        alpha.grafana         600   IN A      18.135.222.143
+        bravo.grafana         600   IN A      18.135.222.143
+        charlie.grafana       600   IN A      18.135.222.143
+        seed                  600   IN A      18.135.222.143
         alpha.seed            600   IN A      18.135.222.143
         bravo.seed            600   IN A      18.135.222.143
         charlie.seed          600   IN A      18.135.222.143
@@ -335,6 +340,12 @@ in
         text/html                  epoch;
         text/css                   1h;
       }
+
+      split_clients "''${remote_addr}''${date_gmt}" $random_abc {
+        33.3%    alpha;
+        33.3%    bravo;
+        *        charlie;
+      } 
     '';
     virtualHosts = {
       "edwardh.dev" = {
@@ -391,6 +402,44 @@ in
           proxyPass = "http://172.27.30.51:3000";
         };
       };
+      "grafana.edwardh.dev" = {
+        forceSSL = true;
+        enableACME = true;
+
+        locations."/".extraConfig = ''
+          rewrite ^(.*)$ https://$random_abc.grafana.edwardh.dev$1;
+        '';
+      };
+      "alpha.grafana.edwardh.dev" = {
+        forceSSL = true;
+        enableACME = true;
+
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyWebsockets = true;
+          proxyPass = "http://172.27.30.51:3210";
+        };
+      };
+      "bravo.grafana.edwardh.dev" = {
+        forceSSL = true;
+        enableACME = true;
+
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyWebsockets = true;
+          proxyPass = "http://172.27.30.52:3210";
+        };
+      };
+      "charlie.grafana.edwardh.dev" = {
+        forceSSL = true;
+        enableACME = true;
+
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyWebsockets = true;
+          proxyPass = "http://172.27.30.53:3210";
+        };
+      };
       "git.edwardh.dev" = {
         addSSL = true;
         enableACME = true;
@@ -399,13 +448,18 @@ in
         '';
         locations."~ ^/pio(/[A-Za-z0-9-_/]+)?$" = {
           return = ''
-            200 '
-            <meta name="go-import" content="git.edwardh.dev/pio git https://alpha.seed.edwardh.dev/z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ.git">
-            <meta http-equiv="refresh" content="0; url=https://radicle.edwardh.dev/nodes/alpha.seed.edwardh.dev/rad:z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ">
-            '
+            200 '<meta name="go-import" content="git.edwardh.dev/pio git https://$random_abc.seed.edwardh.dev/z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ.git"><meta http-equiv="refresh" content="0; url=https://radicle.edwardh.dev/nodes/$random_abc.seed.edwardh.dev/rad:z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ">'
           '';
           extraConfig = "default_type text/html;";
         };
+      };
+      "seed.edwardh.dev" = {
+        forceSSL = true;
+        enableACME = true;
+
+        locations."/".extraConfig = ''
+          rewrite ^(.*)$ https://$random_abc.seed.edwardh.dev$1;
+        '';
       };
       "alpha.seed.edwardh.dev" = {
         forceSSL = true;

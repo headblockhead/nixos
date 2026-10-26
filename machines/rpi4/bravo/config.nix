@@ -1,8 +1,5 @@
 {
-  networking.firewall.allowedTCPPorts = [
-    9002
-    8019
-  ];
+  networking.firewall.allowedTCPPorts = [ 9090 ];
 
   boot.kernelModules = [ "i2c-dev" ];
   hardware.raspberry-pi.config.all.base-dt-params = {

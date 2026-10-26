@@ -33,6 +33,8 @@ inputs.nixpkgs.lib.nixosSystem {
     nix.settings
     programs.fzf
     programs.zsh
+    services.haproxy
+    services.keepalived
     services.openssh
     users.users
   ];
