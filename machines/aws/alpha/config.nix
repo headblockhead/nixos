@@ -23,7 +23,6 @@
       26 # SSH for me
     ];
     allowedUDPPorts = [
-      # QUIC
       80 # HTTP
       443 # HTTPS
 
@@ -332,7 +331,7 @@
 
   services.nginx =
     let
-      nginxSeedCacheConfig = ''
+      seedCacheConfig = ''
         proxy_cache radicle_seed;
         proxy_cache_valid 200 60s;
         proxy_cache_lock on;
@@ -343,7 +342,7 @@
         add_header X-Cache-Status $upstream_cache_status always;
       '';
 
-      nginxSeedVHost = proxyPass: {
+      seedVHost = proxyPass: {
         forceSSL = true;
         enableACME = true;
 
@@ -354,12 +353,48 @@
         locations."/api/" = {
           recommendedProxySettings = true;
           proxyPass = proxyPass;
-          extraConfig = nginxSeedCacheConfig;
+          extraConfig = seedCacheConfig;
         };
         locations."/raw/" = {
           recommendedProxySettings = true;
           proxyPass = proxyPass;
-          extraConfig = nginxSeedCacheConfig;
+          extraConfig = seedCacheConfig;
+        };
+      };
+
+      proxyVHost = ws: proxyPass: {
+        forceSSL = true;
+        enableACME = true;
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyWebsockets = ws;
+          proxyPass = proxyPass;
+        };
+      };
+
+      gitLocation = name: rad: {
+        "~ ^/${name}(/[A-Za-z0-9-_/]+)?$" = {
+          return = ''
+            200 '
+            <!DOCTYPE html>
+            <html lang="en" style="color-scheme: light dark;">
+              <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <meta name="go-import" content="git.edwardh.dev/${name} git https://$random_abc.seed.edwardh.dev/${rad}.git">
+              </head>
+              <body>
+              <h1>git.edwardh.dev/${name}</h1>
+              <p style="font-size: larger;">You have reached a redirect page. Please select where you would like to view this repository:</p>
+                <ul style="font-size: x-large; line-height: 2.5rem;">
+                  <li> <a href="https://radicle.edwardh.dev/nodes/$random_abc.seed.edwardh.dev/rad:${rad}">View on Radicle</a></li>
+                  <li> <a href="https://github.com/headblockhead/${name}">View on GitHub</a></li>
+                </ul>
+              </body>
+            </html>
+            '
+          '';
+          extraConfig = "default_type text/html;";
         };
       };
     in
@@ -414,36 +449,11 @@
           forceSSL = true;
           enableACME = true;
         };
-        "calendar.edwardh.dev" = {
-          forceSSL = true;
-          enableACME = true;
-
-          locations."/" = {
-            recommendedProxySettings = true;
-            proxyPass = "http://127.0.0.1:5232";
-          };
+        "calendar.edwardh.dev" = proxyVHost false "http://127.0.0.1:5232" // {
           serverAliases = [ "contacts.edwardh.dev" ];
         };
-        "knot.edwardh.dev" = {
-          forceSSL = true;
-          enableACME = true;
-
-          locations."/" = {
-            recommendedProxySettings = true;
-            proxyWebsockets = true;
-            proxyPass = "http://172.27.30.51:5555";
-          };
-        };
-        "pds.edwardh.dev" = {
-          forceSSL = true;
-          enableACME = true;
-
-          locations."/" = {
-            recommendedProxySettings = true;
-            proxyWebsockets = true;
-            proxyPass = "http://172.27.30.51:3000";
-          };
-        };
+        "knot.edwardh.dev" = proxyVHost true "http://172.27.30.51:5555";
+        "pds.edwardh.dev" = proxyVHost true "http://172.27.30.51:3000";
         "grafana.edwardh.dev" = {
           forceSSL = true;
           enableACME = true;
@@ -452,70 +462,21 @@
             rewrite ^(.*)$ https://$random_abc.grafana.edwardh.dev$1;
           '';
         };
-        "alpha.grafana.edwardh.dev" = {
-          forceSSL = true;
-          enableACME = true;
-
-          locations."/" = {
-            recommendedProxySettings = true;
-            proxyWebsockets = true;
-            proxyPass = "http://172.27.30.51:3210";
-          };
-        };
-        "bravo.grafana.edwardh.dev" = {
-          forceSSL = true;
-          enableACME = true;
-
-          locations."/" = {
-            recommendedProxySettings = true;
-            proxyWebsockets = true;
-            proxyPass = "http://172.27.30.52:3210";
-          };
-        };
-        "charlie.grafana.edwardh.dev" = {
-          forceSSL = true;
-          enableACME = true;
-
-          locations."/" = {
-            recommendedProxySettings = true;
-            proxyWebsockets = true;
-            proxyPass = "http://172.27.30.53:3210";
-          };
-        };
+        "alpha.grafana.edwardh.dev" = proxyVHost true "http://172.27.30.51:3210";
+        "bravo.grafana.edwardh.dev" = proxyVHost true "http://172.27.30.52:3210";
+        "charlie.grafana.edwardh.dev" = proxyVHost true "http://172.27.30.53:3210";
         "git.edwardh.dev" = {
           addSSL = true;
           enableACME = true;
-          locations."/".extraConfig = ''
-            rewrite ^(.*)$ https://radicle.edwardh.dev$1;
-          '';
-          locations."~ ^/pio(/[A-Za-z0-9-_/]+)?$" = {
-            return = ''
-              200 '
-              <!DOCTYPE html>
-              <html lang="en">
-                <head>
-                  <meta charset="utf-8">
-                  <meta name="viewport" content="width=device-width, initial-scale=1">
-                  <meta name="go-import" content="git.edwardh.dev/pio git https://$random_abc.seed.edwardh.dev/z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ.git">
-                  <style>
-                    :root {
-                      color-scheme: light dark;
-                    }
-                  </style>
-                </head>
-                <body>
-                <h1>git.edwardh.dev/pio</h1>
-                <p style="font-size: larger;">You have reached a redirect page. Please select where you would like to view this repository:</p>
-                  <ul style="font-size: x-large; line-height: 2.5rem;">
-                    <li> <a href="https://radicle.edwardh.dev/nodes/$random_abc.seed.edwardh.dev/rad:z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ">View on Radicle</a></li>
-                    <li> <a href="https://github.com/headblockhead/pio">View on GitHub</a></li>
-                  </ul>
-                </body>
-              </html>
-              '
+          locations = {
+            "/".extraConfig = ''
+              rewrite ^(.*)$ https://radicle.edwardh.dev$1;
             '';
-            extraConfig = "default_type text/html;";
-          };
+          }
+          // gitLocation "edwardh.dev" "zudXi8ABTLpwYLAce7NR8KntbcZU"
+          // gitLocation "nixos" "zBJiVgq6DhTjUg8Tqp9DZAQqSJcz"
+          // gitLocation "pico-edbus" "z2AihL5EFL98E9nhuwguu6tj51yYN"
+          // gitLocation "pio" "z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ";
         };
         "seed.edwardh.dev" = {
           forceSSL = true;
@@ -525,16 +486,14 @@
             rewrite ^(.*)$ https://$random_abc.seed.edwardh.dev$1;
           '';
         };
-        "alpha.seed.edwardh.dev" = nginxSeedVHost "http://172.27.30.51:3015";
-        "bravo.seed.edwardh.dev" = nginxSeedVHost "http://172.27.30.52:3015";
-        "charlie.seed.edwardh.dev" = nginxSeedVHost "http://172.27.30.53:3015";
+        "alpha.seed.edwardh.dev" = seedVHost "http://172.27.30.51:3015";
+        "bravo.seed.edwardh.dev" = seedVHost "http://172.27.30.52:3015";
+        "charlie.seed.edwardh.dev" = seedVHost "http://172.27.30.53:3015";
         "radicle.edwardh.dev" = {
           forceSSL = true;
           enableACME = true;
-
           quic = true;
           http3 = true;
-
           locations."/" = {
             root = pkgs.radicle-explorer.withConfig {
               nodes.fallbackPublicExplorer = "https://radicle.edwardh.dev/nodes/$host/$rid$path";
@@ -557,12 +516,12 @@
               ];
             };
             tryFiles = "$uri /index.html";
-            extraConfig = ''
-              gzip on;
-              gzip_types text/html text/css;
-              add_header Alt-Svc 'h3=":443"; ma=86400';
-            '';
           };
+          extraConfig = ''
+            gzip on;
+            gzip_types text/html text/css;
+            add_header Alt-Svc 'h3=":443"; ma=86400';
+          '';
         };
       };
     };

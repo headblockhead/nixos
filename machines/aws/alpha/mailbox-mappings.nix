@@ -212,4 +212,8 @@
     address = "unmannedtech@edwardh.dev";
     mailbox = "Organizations.UnmannedTech";
   }
+  {
+    address = "emf@edwardh.dev";
+    mailbox = "Organizations.Electromagnetic Field";
+  }
 ]
