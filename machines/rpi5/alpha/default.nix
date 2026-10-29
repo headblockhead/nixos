@@ -51,7 +51,6 @@ inputs.nixpkgs.lib.nixosSystem {
     services.prometheus.prometheus
     services.prometheus.exporters.node
     services.radicle
-    services.tangled.knot-rs
     services.tranquil-pds
     users.users
   ];

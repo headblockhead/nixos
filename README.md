@@ -89,7 +89,7 @@ nixos-generate-config --show-hardware-config > hardware-auto.nix
 Clone a copy of this repo.
 
 ```bash
-git clone https://knot.edwardh.dev/edwardh.dev/nixos.git
+git clone https://seed.edwardh.dev/rad:zBJiVgq6DhTjUg8Tqp9DZAQqSJcz nixos
 ```
 
 Compare the hardware-auto.nix file to the hardware.nix of the machine you intend to install, and update accordingly (imports, kernel modules, CPU microcode, etc.)
@@ -131,7 +131,7 @@ sudo usermod -L root
 Complete the first half of the setup form, then quit when reaching 'generating new key pair'.
 
 ```bash
-gopass clone git@knot.edwardh.dev:edwardh.dev/gopass
+gopass clone git@github.com:headblockhead/gopass
 ```
 
 #### GNOME theme for Firefox

@@ -14,7 +14,6 @@ in
   "aws.alpha.radicale.age".publicKeys = [ keys.aws.alpha ];
 
   "rpi5.alpha.tranquil.age".publicKeys = [ keys.rpi5.alpha ];
-  "rpi5.alpha.knot.age".publicKeys = [ keys.rpi5.alpha ];
 
   "rpi5.alpha.radicle.age".publicKeys = [ keys.rpi5.alpha ];
   "rpi5.bravo.radicle.age".publicKeys = [ keys.rpi5.bravo ];

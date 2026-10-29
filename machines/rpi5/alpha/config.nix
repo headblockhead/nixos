@@ -7,8 +7,6 @@
     config.services.prometheus.exporters.node.port # Node Exporter
     config.services.grafana.settings.server.http_port # Grafana
 
-    22 # Knot
-    5555 # Knot
     3000 # PDS
   ];
 }

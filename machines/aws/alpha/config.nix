@@ -20,8 +20,7 @@
       443 # HTTPS
 
       53 # DNS
-      22 # SSH for Knot
-      26 # SSH for me
+      26 # SSH
     ];
     allowedUDPPorts = [
       80 # HTTP
@@ -273,7 +272,7 @@
         $TTL 86400
 
         edwardh.dev. IN SOA ns.edwardh.dev. admin.edwardh.dev. (
-          2026102603 	; Serial, MUST be updated every change
+          2026102901 	; Serial, MUST be updated every change
           1800        ; Refresh period
           900         ; Retry period
           604800      ; Expire time
@@ -287,8 +286,6 @@
         edwardh.dev.          600   IN A      18.135.222.143
         calendar              600   IN A      18.135.222.143
         contacts              600   IN A      18.135.222.143
-        knot                  600   IN A      18.135.222.143
-        tangled               600   IN A      18.135.222.143
         pds                   600   IN A      18.135.222.143
         git                   600   IN A      18.135.222.143
         grafana               600   IN A      18.135.222.143
@@ -453,7 +450,6 @@
         "calendar.edwardh.dev" = proxyVHost false "http://127.0.0.1:5232" // {
           serverAliases = [ "contacts.edwardh.dev" ];
         };
-        "knot.edwardh.dev" = proxyVHost true "http://172.27.30.51:5555";
         "pds.edwardh.dev" = proxyVHost true "http://172.27.30.51:3000";
         "grafana.edwardh.dev" = {
           forceSSL = true;
