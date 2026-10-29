@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   inputs,
   reverseDomainName,
   ...
@@ -372,30 +373,30 @@
         };
       };
 
+      radicleRepos = import "${inputs.self.outPath}/radicle.nix";
+
       gitLocation = name: rad: {
-        "~ ^/${name}(/[A-Za-z0-9-_/]+)?$" = {
-          return = ''
-            200 '
-            <!DOCTYPE html>
-            <html lang="en" style="color-scheme: light dark;">
-              <head>
-                <meta charset="utf-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-                <meta name="go-import" content="git.edwardh.dev/${name} git https://$random_abc.seed.edwardh.dev/${rad}.git">
-              </head>
-              <body>
-              <h1>git.edwardh.dev/${name}</h1>
-              <p style="font-size: larger;">You have reached a redirect page. Please select where you would like to view this repository:</p>
-                <ul style="font-size: x-large; line-height: 2.5rem;">
-                  <li> <a href="https://radicle.edwardh.dev/nodes/$random_abc.seed.edwardh.dev/rad:${rad}">View on Radicle</a></li>
-                  <li> <a href="https://github.com/headblockhead/${name}">View on GitHub</a></li>
-                </ul>
-              </body>
-            </html>
-            '
-          '';
-          extraConfig = "default_type text/html;";
-        };
+        return = ''
+          200 '
+          <!DOCTYPE html>
+          <html lang="en" style="color-scheme: light dark;">
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+              <meta name="go-import" content="git.edwardh.dev/${name} git https://$random_abc.seed.edwardh.dev/${rad}.git">
+            </head>
+            <body>
+            <h1>git.edwardh.dev/${name}</h1>
+            <p style="font-size: larger;">You have reached a redirect page. Please select where you would like to view this repository:</p>
+              <ul style="font-size: x-large; line-height: 2.5rem;">
+                <li> <a href="https://radicle.edwardh.dev/nodes/$random_abc.seed.edwardh.dev/rad:${rad}">View on Radicle</a></li>
+                <li> <a href="https://github.com/headblockhead/${name}">View on GitHub</a></li>
+              </ul>
+            </body>
+          </html>
+          '
+        '';
+        extraConfig = "default_type text/html;";
       };
     in
     {
@@ -473,10 +474,9 @@
               rewrite ^(.*)$ https://radicle.edwardh.dev$1;
             '';
           }
-          // gitLocation "edwardh.dev" "zudXi8ABTLpwYLAce7NR8KntbcZU"
-          // gitLocation "nixos" "zBJiVgq6DhTjUg8Tqp9DZAQqSJcz"
-          // gitLocation "pico-edbus" "z2AihL5EFL98E9nhuwguu6tj51yYN"
-          // gitLocation "pio" "z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ";
+          // lib.attrsets.mapAttrs' (
+            name: value: lib.nameValuePair ("~ ^/${name}(/[A-Za-z0-9-_/]+)?$") (gitLocation name value)
+          ) radicleRepos;
         };
         "seed.edwardh.dev" = {
           forceSSL = true;

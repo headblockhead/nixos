@@ -12,7 +12,6 @@
       init.defaultBranch = "master";
       pull.rebase = true;
       push.autoSetupRemote = true;
-      init.defaultObjectFormat = "sha256";
       credential = {
         "https://github.com" = {
           helper = "${pkgs.gh}/bin/gh auth git-credential";

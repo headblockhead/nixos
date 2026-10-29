@@ -39,17 +39,16 @@
     privateKey = config.age.secrets.radicle.path;
     checkConfig = false;
     settings = {
-      web = {
-        avatarUrl = "https://edwardh.dev/edward-hesketh-close.jpg";
-        bannerUrl = "https://edwardh.dev/edward-hesketh.jpg";
-        description = "One of Edward Hesketh's personal nodes.";
-        pinned.repositories = [
-          "rad:zBJiVgq6DhTjUg8Tqp9DZAQqSJcz" # nixos
-          "rad:zudXi8ABTLpwYLAce7NR8KntbcZU" # edwardh.dev
-          "rad:z2dQfyStnRiFbU6Sx9pZf7cQk3mDZ" # pio
-          "rad:z2AihL5EFL98E9nhuwguu6tj51yYN" # pico-edbus
-        ];
-      };
+      web =
+        let
+          radicleRepos = import "${inputs.self.outPath}/radicle.nix";
+        in
+        {
+          avatarUrl = "https://edwardh.dev/edward-hesketh-close.jpg";
+          bannerUrl = "https://edwardh.dev/edward-hesketh.jpg";
+          description = "One of Edward Hesketh's personal nodes.";
+          pinned.repositories = builtins.map (id: "rad:" + id) (builtins.attrValues radicleRepos);
+        };
       node = {
         alias = radicleAlias;
         externalAddresses = [ "${radicleAlias}:${builtins.toString radicleNodePort}" ];
