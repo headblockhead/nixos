@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/kernel-6.18.59";
+    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi";
     nixos-raspberrypi.inputs.nixpkgs.follows = "nixpkgs";
 
     disko.url = "github:headblockhead/disko";

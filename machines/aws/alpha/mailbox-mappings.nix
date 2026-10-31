@@ -216,4 +216,8 @@
     address = "emf@edwardh.dev";
     mailbox = "Organizations.Electromagnetic Field";
   }
+  {
+    address = "tangled@edwardh.dev";
+    mailbox = "Organizations.Tangled";
+  }
 ]
