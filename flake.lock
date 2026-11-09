@@ -438,17 +438,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1793393104,
-        "narHash": "sha256-3mvAoaCuwdeOgUv+CkjnE2WuliaZC35Rxzf/1OPYQLQ=",
+        "lastModified": 1794170777,
+        "narHash": "sha256-/Xua2hSS7/ZLRG5CVBNqZn1DJABQAruGDPwtwWsFafM=",
         "owner": "nvmd",
         "repo": "nixos-raspberrypi",
-        "rev": "8db71a3a68c8a4c675d7597c055789969611ff73",
+        "rev": "f8276b43e0a28999269bb4aa9cc7d5c620453118",
         "type": "github"
       },
       "original": {
         "owner": "nvmd",
         "repo": "nixos-raspberrypi",
-        "rev": "8db71a3a68c8a4c675d7597c055789969611ff73",
         "type": "github"
       }
     },
