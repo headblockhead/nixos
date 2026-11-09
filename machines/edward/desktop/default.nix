@@ -75,7 +75,7 @@ inputs.nixpkgs.lib.nixosSystem {
     services.pipewire
     services.printing
     services.printingEnsureHomePrinter
-    #services.wivrn
+    services.wivrn
     users.users
   ];
 }

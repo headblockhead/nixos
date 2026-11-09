@@ -3,8 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-2605.url = "github:NixOS/nixpkgs/nixos-26.05";
 
-    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi";
+    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/8db71a3a68c8a4c675d7597c055789969611ff73";
     nixos-raspberrypi.inputs.nixpkgs.follows = "nixpkgs";
 
     disko.url = "github:headblockhead/disko";
@@ -81,6 +82,24 @@
             go-migrate = prev.go-migrate.overrideAttrs (oldAttrs: {
               tags = [ "postgres" ];
             });
+          }
+        );
+        downgrade = (
+          final: prev:
+          let
+            previousPkgs = import inputs.nixpkgs-2605 {
+              system = prev.stdenv.hostPlatform.system;
+              config = {
+                inherit (prev.config) allowUnfreePackages permittedInsecurePackages;
+              };
+            };
+          in
+          {
+            radicle-desktop = previousPkgs.radicle-desktop;
+            radicle-httpd = previousPkgs.radicle-httpd;
+            radicle-node = previousPkgs.radicle-node;
+            radicle-tui = previousPkgs.radicle-tui;
+            radicle-explorer = previousPkgs.radicle-explorer;
           }
         );
         replace = (

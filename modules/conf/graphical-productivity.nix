@@ -6,12 +6,10 @@
     libreoffice
     hunspell
     hunspellDicts.en-gb-large
-    anki
+    #anki
     thunderbird
-    # CAD
     openscad-unstable
     #freecad-wayland
-    # LaTeX tools
     texstudio
     texliveFull
     hieroglyphic
