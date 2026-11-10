@@ -7,16 +7,12 @@
   environment.systemPackages = with pkgs; [
     # Audio
     spotify
-    #audacity
+    audacity
     easyeffects
     qpwgraph
-    # Video
-    # AV
     obs-studio
-    # Images
     gimp
     inkscape
-    # Scores
-    #musescore
+    musescore
   ];
 }
