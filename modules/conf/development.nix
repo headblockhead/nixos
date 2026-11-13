@@ -26,6 +26,7 @@
     gopls
     templ
     go-migrate
+    golangci-lint
 
     # Python
     python313
