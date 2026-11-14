@@ -62,6 +62,7 @@ inputs.nixpkgs.lib.nixosSystem {
     nix.optimise
     nix.registry
     nix.settings
+    programs.alvr
     programs.fzf
     programs.git
     programs.gnupg
@@ -69,6 +70,7 @@ inputs.nixpkgs.lib.nixosSystem {
     programs.zsh
     security.rtkit
     services.desktop-managers.gnome
+    #services.desktop-managers.plasma6
     services.display-managers.gdm
     services.fwupd
     services.openssh

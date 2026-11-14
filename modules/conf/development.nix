@@ -27,6 +27,7 @@
     templ
     go-migrate
     golangci-lint
+    govulncheck
 
     # Python
     python313

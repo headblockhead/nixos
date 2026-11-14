@@ -194,5 +194,5 @@
     }
   ];
 
-  programs.gnupg.agent.pinentryPackage = lib.mkDefault pkgs.pinentry-gnome3;
+  programs.gnupg.agent.pinentryPackage = lib.mkForce pkgs.pinentry-gnome3;
 }

@@ -10,7 +10,6 @@
 
     disko.url = "github:nix-community/disko";
     agenix.url = "github:ryantm/agenix";
-    wivrn.url = "github:wivrn/wivrn/v26.9";
     tangled.url = "git+https://tangled.org/tangled.org/core";
     nixos-mailserver.url = "git+https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git?ref=main";
     impermanence.url = "github:nix-community/impermanence";
@@ -109,7 +108,6 @@
               withDNS-SD = true;
               withAvahi = true;
             };
-            wivrn = inputs.wivrn.packages.${prev.stdenv.hostPlatform.system}.default;
             unifi = prev.callPackage ./custom-packages/unifi/default.nix { };
           }
         );

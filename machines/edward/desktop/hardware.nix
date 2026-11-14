@@ -27,6 +27,8 @@
   ];
   boot.kernelModules = [ "kvm-amd" ];
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   environment.systemPackages = with pkgs; [
     clinfo
     lact

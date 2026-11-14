@@ -17,6 +17,7 @@
 
   services.openssh.openFirewall = true;
   services.wivrn.openFirewall = true;
+  programs.alvr.openFirewall = true;
 
   programs.steam = {
     enable = true;
