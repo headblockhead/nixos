@@ -269,6 +269,20 @@
     };
   };
 
+  systemd.services.bind = {
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+  };
+
+  systemd.services.wireguard-wg-peer-edwardh-alpha = {
+    after = [ "bind.service" ];
+    wants = [ "bind.service" ];
+    serviceConfig = {
+      Restart = "on-failure";
+      RestartSec = "5s";
+    };
+  };
+
   services.radvd = {
     enable = true;
     config = ''
