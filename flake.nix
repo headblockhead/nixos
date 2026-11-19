@@ -94,11 +94,7 @@
             };
           in
           {
-            radicle-desktop = previousPkgs.radicle-desktop;
-            radicle-httpd = previousPkgs.radicle-httpd;
-            radicle-node = previousPkgs.radicle-node;
             radicle-tui = previousPkgs.radicle-tui;
-            radicle-explorer = previousPkgs.radicle-explorer;
           }
         );
         replace = (
