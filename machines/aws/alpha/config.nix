@@ -159,7 +159,6 @@
     {
       enable = true;
       stateVersion = 3;
-      localDnsResolver = false;
 
       fullTextSearch = {
         enable = true;
