@@ -73,11 +73,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1795556667,
-        "narHash": "sha256-DA4D011GcsSwdZBc4mt3utQtsuCUOm5dz6cNGiGRwE4=",
+        "lastModified": 1795556876,
+        "narHash": "sha256-zvqRkX2S4lLZL8hnQBdHcTtVcdOeTbkiViaViVpR918=",
         "ref": "refs/heads/master",
-        "rev": "eeacb21c14307eea79974f56af6b090f9e8c7bb3",
-        "revCount": 55,
+        "rev": "1855606912e14d01cae4e72f7f3294cece0f5696",
+        "revCount": 56,
         "type": "git",
         "url": "https://seed.edwardh.dev/rad:zudXi8ABTLpwYLAce7NR8KntbcZU"
       },
