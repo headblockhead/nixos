@@ -73,11 +73,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1795527415,
-        "narHash": "sha256-n5VYo/nVEfhk+0/F2npakqdCc512rBtgcl9r8NB8T8I=",
+        "lastModified": 1795556667,
+        "narHash": "sha256-DA4D011GcsSwdZBc4mt3utQtsuCUOm5dz6cNGiGRwE4=",
         "ref": "refs/heads/master",
-        "rev": "4e30acbe22f09db35784f81196e1657b404dd32d",
-        "revCount": 54,
+        "rev": "eeacb21c14307eea79974f56af6b090f9e8c7bb3",
+        "revCount": 55,
         "type": "git",
         "url": "https://seed.edwardh.dev/rad:zudXi8ABTLpwYLAce7NR8KntbcZU"
       },
@@ -668,11 +668,11 @@
         "timeless-fonts-src": "timeless-fonts-src"
       },
       "locked": {
-        "lastModified": 1795523681,
-        "narHash": "sha256-oYigG6rw/Z99XPEwD0zggXwvGVv8QjLz436xhAQzZU8=",
+        "lastModified": 1795548320,
+        "narHash": "sha256-o7khw4Q5Gk8CryocuYAL9fakJR0M6Y7le781kG2j1nE=",
         "ref": "refs/heads/master",
-        "rev": "3aa77e3beade41fb4a61fa5948b89e2ee978918f",
-        "revCount": 6720,
+        "rev": "d96d92b53b12e3751ab8593dbc6009e4300a24c9",
+        "revCount": 6726,
         "type": "git",
         "url": "https://tangled.org/tangled.org/core"
       },
