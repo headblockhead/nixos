@@ -212,7 +212,8 @@ nixos-rebuild boot --target-host alpha.edwardh.dev --sudo --no-reexec --flake .#
 Build the nixos configurations for all machines, without deploying.
 
 ```bash
-nixos-rebuild build --flake .#
+nixos-rebuild build --flake .#edward-desktop
+nixos-rebuild build --flake .#edward-laptop
 nixos-rebuild build --flake .#gateway-alpha
 nixos-rebuild build --flake .#rpi4-alpha
 nixos-rebuild build --flake .#rpi4-bravo
